@@ -1,0 +1,16 @@
+[
+  {
+    "id": "d1ddc04c-86d1-473a-8698-ff2432d24c65",
+    "member_id": 1,
+    "total_cost": 1980,
+    "payment_amount": 1980,
+    "discount": "NULL",
+    "share_payment_id": 1,
+    "share_payment_status_id": 1,
+    "share_order_status_id": 1,
+    "invoice_id": 1,
+    "student_name": "芙莉蓮",
+    "student_phone": "0912345678",
+    "created_at": "2024-04-12 13:12:34"
+  }
+]

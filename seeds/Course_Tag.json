@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "course_id": 1,
+    "tag_id": 4
+  },
+  {
+    "id": 2,
+    "course_id": 1,
+    "tag_id": 5
+  },
+  {
+    "id": 3,
+    "course_id": 2,
+    "tag_id": 4
+  },
+  {
+    "id": 4,
+    "course_id": 2,
+    "tag_id": 5
+  },
+  {
+    "id": 5,
+    "course_id": 3,
+    "tag_id": 4
+  },
+  {
+    "id": 6,
+    "course_id": 3,
+    "tag_id": 5
+  }
+]

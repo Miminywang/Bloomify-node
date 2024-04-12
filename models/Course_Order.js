@@ -1,0 +1,66 @@
+import { DataTypes } from 'sequelize'
+
+export default async function (sequelize) {
+  return sequelize.define(
+    'Course_Order',
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      member_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      total_cost: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      payment_amount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      discount: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      share_payment_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      share_payment_status_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      share_order_status_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      invoice_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      student_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      student_phone: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+    },
+    {
+      tableName: 'course_order', //直接提供資料表名稱
+      timestamps: true, // 使用時間戳
+      paranoid: false, // 軟性刪除
+      underscored: true, // 所有自動建立欄位，使用snake_case命名
+      createdAt: 'created_at', // 建立的時間戳
+      updatedAt: 'updated_at', // 更新的時間戳
+    }
+  )
+}

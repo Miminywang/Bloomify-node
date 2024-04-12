@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "course_id": 1,
+    "period": 1,
+    "date": "2024-04-10",
+    "start_time": "08:00:00",
+    "end_time": "10:00:00"
+  },
+  {
+    "id": 2,
+    "course_id": 1,
+    "period": 2,
+    "date": "2024-04-17",
+    "start_time": "10:00:00",
+    "end_time": "12:00:00"
+  },
+  {
+    "id": 3,
+    "course_id": 1,
+    "period": 3,
+    "date": "2024-05-01",
+    "start_time": "12:00:00",
+    "end_time": "14:00:00"
+  },
+  {
+    "id": 4,
+    "course_id": 1,
+    "period": 4,
+    "date": "2024-05-15",
+    "start_time": "14:00:00",
+    "end_time": "16:00:00"
+  },
+  {
+    "id": 5,
+    "course_id": 1,
+    "period": 5,
+    "date": "2024-05-29",
+    "start_time": "16:00:00",
+    "end_time": "18:00:00"
+  },
+  {
+    "id": 6,
+    "course_id": 2,
+    "period": 1,
+    "date": "2024-06-10",
+    "start_time": "08:00:00",
+    "end_time": "10:00:00"
+  },
+  {
+    "id": 7,
+    "course_id": 2,
+    "period": 2,
+    "date": "2024-06-17",
+    "start_time": "10:00:00",
+    "end_time": "12:00:00"
+  },
+  {
+    "id": 8,
+    "course_id": 2,
+    "period": 3,
+    "date": "2024-07-01",
+    "start_time": "12:00:00",
+    "end_time": "14:00:00"
+  },
+  {
+    "id": 9,
+    "course_id": 2,
+    "period": 4,
+    "date": "2024-07-15",
+    "start_time": "14:00:00",
+    "end_time": "16:00:00"
+  },
+  {
+    "id": 10,
+    "course_id": 2,
+    "period": 5,
+    "date": "2024-07-29",
+    "start_time": "16:00:00",
+    "end_time": "18:00:00"
+  }
+]

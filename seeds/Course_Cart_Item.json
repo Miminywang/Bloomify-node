@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "cart_id": 1,
+    "course_id": 1
+  },
+  {
+    "id": 2,
+    "cart_id": 1,
+    "course_id": 2
+  },
+  {
+    "id": 3,
+    "cart_id": 1,
+    "course_id": 3
+  },
+  {
+    "id": 4,
+    "cart_id": 1,
+    "course_id": 4
+  },
+  {
+    "id": 5,
+    "cart_id": 1,
+    "course_id": 5
+  }
+]

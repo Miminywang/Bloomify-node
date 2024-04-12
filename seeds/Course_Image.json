@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "course_id": 1,
+    "is_main": 1,
+    "path": "/public/assets/course/category-1/img-course-01-01.jpg"
+  },
+  {
+    "id": 2,
+    "course_id": 1,
+    "is_main": 0,
+    "path": "/public/assets/course/category-1/img-course-01-02.jpg"
+  },
+  {
+    "id": 3,
+    "course_id": 1,
+    "is_main": 0,
+    "path": "/public/assets/course/category-1/img-course-01-03.jpg"
+  },
+  {
+    "id": 4,
+    "course_id": 1,
+    "is_main": 0,
+    "path": "/public/assets/course/category-1/img-course-01-04.jpg"
+  },
+  {
+    "id": 5,
+    "course_id": 2,
+    "is_main": 1,
+    "path": "/public/assets/course/category-1/img-course-02-01.jpg"
+  },
+  {
+    "id": 6,
+    "course_id": 2,
+    "is_main": 0,
+    "path": "/public/assets/course/category-1/img-course-02-02.jpg"
+  }
+]
