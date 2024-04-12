@@ -1,0 +1,407 @@
+[
+  {
+    "flower_occ_id": 1,
+    "flower_id": 1,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 2,
+    "flower_id": 1,
+    "occ_id": 6
+  },
+  {
+    "flower_occ_id": 3,
+    "flower_id": 2,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 4,
+    "flower_id": 2,
+    "occ_id": 5
+  },
+  {
+    "flower_occ_id": 5,
+    "flower_id": 3,
+    "occ_id": 3
+  },
+  {
+    "flower_occ_id": 6,
+    "flower_id": 3,
+    "occ_id": 8
+  },
+  {
+    "flower_occ_id": 7,
+    "flower_id": 4,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 8,
+    "flower_id": 4,
+    "occ_id": 4
+  },
+  {
+    "flower_occ_id": 9,
+    "flower_id": 5,
+    "occ_id": 5
+  },
+  {
+    "flower_occ_id": 10,
+    "flower_id": 6,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 11,
+    "flower_id": 6,
+    "occ_id": 3
+  },
+  {
+    "flower_occ_id": 12,
+    "flower_id": 7,
+    "occ_id": 6
+  },
+  {
+    "flower_occ_id": 13,
+    "flower_id": 7,
+    "occ_id": 7
+  },
+  {
+    "flower_occ_id": 14,
+    "flower_id": 8,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 15,
+    "flower_id": 8,
+    "occ_id": 7
+  },
+  {
+    "flower_occ_id": 16,
+    "flower_id": 9,
+    "occ_id": 3
+  },
+  {
+    "flower_occ_id": 17,
+    "flower_id": 9,
+    "occ_id": 4
+  },
+  {
+    "flower_occ_id": 18,
+    "flower_id": 10,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 19,
+    "flower_id": 10,
+    "occ_id": 3
+  },
+  {
+    "flower_occ_id": 20,
+    "flower_id": 11,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 21,
+    "flower_id": 11,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 22,
+    "flower_id": 12,
+    "occ_id": 3
+  },
+  {
+    "flower_occ_id": 23,
+    "flower_id": 12,
+    "occ_id": 6
+  },
+  {
+    "flower_occ_id": 24,
+    "flower_id": 13,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 25,
+    "flower_id": 13,
+    "occ_id": 8
+  },
+  {
+    "flower_occ_id": 26,
+    "flower_id": 14,
+    "occ_id": 3
+  },
+  {
+    "flower_occ_id": 27,
+    "flower_id": 14,
+    "occ_id": 7
+  },
+  {
+    "flower_occ_id": 28,
+    "flower_id": 15,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 29,
+    "flower_id": 15,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 30,
+    "flower_id": 16,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 31,
+    "flower_id": 16,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 32,
+    "flower_id": 17,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 33,
+    "flower_id": 17,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 34,
+    "flower_id": 18,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 35,
+    "flower_id": 18,
+    "occ_id": 3
+  },
+  {
+    "flower_occ_id": 36,
+    "flower_id": 19,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 37,
+    "flower_id": 19,
+    "occ_id": 3
+  },
+  {
+    "flower_occ_id": 38,
+    "flower_id": 20,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 39,
+    "flower_id": 20,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 40,
+    "flower_id": 21,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 41,
+    "flower_id": 21,
+    "occ_id": 6
+  },
+  {
+    "flower_occ_id": 42,
+    "flower_id": 22,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 43,
+    "flower_id": 22,
+    "occ_id": 7
+  },
+  {
+    "flower_occ_id": 44,
+    "flower_id": 23,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 45,
+    "flower_id": 23,
+    "occ_id": 3
+  },
+  {
+    "flower_occ_id": 46,
+    "flower_id": 24,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 47,
+    "flower_id": 24,
+    "occ_id": 4
+  },
+  {
+    "flower_occ_id": 48,
+    "flower_id": 25,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 49,
+    "flower_id": 25,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 50,
+    "flower_id": 26,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 51,
+    "flower_id": 26,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 52,
+    "flower_id": 27,
+    "occ_id": 6
+  },
+  {
+    "flower_occ_id": 53,
+    "flower_id": 27,
+    "occ_id": 7
+  },
+  {
+    "flower_occ_id": 54,
+    "flower_id": 28,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 55,
+    "flower_id": 28,
+    "occ_id": 6
+  },
+  {
+    "flower_occ_id": 56,
+    "flower_id": 29,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 57,
+    "flower_id": 29,
+    "occ_id": 3
+  },
+  {
+    "flower_occ_id": 58,
+    "flower_id": 30,
+    "occ_id": 6
+  },
+  {
+    "flower_occ_id": 59,
+    "flower_id": 30,
+    "occ_id": 7
+  },
+  {
+    "flower_occ_id": 60,
+    "flower_id": 31,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 61,
+    "flower_id": 31,
+    "occ_id": 3
+  },
+  {
+    "flower_occ_id": 62,
+    "flower_id": 32,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 63,
+    "flower_id": 32,
+    "occ_id": 8
+  },
+  {
+    "flower_occ_id": 64,
+    "flower_id": 33,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 65,
+    "flower_id": 33,
+    "occ_id": 8
+  },
+  {
+    "flower_occ_id": 66,
+    "flower_id": 34,
+    "occ_id": 3
+  },
+  {
+    "flower_occ_id": 67,
+    "flower_id": 35,
+    "occ_id": 7
+  },
+  {
+    "flower_occ_id": 68,
+    "flower_id": 36,
+    "occ_id": 7
+  },
+  {
+    "flower_occ_id": 69,
+    "flower_id": 37,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 70,
+    "flower_id": 37,
+    "occ_id": 5
+  },
+  {
+    "flower_occ_id": 71,
+    "flower_id": 38,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 72,
+    "flower_id": 38,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 73,
+    "flower_id": 39,
+    "occ_id": 7
+  },
+  {
+    "flower_occ_id": 74,
+    "flower_id": 40,
+    "occ_id": 7
+  },
+  {
+    "flower_occ_id": 75,
+    "flower_id": 40,
+    "occ_id": 5
+  },
+  {
+    "flower_occ_id": 76,
+    "flower_id": 41,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 77,
+    "flower_id": 42,
+    "occ_id": 2
+  },
+  {
+    "flower_occ_id": 78,
+    "flower_id": 42,
+    "occ_id": 6
+  },
+  {
+    "flower_occ_id": 79,
+    "flower_id": 43,
+    "occ_id": 1
+  },
+  {
+    "flower_occ_id": 80,
+    "flower_id": 43,
+    "occ_id": 6
+  },
+  {
+    "flower_occ_id": 81,
+    "flower_id": 44,
+    "occ_id": 7
+  }
+]

@@ -1,0 +1,327 @@
+[
+  {
+    "flower_color_id": 1,
+    "flower_id": 1,
+    "color_list_id": 1
+  },
+  {
+    "flower_color_id": 2,
+    "flower_id": 1,
+    "color_list_id": 11
+  },
+  {
+    "flower_color_id": 3,
+    "flower_id": 2,
+    "color_list_id": 1
+  },
+  {
+    "flower_color_id": 4,
+    "flower_id": 2,
+    "color_list_id": 11
+  },
+  {
+    "flower_color_id": 5,
+    "flower_id": 3,
+    "color_list_id": 11
+  },
+  {
+    "flower_color_id": 6,
+    "flower_id": 4,
+    "color_list_id": 6
+  },
+  {
+    "flower_color_id": 7,
+    "flower_id": 5,
+    "color_list_id": 5
+  },
+  {
+    "flower_color_id": 8,
+    "flower_id": 6,
+    "color_list_id": 11
+  },
+  {
+    "flower_color_id": 9,
+    "flower_id": 6,
+    "color_list_id": 1
+  },
+  {
+    "flower_color_id": 10,
+    "flower_id": 7,
+    "color_list_id": 5
+  },
+  {
+    "flower_color_id": 11,
+    "flower_id": 7,
+    "color_list_id": 6
+  },
+  {
+    "flower_color_id": 12,
+    "flower_id": 8,
+    "color_list_id": 3
+  },
+  {
+    "flower_color_id": 13,
+    "flower_id": 8,
+    "color_list_id": 12
+  },
+  {
+    "flower_color_id": 14,
+    "flower_id": 9,
+    "color_list_id": 6
+  },
+  {
+    "flower_color_id": 15,
+    "flower_id": 9,
+    "color_list_id": 11
+  },
+  {
+    "flower_color_id": 16,
+    "flower_id": 10,
+    "color_list_id": 3
+  },
+  {
+    "flower_color_id": 17,
+    "flower_id": 11,
+    "color_list_id": 1
+  },
+  {
+    "flower_color_id": 18,
+    "flower_id": 11,
+    "color_list_id": 3
+  },
+  {
+    "flower_color_id": 19,
+    "flower_id": 12,
+    "color_list_id": 5
+  },
+  {
+    "flower_color_id": 20,
+    "flower_id": 13,
+    "color_list_id": 5
+  },
+  {
+    "flower_color_id": 21,
+    "flower_id": 14,
+    "color_list_id": 6
+  },
+  {
+    "flower_color_id": 22,
+    "flower_id": 15,
+    "color_list_id": 11
+  },
+  {
+    "flower_color_id": 23,
+    "flower_id": 15,
+    "color_list_id": 7
+  },
+  {
+    "flower_color_id": 24,
+    "flower_id": 16,
+    "color_list_id": 7
+  },
+  {
+    "flower_color_id": 25,
+    "flower_id": 17,
+    "color_list_id": 6
+  },
+  {
+    "flower_color_id": 26,
+    "flower_id": 17,
+    "color_list_id": 1
+  },
+  {
+    "flower_color_id": 27,
+    "flower_id": 18,
+    "color_list_id": 1
+  },
+  {
+    "flower_color_id": 28,
+    "flower_id": 19,
+    "color_list_id": 11
+  },
+  {
+    "flower_color_id": 29,
+    "flower_id": 19,
+    "color_list_id": 3
+  },
+  {
+    "flower_color_id": 30,
+    "flower_id": 20,
+    "color_list_id": 1
+  },
+  {
+    "flower_color_id": 31,
+    "flower_id": 20,
+    "color_list_id": 5
+  },
+  {
+    "flower_color_id": 32,
+    "flower_id": 21,
+    "color_list_id": 7
+  },
+  {
+    "flower_color_id": 33,
+    "flower_id": 21,
+    "color_list_id": 5
+  },
+  {
+    "flower_color_id": 34,
+    "flower_id": 22,
+    "color_list_id": 6
+  },
+  {
+    "flower_color_id": 35,
+    "flower_id": 23,
+    "color_list_id": 6
+  },
+  {
+    "flower_color_id": 36,
+    "flower_id": 24,
+    "color_list_id": 11
+  },
+  {
+    "flower_color_id": 37,
+    "flower_id": 24,
+    "color_list_id": 3
+  },
+  {
+    "flower_color_id": 38,
+    "flower_id": 25,
+    "color_list_id": 11
+  },
+  {
+    "flower_color_id": 39,
+    "flower_id": 26,
+    "color_list_id": 6
+  },
+  {
+    "flower_color_id": 40,
+    "flower_id": 26,
+    "color_list_id": 7
+  },
+  {
+    "flower_color_id": 41,
+    "flower_id": 27,
+    "color_list_id": 1
+  },
+  {
+    "flower_color_id": 42,
+    "flower_id": 27,
+    "color_list_id": 2
+  },
+  {
+    "flower_color_id": 43,
+    "flower_id": 28,
+    "color_list_id": 6
+  },
+  {
+    "flower_color_id": 44,
+    "flower_id": 28,
+    "color_list_id": 3
+  },
+  {
+    "flower_color_id": 45,
+    "flower_id": 29,
+    "color_list_id": 7
+  },
+  {
+    "flower_color_id": 46,
+    "flower_id": 30,
+    "color_list_id": 6
+  },
+  {
+    "flower_color_id": 47,
+    "flower_id": 30,
+    "color_list_id": 7
+  },
+  {
+    "flower_color_id": 48,
+    "flower_id": 31,
+    "color_list_id": 6
+  },
+  {
+    "flower_color_id": 49,
+    "flower_id": 31,
+    "color_list_id": 5
+  },
+  {
+    "flower_color_id": 50,
+    "flower_id": 32,
+    "color_list_id": 7
+  },
+  {
+    "flower_color_id": 51,
+    "flower_id": 33,
+    "color_list_id": 1
+  },
+  {
+    "flower_color_id": 52,
+    "flower_id": 34,
+    "color_list_id": 11
+  },
+  {
+    "flower_color_id": 53,
+    "flower_id": 35,
+    "color_list_id": 3
+  },
+  {
+    "flower_color_id": 54,
+    "flower_id": 36,
+    "color_list_id": 5
+  },
+  {
+    "flower_color_id": 55,
+    "flower_id": 37,
+    "color_list_id": 1
+  },
+  {
+    "flower_color_id": 56,
+    "flower_id": 37,
+    "color_list_id": 7
+  },
+  {
+    "flower_color_id": 57,
+    "flower_id": 38,
+    "color_list_id": 7
+  },
+  {
+    "flower_color_id": 58,
+    "flower_id": 38,
+    "color_list_id": 5
+  },
+  {
+    "flower_color_id": 59,
+    "flower_id": 39,
+    "color_list_id": 1
+  },
+  {
+    "flower_color_id": 60,
+    "flower_id": 39,
+    "color_list_id": 7
+  },
+  {
+    "flower_color_id": 61,
+    "flower_id": 40,
+    "color_list_id": 5
+  },
+  {
+    "flower_color_id": 62,
+    "flower_id": 41,
+    "color_list_id": 11
+  },
+  {
+    "flower_color_id": 63,
+    "flower_id": 42,
+    "color_list_id": 1
+  },
+  {
+    "flower_color_id": 64,
+    "flower_id": 43,
+    "color_list_id": 11
+  },
+  {
+    "flower_color_id": 65,
+    "flower_id": 44,
+    "color_list_id": 6
+  }
+]
