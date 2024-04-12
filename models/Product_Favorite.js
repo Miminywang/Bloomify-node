@@ -9,11 +9,11 @@ export default async function (sequelize) {
         primaryKey: true,
         autoIncrement: true,
       },
-      product_id: {
+      member_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      member_id: {
+      product_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

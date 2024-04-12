@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize'
 
 export default async function (sequelize) {
   return sequelize.define(
-    'Product_Flowers',
+    'Product',
     {
       id: {
         type: DataTypes.INTEGER,
@@ -11,10 +11,6 @@ export default async function (sequelize) {
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
-      },
-      product_image_flowers_id: {
-        type: DataTypes.INTEGER,
         allowNull: false,
       },
       product_category_id: {
@@ -63,7 +59,7 @@ export default async function (sequelize) {
       },
     },
     {
-      tableName: 'product_flowers', //直接提供資料表名稱
+      tableName: 'product', //直接提供資料表名稱
       timestamps: true, // 使用時間戳
       paranoid: false, // 軟性刪除
       underscored: true, // 所有自動建立欄位，使用snake_case命名

@@ -13,7 +13,7 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      image_url: {
+      url: {
         type: DataTypes.STRING,
         allowNull: false,
       },
