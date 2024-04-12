@@ -1,0 +1,427 @@
+[
+  {
+    "flower_role_id": 1,
+    "flower_id": 1,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 2,
+    "flower_id": 1,
+    "role_id": 6
+  },
+  {
+    "flower_role_id": 3,
+    "flower_id": 2,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 4,
+    "flower_id": 2,
+    "role_id": 3
+  },
+  {
+    "flower_role_id": 5,
+    "flower_id": 3,
+    "role_id": 9
+  },
+  {
+    "flower_role_id": 6,
+    "flower_id": 4,
+    "role_id": 1
+  },
+  {
+    "flower_role_id": 7,
+    "flower_id": 4,
+    "role_id": 4
+  },
+  {
+    "flower_role_id": 8,
+    "flower_id": 5,
+    "role_id": 3
+  },
+  {
+    "flower_role_id": 9,
+    "flower_id": 5,
+    "role_id": 7
+  },
+  {
+    "flower_role_id": 10,
+    "flower_id": 6,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 11,
+    "flower_id": 6,
+    "role_id": 9
+  },
+  {
+    "flower_role_id": 12,
+    "flower_id": 7,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 13,
+    "flower_id": 7,
+    "role_id": 3
+  },
+  {
+    "flower_role_id": 14,
+    "flower_id": 8,
+    "role_id": 8
+  },
+  {
+    "flower_role_id": 15,
+    "flower_id": 9,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 16,
+    "flower_id": 9,
+    "role_id": 8
+  },
+  {
+    "flower_role_id": 17,
+    "flower_id": 10,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 18,
+    "flower_id": 10,
+    "role_id": 9
+  },
+  {
+    "flower_role_id": 19,
+    "flower_id": 11,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 20,
+    "flower_id": 11,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 21,
+    "flower_id": 12,
+    "role_id": 3
+  },
+  {
+    "flower_role_id": 22,
+    "flower_id": 12,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 23,
+    "flower_id": 13,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 24,
+    "flower_id": 13,
+    "role_id": 8
+  },
+  {
+    "flower_role_id": 25,
+    "flower_id": 14,
+    "role_id": 9
+  },
+  {
+    "flower_role_id": 26,
+    "flower_id": 14,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 27,
+    "flower_id": 15,
+    "role_id": 7
+  },
+  {
+    "flower_role_id": 28,
+    "flower_id": 15,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 29,
+    "flower_id": 16,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 30,
+    "flower_id": 16,
+    "role_id": 8
+  },
+  {
+    "flower_role_id": 31,
+    "flower_id": 17,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 32,
+    "flower_id": 17,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 33,
+    "flower_id": 18,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 34,
+    "flower_id": 18,
+    "role_id": 9
+  },
+  {
+    "flower_role_id": 35,
+    "flower_id": 19,
+    "role_id": 8
+  },
+  {
+    "flower_role_id": 36,
+    "flower_id": 19,
+    "role_id": 9
+  },
+  {
+    "flower_role_id": 37,
+    "flower_id": 20,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 38,
+    "flower_id": 20,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 39,
+    "flower_id": 21,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 40,
+    "flower_id": 21,
+    "role_id": 8
+  },
+  {
+    "flower_role_id": 41,
+    "flower_id": 22,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 42,
+    "flower_id": 22,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 43,
+    "flower_id": 23,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 44,
+    "flower_id": 23,
+    "role_id": 9
+  },
+  {
+    "flower_role_id": 45,
+    "flower_id": 24,
+    "role_id": 8
+  },
+  {
+    "flower_role_id": 46,
+    "flower_id": 24,
+    "role_id": 4
+  },
+  {
+    "flower_role_id": 47,
+    "flower_id": 25,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 48,
+    "flower_id": 25,
+    "role_id": 1
+  },
+  {
+    "flower_role_id": 49,
+    "flower_id": 26,
+    "role_id": 3
+  },
+  {
+    "flower_role_id": 50,
+    "flower_id": 26,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 51,
+    "flower_id": 27,
+    "role_id": 3
+  },
+  {
+    "flower_role_id": 52,
+    "flower_id": 27,
+    "role_id": 6
+  },
+  {
+    "flower_role_id": 53,
+    "flower_id": 28,
+    "role_id": 3
+  },
+  {
+    "flower_role_id": 54,
+    "flower_id": 28,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 55,
+    "flower_id": 29,
+    "role_id": 8
+  },
+  {
+    "flower_role_id": 56,
+    "flower_id": 29,
+    "role_id": 9
+  },
+  {
+    "flower_role_id": 57,
+    "flower_id": 30,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 58,
+    "flower_id": 30,
+    "role_id": 3
+  },
+  {
+    "flower_role_id": 59,
+    "flower_id": 31,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 60,
+    "flower_id": 31,
+    "role_id": 7
+  },
+  {
+    "flower_role_id": 61,
+    "flower_id": 32,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 62,
+    "flower_id": 32,
+    "role_id": 9
+  },
+  {
+    "flower_role_id": 63,
+    "flower_id": 33,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 64,
+    "flower_id": 33,
+    "role_id": 9
+  },
+  {
+    "flower_role_id": 65,
+    "flower_id": 34,
+    "role_id": 9
+  },
+  {
+    "flower_role_id": 66,
+    "flower_id": 35,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 67,
+    "flower_id": 35,
+    "role_id": 8
+  },
+  {
+    "flower_role_id": 68,
+    "flower_id": 36,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 69,
+    "flower_id": 36,
+    "role_id": 8
+  },
+  {
+    "flower_role_id": 70,
+    "flower_id": 37,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 71,
+    "flower_id": 37,
+    "role_id": 8
+  },
+  {
+    "flower_role_id": 72,
+    "flower_id": 38,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 73,
+    "flower_id": 38,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 74,
+    "flower_id": 39,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 75,
+    "flower_id": 39,
+    "role_id": 3
+  },
+  {
+    "flower_role_id": 76,
+    "flower_id": 40,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 77,
+    "flower_id": 40,
+    "role_id": 8
+  },
+  {
+    "flower_role_id": 78,
+    "flower_id": 41,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 79,
+    "flower_id": 41,
+    "role_id": 9
+  },
+  {
+    "flower_role_id": 80,
+    "flower_id": 42,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 81,
+    "flower_id": 42,
+    "role_id": 5
+  },
+  {
+    "flower_role_id": 82,
+    "flower_id": 43,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 83,
+    "flower_id": 43,
+    "role_id": 3
+  },
+  {
+    "flower_role_id": 84,
+    "flower_id": 44,
+    "role_id": 2
+  },
+  {
+    "flower_role_id": 85,
+    "flower_id": 44,
+    "role_id": 8
+  }
+]

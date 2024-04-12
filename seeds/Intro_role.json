@@ -1,0 +1,38 @@
+[
+  {
+    "role_id": 1,
+    "role": "長輩"
+  },
+  {
+    "role_id": 2,
+    "role": "朋友"
+  },
+  {
+    "role_id": 3,
+    "role": "同學"
+  },
+  {
+    "role_id": 4,
+    "role": "師長"
+  },
+  {
+    "role_id": 5,
+    "role": "戀人"
+  },
+  {
+    "role_id": 6,
+    "role": "工作伙伴"
+  },
+  {
+    "role_id": 7,
+    "role": "新生嬰兒"
+  },
+  {
+    "role_id": 8,
+    "role": "親人"
+  },
+  {
+    "role_id": 9,
+    "role": "新婚夫婦"
+  }
+]
