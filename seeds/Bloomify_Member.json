@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "哈利",
+    "email": "herry@gmail.com",
+    "password": "123456",
+    "phone": "0911123456",
+    "city": "台北市",
+    "district": "信義區",
+    "address": "忠孝東路四段101號",
+    "avatar": null,
+    "google_id": null,
+    "google_name": null,
+    "google_email": null,
+    "google_pic": null,
+    "join_date": "2020-01-01"
+  },
+  {
+    "id": 2,
+    "name": "金妮",
+    "email": "ginny@gmail.com",
+    "password": "234567",
+    "phone": "0933987654",
+    "city": "台中市",
+    "district": "西屯區",
+    "address": "市政北一路168號",
+    "avatar": null,
+    "google_id": null,
+    "google_name": null,
+    "google_email": null,
+    "google_pic": null,
+    "join_date": "2019-09-23"
+  },
+  {
+    "id": 3,
+    "name": "妙麗",
+    "email": "mione@gmail.com",
+    "password": "345678",
+    "phone": "0935234567",
+    "city": "高雄市",
+    "district": "鼓山區",
+    "address": "蓮海路1號",
+    "avatar": null,
+    "google_id": null,
+    "google_name": null,
+    "google_email": null,
+    "google_pic": null,
+    "join_date": "2020-04-22"
+  }
+]
