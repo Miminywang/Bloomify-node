@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "member_id": 1,
+    "total_cost": 500,
+    "is_buyer_recipient": 0,
+    "recipient_name": "芙莉蓮",
+    "recipient_phone": "0912345678",
+    "recipient_address": "台北市大安區忠孝東路三段8號",
+    "estimated_delivery": "2024/5/1 12:35",
+    "actual_delivery": "2024/5/2 12:35",
+    "share_shipping_id": 3,
+    "share_shipping_status_id": 2,
+    "share_payment_id": 3,
+    "share_payment_status_id": 1,
+    "payment_amount": 500,
+    "has_confirmed": 1,
+    "discount": 50,
+    "invoice_id": 1,
+    "share_order_status_id": 1
+  },
+  {
+    "id": 2,
+    "member_id": 2,
+    "total_cost": 1000,
+    "is_buyer_recipient": 1,
+    "recipient_name": "哈利",
+    "recipient_phone": "0911123456",
+    "recipient_address": "台北市信義區忠孝東路四段101號",
+    "estimated_delivery": "2024/5/2 12:35",
+    "actual_delivery": "2024/5/3 12:30",
+    "share_shipping_id": 3,
+    "share_shipping_status_id": 2,
+    "share_payment_id": 3,
+    "share_payment_status_id": 1,
+    "payment_amount": 1000,
+    "has_confirmed": 1,
+    "discount": 50,
+    "invoice_id": 1,
+    "share_order_status_id": 1
+  }
+]

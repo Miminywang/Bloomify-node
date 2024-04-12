@@ -5,10 +5,9 @@ export default async function (sequelize) {
     'Product_Order_Detail',
     {
       id: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        comment: 'UUID',
+        autoIncrement: true,
       },
       member_id: {
         type: DataTypes.INTEGER,
@@ -20,29 +19,29 @@ export default async function (sequelize) {
       },
       is_buyer_recipient: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       recipient_name: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       recipient_phone: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       recipient_address: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       estimated_delivery: {
         type: DataTypes.DATE,
-        allowNull: true,
+        allowNull: false,
       },
       actual_delivery: {
         type: DataTypes.DATE,
-        allowNull: true,
+        allowNull: false,
       },
-      share_shipping_method_id: {
+      share_shipping_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -62,13 +61,13 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      is_confirm: {
+      has_confirmed: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
       discount: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       invoice_id: {
         type: DataTypes.INTEGER,

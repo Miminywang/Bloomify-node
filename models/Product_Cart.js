@@ -10,7 +10,7 @@ export default async function (sequelize) {
         autoIncrement: true,
       },
       member_id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       total_cost: {
