@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "宅配",
+    "cost": 150
+  },
+  {
+    "id": 2,
+    "name": "自取",
+    "cost": 0
+  },
+  {
+    "id": 3,
+    "name": "7-ELEVEN",
+    "cost": 60
+  },
+  {
+    "id": 4,
+    "name": "Family Mart",
+    "cost": 60
+  },
+  {
+    "id": 5,
+    "name": "Hi-Life",
+    "cost": 60
+  },
+  {
+    "id": 6,
+    "name": "OK Mart",
+    "cost": 60
+  },
+  {
+    "id": 7,
+    "name": "郵局",
+    "cost": 100
+  }
+]

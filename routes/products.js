@@ -32,6 +32,7 @@ router.get('/:id', async function (req, res) {
   //   return res.json({ status: 'error', message: '存取會員資料失敗' })
   // }
 
+  // 這只有一張表
   const product = await Product.findByPk(id, {
     raw: true, // 只需要資料表中資料
   })

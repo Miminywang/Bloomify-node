@@ -18,22 +18,6 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      is_buyer_member: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      buyer_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      buyer_phone: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      buyer_mail: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       is_buyer_recipient: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -82,7 +66,7 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      coupon_id: {
+      discount: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },

@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "name": "鮮花類",
+    "parent_id": "NULL",
+    "url": "NULL"
+  },
+  {
+    "id": 2,
+    "name": "植栽類",
+    "parent_id": "NULL",
+    "url": "NULL"
+  },
+  {
+    "id": 3,
+    "name": "資材類",
+    "parent_id": "NULL",
+    "url": "NULL"
+  },
+  {
+    "id": 4,
+    "name": "鮮花",
+    "parent_id": 1,
+    "url": "/assets/shop/products/flowers"
+  },
+  {
+    "id": 5,
+    "name": "花盆栽",
+    "parent_id": 1,
+    "url": "/assets/shop/products/flower-pots"
+  },
+  {
+    "id": 6,
+    "name": "葉材",
+    "parent_id": 2,
+    "url": "/assets/shop/products/foliage"
+  },
+  {
+    "id": 7,
+    "name": "植盆栽",
+    "parent_id": 2,
+    "url": "/assets/shop/products/plant-pots"
+  },
+  {
+    "id": 8,
+    "name": "器具",
+    "parent_id": 3,
+    "url": "/assets/shop/products/tools"
+  },
+  {
+    "id": 9,
+    "name": "材料",
+    "parent_id": 3,
+    "url": "/assets/shop/products/materials"
+  }
+]

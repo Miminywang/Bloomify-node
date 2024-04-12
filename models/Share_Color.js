@@ -13,6 +13,14 @@ export default async function (sequelize) {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      en_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       tableName: 'share_color', //直接提供資料表名稱

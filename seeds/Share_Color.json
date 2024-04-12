@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "name": "紅色",
+    "en_name": "red",
+    "code": "#FF0000"
+  },
+  {
+    "id": 2,
+    "name": "橙色",
+    "en_name": "orange",
+    "code": "#FFA500"
+  },
+  {
+    "id": 3,
+    "name": "黃色",
+    "en_name": "yellow",
+    "code": "#FFFF00"
+  },
+  {
+    "id": 4,
+    "name": "綠色",
+    "en_name": "green",
+    "code": "#008000"
+  },
+  {
+    "id": 5,
+    "name": "藍色",
+    "en_name": "blue",
+    "code": "#0000FF"
+  },
+  {
+    "id": 6,
+    "name": "紫色",
+    "en_name": "purple",
+    "code": "#8B00FF"
+  },
+  {
+    "id": 7,
+    "name": "粉色",
+    "en_name": "pink",
+    "code": "#FFC0CB"
+  },
+  {
+    "id": 8,
+    "name": "棕色",
+    "en_name": "brown",
+    "code": "#704214"
+  },
+  {
+    "id": 9,
+    "name": "灰色",
+    "en_name": "gray",
+    "code": "#808080"
+  },
+  {
+    "id": 10,
+    "name": "黑色",
+    "en_name": "black",
+    "code": "#000000"
+  },
+  {
+    "id": 11,
+    "name": "白色",
+    "en_name": "white",
+    "code": "#FFFFFF"
+  },
+  {
+    "id": 12,
+    "name": "其他",
+    "en_name": "other",
+    "code": "linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,255,0,1) 50%, rgba(0,128,0,1) 100%)"
+  }
+]
