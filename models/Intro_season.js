@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize'
 
 export default async function (sequelize) {
   return sequelize.define(
-    'Intro_season',
+    'Intro_Season',
     {
       season_id: {
         type: DataTypes.INTEGER,

@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize'
 
 export default async function (sequelize) {
   return sequelize.define(
-    'Intro_flower_occ',
+    'Intro_Flower_Occ',
     {
       flower_occ_id: {
         type: DataTypes.INTEGER,
