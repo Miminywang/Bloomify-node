@@ -1,0 +1,22 @@
+[
+  {
+    "season_id": 1,
+    "season": "春"
+  },
+  {
+    "season_id": 2,
+    "season": "夏"
+  },
+  {
+    "season_id": 3,
+    "season": "秋"
+  },
+  {
+    "season_id": 4,
+    "season": "冬"
+  },
+  {
+    "season_id": 5,
+    "season": "全年"
+  }
+]
