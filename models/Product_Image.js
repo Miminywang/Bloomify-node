@@ -18,7 +18,7 @@ export default async function (sequelize) {
         allowNull: false,
       },
       is_thumbnail: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
     },
