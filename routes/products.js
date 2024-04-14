@@ -1,26 +1,98 @@
 import express from 'express'
 const router = express.Router()
 
-/* GET home page. */
-// router.get('/', function (req, res, next) {
-//   res.render('index', { title: 'products' })
-// })
-
 // 檢查空物件, 轉換req.params為數字
 import { getIdParam } from '#db-helpers/db-tool.js'
 
 // 資料庫使用
 import sequelize from '#configs/db.js'
-const { Product } = sequelize.models
 
-// GET - 得到所有會員資料
-router.get('/', async function (req, res) {
-  const products = await Product.findAll({ logging: console.log })
-  // 處理如果沒找到資料
+const { Product, Product_Image, Product_Tag, Share_Tag, Product_Category } =
+  sequelize.models
 
-  // 標準回傳JSON
-  return res.json({ status: 'success', data: { products } })
+// 建立一對多關聯：圖片資料表定義
+Product.hasMany(Product_Image, { foreignKey: 'product_id', as: 'images' })
+Product_Image.belongsTo(Product, { foreignKey: 'product_id' })
+
+// 建立多對多關聯：產品與共享標籤
+Product.belongsToMany(Share_Tag, {
+  through: Product_Tag,
+  foreignKey: 'product_id',
+  as: 'tags',
 })
+Share_Tag.belongsToMany(Product, {
+  through: Product_Tag,
+  foreignKey: 'share_tag_id',
+})
+
+// 建立一對多關聯：產品類別表
+Product.belongsTo(Product_Category, {
+  foreignKey: 'product_category_id',
+  as: 'category',
+})
+Product_Category.hasMany(Product, {
+  foreignKey: 'product_category_id',
+  as: 'products',
+})
+
+// GET - 得到所有商品
+router.get('/', async function (req, res) {
+  try {
+    const products = await Product.findAll({
+      include: [
+        {
+          model: Product_Image,
+          as: 'images',
+          attributes: ['id', 'url', 'is_thumbnail'],
+        },
+        {
+          model: Share_Tag,
+          as: 'tags',
+          attributes: ['id', 'name'],
+          through: { attributes: [] },
+        },
+        {
+          model: Product_Category,
+          as: 'category',
+          attributes: ['name'], // 指定需要的屬性
+        },
+      ],
+      // raw: true,
+      nest: true,
+      limit: 189,
+    })
+    return res.json({ status: 'success', data: { products } })
+  } catch (error) {
+    console.error('Error fetching Products:', error)
+    return res
+      .status(500)
+      .json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+// GET - 得到最新課程
+// router.get('/latest', async function (req, res) {
+//   try {
+//     const latestProducts = await Product.findAll({
+//       include: [
+//         {
+//           model: Product_Image,
+//           as: 'images',
+//           attributes: ['id', 'path', 'is_main'],
+//         },
+//       ],
+//       order: [['created_at', 'DESC']],
+//       nest: true,
+//       limit: 4,
+//     })
+//     return res.json({ status: 'success', data: { latestProducts } })
+//   } catch (error) {
+//     console.error('Error fetching latest Products:', error)
+//     return res
+//       .status(500)
+//       .json({ status: 'error', message: 'Internal server error' })
+//   }
+// })
 
 // GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
 router.get('/:id', async function (req, res) {
