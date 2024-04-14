@@ -13,9 +13,9 @@ export default async function (sequelize) {
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
-      username: {
+      email: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -23,27 +23,15 @@ export default async function (sequelize) {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      avatar: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      birth_date: {
-        type: DataTypes.DATEONLY, //只需要日期
-        allowNull: true,
-      },
-      sex: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
       phone: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      postcode: {
+      city: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      district: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -51,26 +39,41 @@ export default async function (sequelize) {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      avatar: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       google_uid: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      line_uid: {
+      google_name: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      photo_url: {
+      google_email: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      line_access_token: {
-        type: DataTypes.TEXT,
+      google_pic: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      join_date: {
+        type: DataTypes.DATE,
+        // type: DataTypes.DATEONLY  //只需要日期  會報錯
         allowNull: true,
       },
     },
     {
       hooks: {
         // 建立時產生密碼加密字串用
+        // seeds檔案 JSON導入時為明碼，導入資料庫時自動加密
+        // 註冊登入時都是用明碼
+        // 驗證密碼時需要特別的函式 db-helpers => password-hash.js
+
+        // 有加密的情況下，驗證密碼無法用 sql 直接where找符合的帳號密碼組合，
+        // 而是先找到帳號，進而拿到密碼 routes=>auth.js
         beforeCreate: async (user) => {
           if (user.password) {
             user.password = await generateHash(user.password)

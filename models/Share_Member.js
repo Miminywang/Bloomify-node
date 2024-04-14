@@ -61,7 +61,7 @@ export default async function (sequelize) {
       },
       join_date: {
         type: DataTypes.DATE,
-        // type: DataTypes.DATEONLY  //只需要日期  會報錯
+        // type: DataTypes.DATEONLY  //只需要日期    !!!!!!!!!!用DATEONLY會報錯
         allowNull: true,
       },
     },
