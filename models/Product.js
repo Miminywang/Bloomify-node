@@ -37,7 +37,7 @@ export default async function (sequelize) {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      store_id: {
+      share_store_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

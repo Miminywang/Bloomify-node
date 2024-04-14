@@ -7,8 +7,14 @@ import { getIdParam } from '#db-helpers/db-tool.js'
 // 資料庫使用
 import sequelize from '#configs/db.js'
 
-const { Product, Product_Image, Product_Tag, Share_Tag, Product_Category } =
-  sequelize.models
+const {
+  Product,
+  Product_Image,
+  Product_Tag,
+  Share_Tag,
+  Product_Category,
+  Share_Store,
+} = sequelize.models
 
 // 建立一對多關聯：圖片資料表定義
 Product.hasMany(Product_Image, { foreignKey: 'product_id', as: 'images' })
@@ -25,14 +31,19 @@ Share_Tag.belongsToMany(Product, {
   foreignKey: 'share_tag_id',
 })
 
-// 建立一對多關聯：產品類別表
-Product.belongsTo(Product_Category, {
-  foreignKey: 'product_category_id',
-  as: 'category',
-})
+// 在 Product 模型中建立多對一關聯
+Product.belongsTo(Share_Store, { foreignKey: 'share_store_id', as: 'stores' })
+// 在 Share_Store 模型中建立一對多關聯
+Share_Store.hasMany(Product, { foreignKey: 'share_store_id', as: 'products' })
+
+// 建立一對多關聯：產品類別表定義
 Product_Category.hasMany(Product, {
   foreignKey: 'product_category_id',
   as: 'products',
+})
+Product.belongsTo(Product_Category, {
+  foreignKey: 'product_category_id',
+  as: 'category',
 })
 
 // GET - 得到所有商品
@@ -55,6 +66,11 @@ router.get('/', async function (req, res) {
           model: Product_Category,
           as: 'category',
           attributes: ['name'], // 指定需要的屬性
+        },
+        {
+          model: Share_Store,
+          as: 'stores',
+          attributes: ['store_name'],
         },
       ],
       // raw: true,
