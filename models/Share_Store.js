@@ -53,6 +53,10 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      logo_path: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       tableName: 'share_store', //直接提供資料表名稱

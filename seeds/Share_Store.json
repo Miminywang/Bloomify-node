@@ -25,7 +25,8 @@
     "store_tel": "0921-234-567",
     "sub_date": "2024-01-06",
     "sub_id": "2",
-    "permission_id": "2"
+    "permission_id": "2",
+    "logo_path": "/assets/store/logo/img-logo-02.jpg"
   },
   {
     "store_id": "3",
@@ -39,7 +40,8 @@
     "store_tel": "0934-567-890",
     "sub_date": "2024-01-07",
     "sub_id": "1",
-    "permission_id": "2"
+    "permission_id": "2",
+    "logo_path": "/assets/store/logo/img-logo-03.jpg"
   },
   {
     "store_id": "4",
@@ -53,7 +55,8 @@
     "store_tel": "0987-123-456",
     "sub_date": "2024-01-07",
     "sub_id": "3",
-    "permission_id": "2"
+    "permission_id": "2",
+    "logo_path": "/assets/store/logo/img-logo-04.jpg"
   },
   {
     "store_id": "5",
@@ -67,7 +70,8 @@
     "store_tel": "0912-345-678",
     "sub_date": "2024-01-07",
     "sub_id": "2",
-    "permission_id": "2"
+    "permission_id": "2",
+    "logo_path": "/assets/store/logo/img-logo-05.jpg"
   },
   {
     "store_id": "6",
@@ -81,7 +85,8 @@
     "store_tel": "0978-654-321",
     "sub_date": "2024-01-08",
     "sub_id": "1",
-    "permission_id": "2"
+    "permission_id": "2",
+    "logo_path": "/assets/store/logo/img-logo-06.jpg"
   },
   {
     "store_id": "7",
@@ -95,7 +100,8 @@
     "store_tel": "0943-210-987",
     "sub_date": "2024-01-08",
     "sub_id": "3",
-    "permission_id": "2"
+    "permission_id": "2",
+    "logo_path": "/assets/store/logo/img-logo-07.jpg"
   },
   {
     "store_id": "8",
@@ -109,7 +115,8 @@
     "store_tel": "0965-432-109",
     "sub_date": "2024-01-08",
     "sub_id": "2",
-    "permission_id": "2"
+    "permission_id": "2",
+    "logo_path": "/assets/store/logo/img-logo-08.jpg"
   },
   {
     "store_id": "9",
@@ -123,7 +130,8 @@
     "store_tel": "0901-876-543",
     "sub_date": "2024-01-09",
     "sub_id": "1",
-    "permission_id": "2"
+    "permission_id": "2",
+    "logo_path": "/assets/store/logo/img-logo-09.jpg"
   },
   {
     "store_id": "10",
