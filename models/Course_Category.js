@@ -13,6 +13,10 @@ export default async function (sequelize) {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      path: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       tableName: 'course_category', //直接提供資料表名稱
