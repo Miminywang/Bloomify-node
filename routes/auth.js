@@ -9,11 +9,16 @@ import authenticate from '#middlewares/authenticate.js'
 import 'dotenv/config.js'
 
 // 資料庫使用
+// QueryTypes 是 Sequelize 提供的一個列舉類型，可以執行原生的 SQL 查詢。
 import { QueryTypes } from 'sequelize'
+
+// 資料庫使用
+// 使用 sequelize 物件中的 models 屬性來取得 User 模型
 import sequelize from '#configs/db.js'
 const { User } = sequelize.models
 
 // 驗証加密密碼字串用
+// bcrypt 比對明文密碼和儲存在資料庫中的雜湊值是否相符
 import { compareHash } from '#db-helpers/password-hash.js'
 
 // 定義安全的私鑰字串
@@ -31,6 +36,7 @@ router.get('/check', authenticate, async (req, res) => {
   return res.json({ status: 'success', data: { user } })
 })
 
+// 登入登出路由，新增修改參考routes/users.js
 router.post('/login', async (req, res) => {
   // 從前端來的資料 req.body = { username:'xxxx', password :'xxxx'}
   const loginUser = req.body
@@ -85,10 +91,12 @@ router.post('/login', async (req, res) => {
     line_uid: user.line_uid,
   }
 
+  // 創建JWT
   // 產生存取令牌(access token)，其中包含會員資料
   const accessToken = jsonwebtoken.sign(returnUser, accessTokenSecret, {
     expiresIn: '3d',
   })
+  // 驗證在middlewares的authenticate.js裡面
 
   // 使用httpOnly cookie來讓瀏覽器端儲存access token
   res.cookie('accessToken', accessToken, { httpOnly: true })
