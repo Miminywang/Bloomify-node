@@ -22,31 +22,31 @@
   {
     "id": 5,
     "name": "鮮花",
-    "parent_id": 1
+    "parent_id": 2
   },
   {
     "id": 6,
     "name": "花盆栽",
-    "parent_id": 1
+    "parent_id": 2
   },
   {
     "id": 7,
     "name": "葉材",
-    "parent_id": 2
+    "parent_id": 3
   },
   {
     "id": 8,
     "name": "植盆栽",
-    "parent_id": 2
+    "parent_id": 3
   },
   {
     "id": 9,
     "name": "器具",
-    "parent_id": 3
+    "parent_id": 4
   },
   {
     "id": 10,
     "name": "材料",
-    "parent_id": 3
+    "parent_id": 4
   }
 ]
