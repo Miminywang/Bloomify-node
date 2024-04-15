@@ -1,46 +1,51 @@
 [
   {
     "id": 1,
-    "name": "鮮花類",
+    "name": "全部",
     "parent_id": "NULL"
   },
   {
     "id": 2,
-    "name": "植栽類",
+    "name": "鮮花類",
     "parent_id": "NULL"
   },
   {
     "id": 3,
-    "name": "資材類",
+    "name": "植栽類",
     "parent_id": "NULL"
   },
   {
     "id": 4,
+    "name": "資材類",
+    "parent_id": "NULL"
+  },
+  {
+    "id": 5,
     "name": "鮮花",
     "parent_id": 1
   },
   {
-    "id": 5,
+    "id": 6,
     "name": "花盆栽",
     "parent_id": 1
   },
   {
-    "id": 6,
+    "id": 7,
     "name": "葉材",
     "parent_id": 2
   },
   {
-    "id": 7,
+    "id": 8,
     "name": "植盆栽",
     "parent_id": 2
   },
   {
-    "id": 8,
+    "id": 9,
     "name": "器具",
     "parent_id": 3
   },
   {
-    "id": 9,
+    "id": 10,
     "name": "材料",
     "parent_id": 3
   }
