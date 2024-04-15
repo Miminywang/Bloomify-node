@@ -14,11 +14,12 @@ const {
   Share_Tag,
   Product_Category,
   Share_Store,
+  Share_Color,
 } = sequelize.models
 
 // 建立一對多關聯：圖片資料表定義
 Product.hasMany(Product_Image, { foreignKey: 'product_id', as: 'images' })
-Product_Image.belongsTo(Product, { foreignKey: 'product_id' })
+Product_Image.belongsTo(Product, { foreignKey: 'product_id', as: 'product' })
 
 // 建立多對多關聯：產品與共享標籤
 Product.belongsToMany(Share_Tag, {
@@ -46,6 +47,10 @@ Product.belongsTo(Product_Category, {
   as: 'category',
 })
 
+// 建立一對多關聯：顏色表定義
+Share_Color.hasMany(Product, { foreignKey: 'share_color_id', as: 'product' })
+Product.belongsTo(Share_Color, { foreignKey: 'share_color_id', as: 'colors' })
+
 // GET - 得到所有商品
 router.get('/', async function (req, res) {
   try {
@@ -72,6 +77,11 @@ router.get('/', async function (req, res) {
           as: 'stores',
           attributes: ['store_name'],
         },
+        {
+          model: Share_Color,
+          as: 'colors',
+          attributes: ['name', 'code'],
+        },
       ],
       // raw: true,
       nest: true,
@@ -85,30 +95,6 @@ router.get('/', async function (req, res) {
       .json({ status: 'error', message: 'Internal server error' })
   }
 })
-
-// GET - 得到最新課程
-// router.get('/latest', async function (req, res) {
-//   try {
-//     const latestProducts = await Product.findAll({
-//       include: [
-//         {
-//           model: Product_Image,
-//           as: 'images',
-//           attributes: ['id', 'path', 'is_main'],
-//         },
-//       ],
-//       order: [['created_at', 'DESC']],
-//       nest: true,
-//       limit: 4,
-//     })
-//     return res.json({ status: 'success', data: { latestProducts } })
-//   } catch (error) {
-//     console.error('Error fetching latest Products:', error)
-//     return res
-//       .status(500)
-//       .json({ status: 'error', message: 'Internal server error' })
-//   }
-// })
 
 // GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
 router.get('/:id', async function (req, res) {
