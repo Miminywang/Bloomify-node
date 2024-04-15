@@ -7,9 +7,9 @@ import { getIdParam } from '#db-helpers/db-tool.js'
 // 資料庫使用
 import sequelize from '#configs/db.js'
 
-const { Course, Course_Image } = sequelize.models
+const { Course, Course_Image, Course_Category } = sequelize.models
 
-// 外鍵 - 圖片資料表定義
+// 外鍵 - 圖片資料表 & 分類資料表 定義
 Course.hasMany(Course_Image, { foreignKey: 'course_id', as: 'images' })
 Course_Image.belongsTo(Course, { foreignKey: 'course_id' })
 
@@ -31,6 +31,25 @@ router.get('/', async function (req, res) {
     return res.json({ status: 'success', data: { courses } })
   } catch (error) {
     console.error('Error fetching courses:', error)
+    return res
+      .status(500)
+      .json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+// GET - 得到所有課程分類
+router.get('/categories', async function (req, res) {
+  console.log('Fetching categories...')
+  try {
+    const categories = await Course_Category.findAll({
+      attributes: ['id', 'name', 'path'],
+      order: [['id', 'ASC']],
+      raw: true,
+      nest: true,
+    })
+    return res.json({ status: 'success', data: { categories } })
+  } catch (error) {
+    console.error('Error fetching categories:', error)
     return res
       .status(500)
       .json({ status: 'error', message: 'Internal server error' })
@@ -105,5 +124,29 @@ router.get('/:id', async function (req, res) {
 
   return res.json({ status: 'success', data: { course } })
 })
+
+// GET - 處理篩選排序條件的路由
+// router.get('/search', async function (req, res) {
+//   // 查詢參數們
+//   const { category, store } = req.query
+
+//   const whereConditions = {}
+//   if (category) {
+//     whereConditions.category_id = category
+//   }
+//   if (store) {
+//     whereConditions.store_id = store
+//   }
+
+//   // 進行查詢
+//   try {
+//     const courses = await Course.findAll({})
+//   } catch (error) {
+//     console.error('Error fetching filtered courses:', error)
+//     return res
+//       .status(500)
+//       .json({ status: 'error', message: 'Internal server error' })
+//   }
+// })
 
 export default router

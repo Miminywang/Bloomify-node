@@ -1,18 +1,23 @@
 [
   {
-    "category_id": 1,
-    "name": "花藝基礎課程"
+    "id": 1,
+    "name": "花藝基礎課程",
+    "path": "/assets/course/img-category-1.jpg"
   },
   {
-    "category_id": 2,
-    "name": "植栽相關課程"
+    "id": 2,
+    "name": "植栽相關課程",
+    "path": "/assets/course/img-category-2.jpg"
   },
   {
-    "category_id": 3,
-    "name": "節慶主題課程"
+    "id": 3,
+    "name": "節慶主題課程",
+    "path": "/assets/course/img-category-3.jpg"
+    
   },
   {
-    "category_id": 4,
-    "name": "進階商業課程"
+    "id": 4,
+    "name": "進階商業課程",
+    "path": "/assets/course/img-category-4.jpg"
   }
 ]
