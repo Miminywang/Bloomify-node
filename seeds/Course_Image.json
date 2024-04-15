@@ -3,36 +3,564 @@
     "id": 1,
     "course_id": 1,
     "is_main": 1,
-    "path": "/public/assets/course/category-1/img-course-01-01.jpg"
+    "path": "/assets/course/category-1/img-course-01-01.jpg"
   },
   {
     "id": 2,
     "course_id": 1,
     "is_main": 0,
-    "path": "/public/assets/course/category-1/img-course-01-02.jpg"
+    "path": "/assets/course/category-1/img-course-01-02.jpg"
   },
   {
     "id": 3,
     "course_id": 1,
     "is_main": 0,
-    "path": "/public/assets/course/category-1/img-course-01-03.jpg"
+    "path": "/assets/course/category-1/img-course-01-03.jpg"
   },
   {
     "id": 4,
     "course_id": 1,
     "is_main": 0,
-    "path": "/public/assets/course/category-1/img-course-01-04.jpg"
+    "path": "/assets/course/category-1/img-course-01-04.jpg"
   },
   {
     "id": 5,
     "course_id": 2,
     "is_main": 1,
-    "path": "/public/assets/course/category-1/img-course-02-01.jpg"
+    "path": "/assets/course/category-1/img-course-02-01.jpg"
   },
   {
     "id": 6,
     "course_id": 2,
     "is_main": 0,
-    "path": "/public/assets/course/category-1/img-course-02-02.jpg"
+    "path": "/assets/course/category-1/img-course-02-02.jpg"
+  },
+  {
+    "id": 7,
+    "course_id": 3,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-03-01.jpg"
+  },
+  {
+    "id": 8,
+    "course_id": 4,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-04-01.jpg"
+  },
+  {
+    "id": 9,
+    "course_id": 5,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-05-01.jpg"
+  },
+  {
+    "id": 10,
+    "course_id": 6,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-06-01.jpg"
+  },
+  {
+    "id": 11,
+    "course_id": 7,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-07-01.jpg"
+  },
+  {
+    "id": 12,
+    "course_id": 7,
+    "is_main": 0,
+    "path": "/assets/course/category-1/img-course-07-02.jpg"
+  },
+  {
+    "id": 13,
+    "course_id": 8,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-08-01.jpg"
+  },
+  {
+    "id": 14,
+    "course_id": 9,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-09-01.jpg"
+  },
+  {
+    "id": 15,
+    "course_id": 10,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-10-01.jpg"
+  },
+  {
+    "id": 16,
+    "course_id": 11,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-11-01.jpg"
+  },
+  {
+    "id": 17,
+    "course_id": 12,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-12-01.jpg"
+  },
+  {
+    "id": 18,
+    "course_id": 13,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-13-01.jpg"
+  },
+  {
+    "id": 19,
+    "course_id": 14,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-14-01.jpg"
+  },
+  {
+    "id": 20,
+    "course_id": 15,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-15-01.jpg"
+  },
+  {
+    "id": 21,
+    "course_id": 16,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-16-01.jpg"
+  },
+  {
+    "id": 22,
+    "course_id": 17,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-17-01.jpg"
+  },
+  {
+    "id": 23,
+    "course_id": 18,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-18-01.jpg"
+  },
+  {
+    "id": 24,
+    "course_id": 19,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-19-01.jpg"
+  },
+  {
+    "id": 25,
+    "course_id": 20,
+    "is_main": 1,
+    "path": "/assets/course/category-1/img-course-20-01.jpg"
+  },
+  {
+    "id": 26,
+    "course_id": 21,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-21-01.jpg"
+  },
+  {
+    "id": 27,
+    "course_id": 21,
+    "is_main": 0,
+    "path": "/assets/course/category-2/img-course-21-02.jpg"
+  },
+  {
+    "id": 28,
+    "course_id": 21,
+    "is_main": 0,
+    "path": "/assets/course/category-2/img-course-21-03.jpg"
+  },
+  {
+    "id": 29,
+    "course_id": 21,
+    "is_main": 0,
+    "path": "/assets/course/category-2/img-course-21-04.jpg"
+  },
+  {
+    "id": 30,
+    "course_id": 22,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-22-01.jpg"
+  },
+  {
+    "id": 31,
+    "course_id": 23,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-23-01.jpg"
+  },
+  {
+    "id": 32,
+    "course_id": 24,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-24-01.jpg"
+  },
+  {
+    "id": 33,
+    "course_id": 24,
+    "is_main": 0,
+    "path": "/assets/course/category-2/img-course-24-02.jpg"
+  },
+  {
+    "id": 34,
+    "course_id": 25,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-25-01.jpg"
+  },
+  {
+    "id": 35,
+    "course_id": 26,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-26-01.jpg"
+  },
+  {
+    "id": 36,
+    "course_id": 27,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-27-01.jpg"
+  },
+  {
+    "id": 37,
+    "course_id": 28,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-28-01.jpg"
+  },
+  {
+    "id": 38,
+    "course_id": 29,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-29-01.jpg"
+  },
+  {
+    "id": 39,
+    "course_id": 30,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-30-01.jpg"
+  },
+  {
+    "id": 40,
+    "course_id": 31,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-31-01.jpg"
+  },
+  {
+    "id": 41,
+    "course_id": 32,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-32-01.jpg"
+  },
+  {
+    "id": 42,
+    "course_id": 33,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-33-01.jpg"
+  },
+  {
+    "id": 43,
+    "course_id": 34,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-34-01.jpg"
+  },
+  {
+    "id": 44,
+    "course_id": 35,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-35-01.jpg"
+  },
+  {
+    "id": 45,
+    "course_id": 36,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-36-01.jpg"
+  },
+  {
+    "id": 46,
+    "course_id": 37,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-37-01.jpg"
+  },
+  {
+    "id": 47,
+    "course_id": 38,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-38-01.jpg"
+  },
+  {
+    "id": 48,
+    "course_id": 39,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-39-01.jpg"
+  },
+  {
+    "id": 49,
+    "course_id": 40,
+    "is_main": 1,
+    "path": "/assets/course/category-2/img-course-40-01.jpg"
+  },
+  {
+    "id": 50,
+    "course_id": 41,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-41-01.jpg"
+  },
+  {
+    "id": 51,
+    "course_id": 41,
+    "is_main": 0,
+    "path": "/assets/course/category-3/img-course-41-02.jpg"
+  },
+  {
+    "id": 52,
+    "course_id": 41,
+    "is_main": 0,
+    "path": "/assets/course/category-3/img-course-41-03.jpg"
+  },
+  {
+    "id": 53,
+    "course_id": 41,
+    "is_main": 0,
+    "path": "/assets/course/category-3/img-course-41-04.jpg"
+  },
+  {
+    "id": 54,
+    "course_id": 42,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-42-01.jpg"
+  },
+  {
+    "id": 55,
+    "course_id": 43,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-43-01.jpg"
+  },
+  {
+    "id": 56,
+    "course_id": 44,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-44-01.jpg"
+  },
+  {
+    "id": 57,
+    "course_id": 45,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-45-01.jpg"
+  },
+  {
+    "id": 58,
+    "course_id": 46,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-46-01.jpg"
+  },
+  {
+    "id": 59,
+    "course_id": 47,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-47-01.jpg"
+  },
+  {
+    "id": 60,
+    "course_id": 48,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-48-01.jpg"
+  },
+  {
+    "id": 61,
+    "course_id": 49,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-49-01.jpg"
+  },
+  {
+    "id": 62,
+    "course_id": 50,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-50-01.jpg"
+  },
+  {
+    "id": 63,
+    "course_id": 51,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-51-01.jpg"
+  },
+  {
+    "id": 64,
+    "course_id": 52,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-52-01.jpg"
+  },
+  {
+    "id": 65,
+    "course_id": 53,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-53-01.jpg"
+  },
+  {
+    "id": 66,
+    "course_id": 54,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-54-01.jpg"
+  },
+  {
+    "id": 67,
+    "course_id": 55,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-55-01.jpg"
+  },
+  {
+    "id": 68,
+    "course_id": 56,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-56-01.jpg"
+  },
+  {
+    "id": 69,
+    "course_id": 57,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-57-01.jpg"
+  },
+  {
+    "id": 70,
+    "course_id": 58,
+    "is_main": 1,
+    "path": "/assets/course/category-3/img-course-58-01.jpg"
+  },
+  {
+    "id": 71,
+    "course_id": 59,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-59-01.jpg"
+  },
+  {
+    "id": 72,
+    "course_id": 59,
+    "is_main": 0,
+    "path": "/assets/course/category-4/img-course-59-02.jpg"
+  },
+  {
+    "id": 73,
+    "course_id": 59,
+    "is_main": 0,
+    "path": "/assets/course/category-4/img-course-59-03.jpg"
+  },
+  {
+    "id": 74,
+    "course_id": 59,
+    "is_main": 0,
+    "path": "/assets/course/category-4/img-course-59-04.jpg"
+  },
+  {
+    "id": 75,
+    "course_id": 60,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-60-01.jpg"
+  },
+  {
+    "id": 76,
+    "course_id": 61,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-61-01.jpg"
+  },
+  {
+    "id": 77,
+    "course_id": 62,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-62-01.jpg"
+  },
+  {
+    "id": 78,
+    "course_id": 63,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-63-01.jpg"
+  },
+  {
+    "id": 79,
+    "course_id": 64,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-64-01.jpg"
+  },
+  {
+    "id": 80,
+    "course_id": 65,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-65-01.jpg"
+  },
+  {
+    "id": 81,
+    "course_id": 66,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-66-01.jpg"
+  },
+  {
+    "id": 82,
+    "course_id": 67,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-67-01.jpg"
+  },
+  {
+    "id": 83,
+    "course_id": 68,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-68-01.jpg"
+  },
+  {
+    "id": 84,
+    "course_id": 69,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-69-01.jpg"
+  },
+  {
+    "id": 85,
+    "course_id": 70,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-70-01.jpg"
+  },
+  {
+    "id": 86,
+    "course_id": 71,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-71-01.jpg"
+  },
+  {
+    "id": 87,
+    "course_id": 72,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-72-01.jpg"
+  },
+  {
+    "id": 88,
+    "course_id": 73,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-73-01.jpg"
+  },
+  {
+    "id": 89,
+    "course_id": 74,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-74-01.jpg"
+  },
+  {
+    "id": 90,
+    "course_id": 75,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-75-01.jpg"
+  },
+  {
+    "id": 91,
+    "course_id": 75,
+    "is_main": 0,
+    "path": "/assets/course/category-4/img-course-75-02.jpg"
+  },
+  {
+    "id": 92,
+    "course_id": 76,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-76-01.jpg"
+  },
+  {
+    "id": 93,
+    "course_id": 77,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-77-01.jpg"
+  },
+  {
+    "id": 94,
+    "course_id": 78,
+    "is_main": 1,
+    "path": "/assets/course/category-4/img-course-78-01.jpg"
   }
 ]
