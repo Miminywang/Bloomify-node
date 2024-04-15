@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "哈利",
-    "email": "herry@test.com",
+    "username": "herry@test.com",
     "password": "11111",
     "phone": "0906102808",
     "city": "台北市",
@@ -18,7 +18,7 @@
   {
     "id": 2,
     "name": "金妮",
-    "email": "ginny@test.com",
+    "username": "ginny@test.com",
     "password": "22222",
     "phone": "0946840920",
     "city": "台中市",
@@ -34,7 +34,7 @@
   {
     "id": 3,
     "name": "妙麗",
-    "email": "mione@test.com",
+    "username": "mione@test.com",
     "password": "33333",
     "phone": "0912541534",
     "city": "高雄市",

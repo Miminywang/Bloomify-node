@@ -15,7 +15,7 @@ export default async function (sequelize) {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      email: {
+      username: {
         type: DataTypes.STRING,
         allowNull: true,
       },

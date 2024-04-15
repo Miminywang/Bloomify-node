@@ -17,25 +17,47 @@ const { Share_Member } = sequelize.models
 // 驗証加密密碼字串用
 import { compareHash } from '#db-helpers/password-hash.js'
 
-// GET - 得到所有會員資料
-router.get('/', async function (req, res) {
-  const share_members = await Share_Member.findAll({ logging: console.log })
+// post - 登入驗證
+router.post('/login', async function (req, res) {
   // 處理如果沒找到資料
+  // 從前端來的資料 req.body = { username:'xxxx', password :'xxxx'}
+  const loginUser = req.body
+  console.log(loginUser)
+  // 檢查從前端來的資料哪些為必要
+  if (!loginUser.username || !loginUser.password) {
+    return res.json({ status: 'fail', data: null })
+  }
 
-  // 標準回傳JSON
-  return res.json({ status: 'success', data: { share_members } })
-})
+  // 查詢資料庫，是否有這帳號與密碼的使用者資料
+  // 方式一: 使用直接查詢
+  // const user = await sequelize.query(
+  //   'SELECT * FROM user WHERE username=? LIMIT 1',
+  //   {
+  //     replacements: [loginUser.username], //代入問號值
+  //     type: QueryTypes.SELECT, //執行為SELECT
+  //     plain: true, // 只回傳第一筆資料
+  //     raw: true, // 只需要資料表中資料
+  //     logging: console.log, // SQL執行呈現在console.log
+  //   }
+  // )
 
-// 檢查登入狀態用
-router.get('/check', authenticate, async (req, res) => {
-  // 查詢資料庫目前的資料
-  const user = await Share_Member.findByPk(req.user.id, {
+  // 方式二: 使用模型查詢
+  const user = await Share_Member.findOne({
+    where: {
+      username: loginUser.username,
+    },
     raw: true, // 只需要資料表中資料
   })
 
-  // 不回傳密碼值
-  delete user.password
-  return res.json({ status: 'success', data: { user } })
+  console.log(user)
+
+  // user=null代表不存在
+  if (!user) {
+    return res.json({ status: 'error', message: '使用者不存在' })
+  } else {
+    // 標準回傳JSON
+    return res.json({ status: 'success', data: { user } })
+  }
 })
 
 export default router
