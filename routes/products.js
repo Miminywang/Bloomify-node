@@ -98,23 +98,43 @@ router.get('/', async function (req, res) {
 
 // GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
 router.get('/:id', async function (req, res) {
-  // 轉為數字
-  const id = getIdParam(req)
+  const id = getIdParam(req) // Ensure that `id` is properly parsed and validated
 
-  // 檢查是否為授權會員，只有授權會員可以存取自己的資料
-  // if (req.user.id !== id) {
-  //   return res.json({ status: 'error', message: '存取會員資料失敗' })
-  // }
+  try {
+    const product = await Product.findByPk(id, {
+      include: [
+        {
+          model: Product_Image,
+          as: 'images', // Ensure that this alias matches the one defined in the association
+          attributes: ['id', 'url', 'is_thumbnail'], // Select only necessary fields
+        },
+        {
+          model: Product_Category,
+          as: 'category',
+          attributes: ['name'], // 指定需要的屬性
+        },
+        {
+          model: Share_Tag,
+          as: 'tags',
+          attributes: ['id', 'name'],
+          through: { attributes: [] },
+        },
+      ],
+      nest: true, // This option enables a nested return structure that's easier to work with
+    })
 
-  // 這只有一張表
-  const product = await Product.findByPk(id, {
-    raw: true, // 只需要資料表中資料
-  })
-
-  // 不回傳密碼
-  // delete user.password
-
-  return res.json({ status: 'success', data: { product } })
+    if (product) {
+      return res.json({ status: 'success', data: { product } })
+    } else {
+      return res
+        .status(404)
+        .json({ status: 'error', message: 'Product not found' })
+    }
+  } catch (error) {
+    console.error('Error fetching Product:', error)
+    return res
+      .status(500)
+      .json({ status: 'error', message: 'Internal server error' })
+  }
 })
-
 export default router
