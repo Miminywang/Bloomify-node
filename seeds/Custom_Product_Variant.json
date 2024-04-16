@@ -1,0 +1,142 @@
+[
+  {
+    "variant_id": 1,
+    "category_id": 13,
+    "variant_name": "紅色玫瑰",
+    "image_url": "/custom/custom/roses/red.jpg",
+    "color_id": 1
+  },
+  {
+    "variant_id": 2,
+    "category_id": 13,
+    "variant_name": "橙色玫瑰",
+    "image_url": "/custom/custom/roses/orange.jpg",
+    "color_id": 2
+  },
+  {
+    "variant_id": 3,
+    "category_id": 13,
+    "variant_name": "黃色玫瑰",
+    "image_url": "/custom/custom/roses/yellow.jpg",
+    "color_id": 3
+  },
+  {
+    "variant_id": 4,
+    "category_id": 14,
+    "variant_name": "綠色向日葵",
+    "image_url": "/custom/custom/sunflowers/green.jpg",
+    "color_id": 4
+  },
+  {
+    "variant_id": 5,
+    "category_id": 14,
+    "variant_name": "藍色向日葵",
+    "image_url": "/custom/custom/sunflowers/blue.jpg",
+    "color_id": 5
+  },
+  {
+    "variant_id": 6,
+    "category_id": 15,
+    "variant_name": "紫色百合",
+    "image_url": "/custom/custom/lilies/purple.jpg",
+    "color_id": 6
+  },
+  {
+    "variant_id": 7,
+    "category_id": 15,
+    "variant_name": "粉色百合",
+    "image_url": "/custom/custom/lilies/pink.jpg",
+    "color_id": 7
+  },
+  {
+    "variant_id": 8,
+    "category_id": 16,
+    "variant_name": "棕色鬱金香",
+    "image_url": "/custom/custom/tulips/brown.jpg",
+    "color_id": 8
+  },
+  {
+    "variant_id": 9,
+    "category_id": 16,
+    "variant_name": "灰色鬱金香",
+    "image_url": "/custom/custom/tulips/gray.jpg",
+    "color_id": 9
+  },
+  {
+    "variant_id": 10,
+    "category_id": 16,
+    "variant_name": "黑色鬱金香",
+    "image_url": "/custom/custom/tulips/black.jpg",
+    "color_id": 10
+  },
+  {
+    "variant_id": 11,
+    "category_id": 17,
+    "variant_name": "白色康乃馨",
+    "image_url": "/custom/custom/carnations/white.jpg",
+    "color_id": 11
+  },
+  {
+    "variant_id": 12,
+    "category_id": 17,
+    "variant_name": "其他色康乃馨",
+    "image_url": "/custom/custom/carnations/other.jpg",
+    "color_id": 12
+  },
+  {
+    "variant_id": 13,
+    "category_id": 18,
+    "variant_name": "黃色雛菊",
+    "image_url": "/custom/custom/daisies/yellow.jpg",
+    "color_id": 3
+  },
+  {
+    "variant_id": 14,
+    "category_id": 18,
+    "variant_name": "紅色雛菊",
+    "image_url": "/custom/custom/daisies/red.jpg",
+    "color_id": 1
+  },
+  {
+    "variant_id": 15,
+    "category_id": 9,
+    "variant_name": "粉色生日卡",
+    "image_url": "/custom/custom/cards/pink.jpg",
+    "color_id": 7
+  },
+  {
+    "variant_id": 16,
+    "category_id": 10,
+    "variant_name": "藍色感謝卡",
+    "image_url": "/custom/custom/cards/blue.jpg",
+    "color_id": 5
+  },
+  {
+    "variant_id": 17,
+    "category_id": 11,
+    "variant_name": "綠色萬用卡",
+    "image_url": "/custom/custom/cards/green.jpg",
+    "color_id": 4
+  },
+  {
+    "variant_id": 18,
+    "category_id": 12,
+    "variant_name": "紫色情人卡",
+    "image_url": "/custom/custom/cards/purple.jpg",
+    "color_id": 6
+  },
+  {
+    "variant_id": 19,
+    "category_id": 7,
+    "variant_name": "棕色櫥窗提盒",
+    "image_url": "/custom/custom/packages/brown.jpg",
+    "color_id": 8
+  },
+  {
+    "variant_id": 20,
+    "category_id": 8,
+    "variant_name": "黑色透明禮盒",
+    "image_url": "/custom/custom/packages/black.jpg",
+    "color_id": 10
+  }
+]
