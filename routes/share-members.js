@@ -104,6 +104,7 @@ router.post('/login', async function (req, res) {
   res.json({
     status: 'success',
     data: { accessToken },
+    user: { user },
   })
 })
 
