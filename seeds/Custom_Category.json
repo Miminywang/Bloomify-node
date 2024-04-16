@@ -1,0 +1,119 @@
+[
+  {
+    "category_id": "1",
+    "category_name": "玫瑰花",
+    "category_en_name": "rose",
+    "category_url": "/custom/custom/rose.jpg",
+    "category_type": "主花",
+    "created_at": "2024-04-16 16:13:57",
+    "updated_at": "2024-04-16 16:13:57"
+  },
+  {
+    "category_id": "2",
+    "category_name": "向日葵",
+    "category_en_name": "sunflower",
+    "category_url": "/custom/custom/sunflower.jpg",
+    "category_type": "配花",
+    "created_at": "2024-04-16 16:13:57",
+    "updated_at": "2024-04-16 16:13:57"
+  },
+  {
+    "category_id": "3",
+    "category_name": "百合",
+    "category_en_name": "lily",
+    "category_url": "/custom/custom/lily.jpg",
+    "category_type": "主花",
+    "created_at": "2024-04-16 16:13:57",
+    "updated_at": "2024-04-16 16:13:57"
+  },
+  {
+    "category_id": "4",
+    "category_name": "鬱金香",
+    "category_en_name": "tulip",
+    "category_url": "/custom/custom/tulip.jpg",
+    "category_type": "主花",
+    "created_at": "2024-04-16 16:13:57",
+    "updated_at": "2024-04-16 16:13:57"
+  },
+  {
+    "category_id": "5",
+    "category_name": "康乃馨",
+    "category_en_name": "carnation",
+    "category_url": "/custom/custom/carnation.jpg",
+    "category_type": "配花",
+    "created_at": "2024-04-16 16:13:57",
+    "updated_at": "2024-04-16 16:13:57"
+  },
+  {
+    "category_id": "6",
+    "category_name": "雛菊",
+    "category_en_name": "daisy",
+    "category_url": "/custom/custom/daisy.jpg",
+    "category_type": "配花",
+    "created_at": "2024-04-16 16:13:57",
+    "updated_at": "2024-04-16 16:13:57"
+  },
+  {
+    "category_id": "7",
+    "category_name": "透明提袋",
+    "category_en_name": null,
+    "category_url": "/custom/custom/package.jpg",
+    "category_type": "包裝",
+    "created_at": "2024-04-15 15:14:51",
+    "updated_at": "2024-04-15 15:14:51"
+  },
+  {
+    "category_id": "8",
+    "category_name": "櫥窗提盒",
+    "category_en_name": null,
+    "category_url": "",
+    "category_type": "包裝",
+    "created_at": "2024-04-15 15:14:51",
+    "updated_at": "2024-04-15 15:14:51"
+  },
+  {
+    "category_id": "9",
+    "category_name": "透明禮盒",
+    "category_en_name": null,
+    "category_url": "",
+    "category_type": "包裝",
+    "created_at": "2024-04-15 15:14:51",
+    "updated_at": "2024-04-15 15:14:51"
+  },
+  {
+    "category_id": "10",
+    "category_name": "生日卡",
+    "category_en_name": null,
+    "category_url": "",
+    "category_type": "卡片",
+    "created_at": "2024-04-15 15:14:51",
+    "updated_at": "2024-04-15 15:14:51"
+  },
+  {
+    "category_id": "11",
+    "category_name": "感謝卡",
+    "category_en_name": null,
+    "category_url": "/custom/custom/thankscard.jpg",
+    "category_type": "卡片",
+    "created_at": "2024-04-15 15:14:51",
+    "updated_at": "2024-04-15 15:14:51"
+  },
+  {
+    "category_id": "12",
+    "category_name": "萬用卡",
+    "category_en_name": null,
+    "category_url": "/custom/custom/cards.jpg",
+    "category_type": "卡片",
+    "created_at": "2024-04-15 15:14:51",
+    "updated_at": "2024-04-15 15:14:51"
+  },
+  {
+    "category_id": "13",
+    "category_name": "情人卡",
+    "category_en_name": null,
+    "category_url": "",
+    "category_type": "卡片",
+    "created_at": "2024-04-15 15:14:51",
+    "updated_at": "2024-04-15 15:14:51"
+  }
+]

@@ -7,18 +7,10 @@ export default async function (sequelize) {
       product_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        allowNull: false,
         autoIncrement: true,
-      },
-      product_name: {
-        type: DataTypes.STRING(255),
         allowNull: false,
       },
-      image_url: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-      },
-      color_id: {
+      variant_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -26,11 +18,8 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      product_price: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      category_id: {
+
+      price: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
