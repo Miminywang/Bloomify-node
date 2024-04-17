@@ -57,6 +57,10 @@ export default async function (sequelize) {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      store_info: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       tableName: 'share_store', //直接提供資料表名稱
