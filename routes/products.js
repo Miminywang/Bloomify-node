@@ -15,6 +15,9 @@ const {
   Product_Category,
   Share_Store,
   Share_Color,
+  Product_Review,
+  Share_Star,
+  Member,
 } = sequelize.models
 
 // 建立一對多關聯：圖片資料表定義
@@ -51,6 +54,40 @@ Product.belongsTo(Product_Category, {
 Share_Color.hasMany(Product, { foreignKey: 'share_color_id', as: 'product' })
 Product.belongsTo(Share_Color, { foreignKey: 'share_color_id', as: 'colors' })
 
+// 建立一對多關聯：一個商品，多個評論；一個評論，一個商品
+Product.hasMany(Product_Review, {
+  foreignKey: 'product_id',
+  as: 'reviews',
+})
+Product_Review.belongsTo(Product, {
+  foreignKey: 'product_id',
+  as: 'product',
+})
+
+// 建立商品評論與共享星等關聯
+// models/Product_Review.js
+Product_Review.belongsTo(Share_Star, {
+  foreignKey: 'share_star_id',
+  as: 'star',
+})
+
+// models/Share_Star.js
+Share_Star.hasMany(Product_Review, {
+  foreignKey: 'share_star_id',
+  as: 'reviews',
+})
+
+// 建立商品評論與會員關聯
+Product_Review.belongsTo(Member, {
+  foreignKey: 'member_id',
+  as: 'member',
+})
+
+Member.hasMany(Product_Review, {
+  foreignKey: 'member_id',
+  as: 'reviews',
+})
+
 // GET - 得到所有商品
 router.get('/', async function (req, res) {
   try {
@@ -75,12 +112,23 @@ router.get('/', async function (req, res) {
         {
           model: Share_Store,
           as: 'stores',
-          attributes: ['store_name'],
+          attributes: ['store_id', 'store_name', 'store_info'],
         },
         {
           model: Share_Color,
           as: 'colors',
           attributes: ['name', 'code'],
+        },
+        {
+          model: Product_Review,
+          as: 'reviews',
+          attributes: [
+            'id',
+            'share_star_id',
+            'comment',
+            'created_at',
+            'updated_at',
+          ],
         },
       ],
       // raw: true,
@@ -98,23 +146,83 @@ router.get('/', async function (req, res) {
 
 // GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
 router.get('/:id', async function (req, res) {
-  // 轉為數字
-  const id = getIdParam(req)
+  const id = getIdParam(req) // Ensure that `id` is properly parsed and validated
 
-  // 檢查是否為授權會員，只有授權會員可以存取自己的資料
-  // if (req.user.id !== id) {
-  //   return res.json({ status: 'error', message: '存取會員資料失敗' })
-  // }
+  try {
+    const product = await Product.findByPk(id, {
+      include: [
+        {
+          model: Product_Image,
+          as: 'images', // Ensure that this alias matches the one defined in the association
+          attributes: ['id', 'url', 'is_thumbnail'], // Select only necessary fields
+        },
+        {
+          model: Product_Category,
+          as: 'category',
+          attributes: ['name'], // 指定需要的屬性
+        },
+        {
+          model: Share_Store,
+          as: 'stores',
+          attributes: ['store_id', 'store_name', 'store_info'],
+        },
+        {
+          model: Share_Tag,
+          as: 'tags',
+          attributes: ['id', 'name'],
+          through: { attributes: [] },
+        },
+        {
+          model: Product_Review,
+          as: 'reviews',
+          attributes: [
+            'id',
+            'share_star_id',
+            'comment',
+            'created_at',
+            'updated_at',
+          ],
+        },
+        {
+          model: Product_Review,
+          as: 'reviews',
+          attributes: [
+            'id',
+            'member_id',
+            'share_star_id',
+            'comment',
+            'created_at',
+            'updated_at',
+          ],
+          include: [
+            {
+              model: Share_Star,
+              as: 'star',
+              attributes: ['id', 'name', 'numbers'],
+            },
+            {
+              model: Member,
+              as: 'member',
+              attributes: ['id', 'name'],
+            },
+          ],
+        },
+      ],
+      nest: true, // This option enables a nested return structure that's easier to work with
+    })
 
-  // 這只有一張表
-  const product = await Product.findByPk(id, {
-    raw: true, // 只需要資料表中資料
-  })
-
-  // 不回傳密碼
-  // delete user.password
-
-  return res.json({ status: 'success', data: { product } })
+    if (product) {
+      return res.json({ status: 'success', data: { product } })
+    } else {
+      return res
+        .status(404)
+        .json({ status: 'error', message: 'Product not found' })
+    }
+  } catch (error) {
+    console.error('Error fetching Product:', error)
+    return res
+      .status(500)
+      .json({ status: 'error', message: 'Internal server error' })
+  }
 })
-
 export default router
