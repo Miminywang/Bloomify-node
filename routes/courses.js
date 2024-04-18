@@ -1,11 +1,12 @@
 import express from 'express'
 const router = express.Router()
 
-// 檢查空物件, 轉換req.params為數字
+// 檢查空物件, 轉換 req.params 為數字
 import { getIdParam } from '#db-helpers/db-tool.js'
 
 // 資料庫使用
 import sequelize from '#configs/db.js'
+import { Op } from 'sequelize' // 從 Sequelize 引入操作符
 
 const {
   Course,
@@ -16,6 +17,8 @@ const {
   Course_Datetime,
   Course_Review,
   Share_Member,
+  Share_Tag,
+  Course_Tag,
 } = sequelize.models
 
 // 外鍵 - 圖片資料表定義
@@ -39,6 +42,18 @@ Course_Review.belongsTo(Share_Member, {
   foreignKey: 'member_id',
   as: 'member',
 })
+// 多對多 - 課程與標籤定義
+Course.belongsToMany(Share_Tag, {
+  through: Course_Tag,
+  foreignKey: 'course_id',
+  as: 'tags',
+})
+Share_Tag.belongsToMany(Course, {
+  through: Course_Tag,
+  foreignKey: 'tag_id',
+})
+
+// 路由建構 ---------------------------------
 
 // GET - 得到所有課程
 router.get('/', async function (req, res) {
@@ -131,6 +146,73 @@ router.get('/random', async function (req, res) {
   }
 })
 
+// GET - 根據篩選條件得到課程
+router.get('/search', async function (req, res) {
+  // 從查詢參數中獲取 category_id 和 store_id
+  const { category_id, store_id, keyword, price, sort } = req.query
+
+  // 建立查詢條件
+  const whereConditions = {}
+  // 課程分類
+  if (category_id) {
+    whereConditions.category_id = category_id
+  }
+  // 商家分類
+  if (store_id) {
+    whereConditions.store_id = store_id
+  }
+  // TODO:
+  // 價格區間
+  // if (price) {
+  //   whereConditions.price = price
+  // }
+  // TODO:
+  // 日期區間
+  // 關鍵字搜尋
+  if (keyword) {
+    whereConditions[Op.or] = [
+      {
+        name: { [Op.like]: `%${keyword}%` },
+      },
+      {
+        intro: { [Op.like]: `%${keyword}%` },
+      },
+    ]
+  }
+  // 排序選項
+  let orderOptions = [['created_at', 'DESC']] // 最新的(預設)
+  if (sort === 'oldest') {
+    orderOptions = [['created_at', 'ASC']] // 最舊的
+  }
+  if (sort === 'expensive') {
+    orderOptions = [['price', 'DESC']] // 最貴的
+  }
+  if (sort === 'cheapest') {
+    orderOptions = [['price', 'ASC']] // 最便宜的
+  }
+
+  try {
+    const courses = await Course.findAll({
+      where: whereConditions, // 使用篩選條件
+      include: [
+        {
+          model: Course_Image, // 引入圖片資料表
+          as: 'images', // 確保在模型定義中使用這個別名
+          attributes: ['id', 'path', 'is_main'],
+        },
+      ],
+      order: orderOptions,
+      nest: true,
+    })
+    return res.json({ status: 'success', data: { courses } })
+  } catch (error) {
+    console.error('Error fetching filtered courses:', error)
+    return res
+      .status(500)
+      .json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
 // GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
 router.get('/:id', async function (req, res) {
   // 轉為數字
@@ -175,6 +257,12 @@ router.get('/:id', async function (req, res) {
           },
         ],
       },
+      {
+        model: Share_Tag,
+        as: 'tags',
+        attributes: ['id', 'name'],
+        through: { attributes: [] },
+      },
     ],
     nest: true,
   })
@@ -184,29 +272,5 @@ router.get('/:id', async function (req, res) {
 
   return res.json({ status: 'success', data: { course } })
 })
-
-// GET - 處理篩選排序條件的路由
-// router.get('/search', async function (req, res) {
-//   // 查詢參數們
-//   const { category, store } = req.query
-
-//   const whereConditions = {}
-//   if (category) {
-//     whereConditions.category_id = category
-//   }
-//   if (store) {
-//     whereConditions.store_id = store
-//   }
-
-//   // 進行查詢
-//   try {
-//     const courses = await Course.findAll({})
-//   } catch (error) {
-//     console.error('Error fetching filtered courses:', error)
-//     return res
-//       .status(500)
-//       .json({ status: 'error', message: 'Internal server error' })
-//   }
-// })
 
 export default router
