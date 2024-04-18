@@ -124,10 +124,23 @@ router.get('/', async function (req, res) {
           as: 'reviews',
           attributes: [
             'id',
+            'member_id',
             'share_star_id',
             'comment',
             'created_at',
             'updated_at',
+          ],
+          include: [
+            {
+              model: Share_Star,
+              as: 'star',
+              attributes: ['id', 'name', 'numbers'],
+            },
+            {
+              model: Member,
+              as: 'member',
+              attributes: ['id', 'name'],
+            },
           ],
         },
       ],
@@ -144,10 +157,96 @@ router.get('/', async function (req, res) {
   }
 })
 
+// 篩選子項目
+router.get('/filter', async function (req, res) {
+  const { parent_id } = req.query
+
+  // 建立分類查詢條件
+  const whereConditions = {}
+
+  if (parent_id) {
+    const parentToCategoryMap = {
+      1: [5, 6, 7, 8, 9, 10],
+      2: [5, 6],
+      3: [7, 8],
+      4: [9, 10],
+    }
+    const categoryIds = parentToCategoryMap[parent_id]
+    if (categoryIds) {
+      whereConditions.product_category_id = categoryIds
+    }
+  }
+
+  try {
+    const products = await Product.findAll({
+      where: whereConditions,
+      include: [
+        {
+          model: Product_Image,
+          as: 'images',
+          attributes: ['id', 'url', 'is_thumbnail'],
+        },
+        {
+          model: Share_Tag,
+          as: 'tags',
+          attributes: ['id', 'name'],
+          through: { attributes: [] },
+        },
+        {
+          model: Product_Category,
+          as: 'category',
+          attributes: ['name', 'parent_id'], // Also retrieving parent_id for clarity
+        },
+        {
+          model: Share_Store,
+          as: 'stores',
+          attributes: ['store_id', 'store_name', 'store_info'],
+        },
+        {
+          model: Share_Color,
+          as: 'colors',
+          attributes: ['name', 'code'],
+        },
+        {
+          model: Product_Review,
+          as: 'reviews',
+          attributes: [
+            'id',
+            'member_id',
+            'share_star_id',
+            'comment',
+            'created_at',
+            'updated_at',
+          ],
+          include: [
+            {
+              model: Share_Star,
+              as: 'star',
+              attributes: ['id', 'name', 'numbers'],
+            },
+            {
+              model: Member,
+              as: 'member',
+              attributes: ['id', 'name'],
+            },
+          ],
+        },
+      ],
+      nest: true,
+      limit: 189,
+    })
+    return res.json({ status: 'success', data: { products } })
+  } catch (error) {
+    console.error('Error fetching Products:', error)
+    return res
+      .status(500)
+      .json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
 // GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
 router.get('/:id', async function (req, res) {
-  const id = getIdParam(req) // Ensure that `id` is properly parsed and validated
-
+  const id = getIdParam(req)
   try {
     const product = await Product.findByPk(id, {
       include: [
@@ -171,17 +270,6 @@ router.get('/:id', async function (req, res) {
           as: 'tags',
           attributes: ['id', 'name'],
           through: { attributes: [] },
-        },
-        {
-          model: Product_Review,
-          as: 'reviews',
-          attributes: [
-            'id',
-            'share_star_id',
-            'comment',
-            'created_at',
-            'updated_at',
-          ],
         },
         {
           model: Product_Review,
