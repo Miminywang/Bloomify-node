@@ -17,6 +17,10 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      directory: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       share_color_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
