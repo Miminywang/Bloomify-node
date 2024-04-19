@@ -158,24 +158,29 @@ router.get('/', async function (req, res) {
 })
 
 // 篩選子項目
+// Importing required models and other necessary libraries may be assumed here.
+
+// Define a GET route handler for the '/filter' endpoint.
 router.get('/filter', async function (req, res) {
-  // Extract the parent_id from the query parameters of the request.
+  // Extract parent_id from the query parameters of the request.
   const { parent_id } = req.query
 
   // Initialize an object to hold conditions for the database query.
   const whereConditions = {}
-  // If a parent_id is provided, use it to determine the specific cat
+
+  // If a parent_id is provided, use it to determine the specific categories to filter by.
   if (parent_id) {
     // Map parent categories to their child category IDs.
     const parentToCategoryMap = {
-      1: [5, 6, 7, 8, 9, 10],
+      1: [5, 6, 7, 8, 9, 10], // All categories
       2: [5, 6], // Specific subcategories for parent_id = 2
-      3: [7, 8],
-      4: [9, 10],
+      3: [7, 8], // Specific subcategories for parent_id = 3
+      4: [9, 10], // Specific subcategories for parent_id = 4
     }
 
     // Retrieve the category IDs that correspond to the given parent_id.
     const categoryIds = parentToCategoryMap[parent_id]
+
     // If the parent_id is valid and has corresponding category IDs, set them in the conditions.
     if (categoryIds) {
       whereConditions.product_category_id = categoryIds
@@ -197,12 +202,12 @@ router.get('/filter', async function (req, res) {
           model: Share_Tag,
           as: 'tags',
           attributes: ['id', 'name'],
-          through: { attributes: [] },
+          through: { attributes: [] }, // Do not retrieve attributes from the join table.
         },
         {
           model: Product_Category,
           as: 'category',
-          attributes: ['name', 'parent_id'], // Also retrieving parent_id for clarity
+          attributes: ['name', 'parent_id'], // Include parent_id for additional context.
         },
         {
           model: Share_Store,
@@ -226,6 +231,7 @@ router.get('/filter', async function (req, res) {
             'updated_at',
           ],
           include: [
+            // Include nested relations within reviews.
             {
               model: Share_Star,
               as: 'star',
@@ -239,11 +245,14 @@ router.get('/filter', async function (req, res) {
           ],
         },
       ],
-      nest: true,
-      limit: 189,
+      nest: true, // Enable nested loading of related models.
+      limit: 189, // Set a limit for the number of products returned.
     })
+
+    // If the query is successful, return the products in the response.
     return res.json({ status: 'success', data: { products } })
   } catch (error) {
+    // If there's an error during the database query, log the error and return a server error response.
     console.error('Error fetching Products:', error)
     return res
       .status(500)
