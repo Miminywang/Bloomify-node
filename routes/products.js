@@ -159,28 +159,35 @@ router.get('/', async function (req, res) {
 
 // 篩選子項目
 router.get('/filter', async function (req, res) {
+  // Extract the parent_id from the query parameters of the request.
   const { parent_id } = req.query
 
-  // 建立分類查詢條件
+  // Initialize an object to hold conditions for the database query.
   const whereConditions = {}
-
+  // If a parent_id is provided, use it to determine the specific cat
   if (parent_id) {
+    // Map parent categories to their child category IDs.
     const parentToCategoryMap = {
       1: [5, 6, 7, 8, 9, 10],
-      2: [5, 6],
+      2: [5, 6], // Specific subcategories for parent_id = 2
       3: [7, 8],
       4: [9, 10],
     }
+
+    // Retrieve the category IDs that correspond to the given parent_id.
     const categoryIds = parentToCategoryMap[parent_id]
+    // If the parent_id is valid and has corresponding category IDs, set them in the conditions.
     if (categoryIds) {
       whereConditions.product_category_id = categoryIds
     }
   }
 
   try {
+    // Perform a database query to find all products matching the whereConditions.
     const products = await Product.findAll({
-      where: whereConditions,
+      where: whereConditions, // Conditions used for filtering the products.
       include: [
+        // Include related models and specify the attributes to retrieve.
         {
           model: Product_Image,
           as: 'images',
