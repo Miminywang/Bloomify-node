@@ -10,9 +10,6 @@ import sequelize from '#configs/db.js'
 const { Course, Course_Image, Share_Member, Course_Favorite } = sequelize.models
 
 // 外鍵定義
-// Course.hasMany(Course_Image, { foreignKey: 'course_id', as: 'images' })
-// Course_Image.belongsTo(Course, { foreignKey: 'course_id' })
-
 Course.belongsToMany(Share_Member, {
   through: Course_Favorite,
   foreignKey: 'course_id',
