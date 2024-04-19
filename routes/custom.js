@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router()
 import { getIdParam } from '#db-helpers/db-tool.js'
-
+import { Op } from 'sequelize'
 // 資料庫使用
 import sequelize from '#configs/db.js'
 
@@ -82,8 +82,44 @@ Custom_Template_List.hasMany(Custom_Template_Detail, {
 })
 
 router.get('/', async function (req, res) {
+  // const { occs, roles, colors } = req.query
+  // const whereCondition = {}
+
+  const sortField = req.query.sortField
+  const sortOrder = req.query.sortOrder || 'ASC'
+  const filterField = req.query.filterField
+  const filterValue = req.query.filterValue
+  let orderCriteria = [['template_id', sortOrder]] // default sorting
+
+  if (sortField === 'total_price') {
+    orderCriteria = [
+      [
+        sequelize.literal(
+          `(SELECT SUM(price) FROM custom_product_list WHERE product_id IN (SELECT product_id FROM custom_template_detail WHERE template_id = Custom_Template_List.template_id))`
+        ),
+        sortOrder,
+      ],
+    ]
+  }
+
+  // filterField=occs&roles&filterValue=2,4;2,3,6&sortField=template_id&sortOrder=asc
+  const whereCondition = {}
+  // if (filterField && filterValue) {
+  //   whereCondition[filterField] = filterValue
+  // }
+  if (filterField && filterValue) {
+    const fields = filterField.split('&')
+    const values = filterValue.split(';').map((value) => value.split(','))
+
+    fields.forEach((field, index) => {
+      // 对每个字段应用适当的查询条件
+      whereCondition[field] = { [Op.in]: values[index] }
+    })
+  }
   try {
     const customTemplateLists = await Custom_Template_List.findAll({
+      where: whereCondition,
+      order: orderCriteria,
       include: [
         {
           model: Share_Store,
@@ -257,6 +293,8 @@ router.get('/custom/:store_id', async function (req, res) {
       ss.store_id,
       ss.store_name,
       cat.category_name,
+      cat.category_url,
+      cat.category_type,
       GROUP_CONCAT(DISTINCT sc.name) AS colors,
       GROUP_CONCAT(DISTINCT cpv.image_url) AS urls
     FROM 
@@ -272,7 +310,7 @@ router.get('/custom/:store_id', async function (req, res) {
     WHERE 
       ss.store_id = :store_id
     GROUP BY 
-      cat.category_name
+      cat.category_name, cat.category_type
   `
 
   try {
@@ -286,17 +324,29 @@ router.get('/custom/:store_id', async function (req, res) {
         .status(404)
         .json({ message: 'No products found for this store.' })
     }
-    const formattedResults = results.map((result) => ({
-      store_id: result.store_id,
-      store_name: result.store_name,
-      category_name: result.category_name,
-      colors: result.colors.split(','),
-      urls: result.urls.split(','),
-    }))
-    return res.json({
-      status: 'success',
-      data: formattedResults,
-    })
+
+    // Reformat the results to match the desired output
+    const output = results.reduce((acc, cur) => {
+      const type = cur.category_type
+      if (!acc[type]) {
+        acc[type] = []
+      }
+      acc[type].push({
+        category_name: cur.category_name,
+        category_url: cur.category_url,
+        colors: cur.colors.split(','),
+        urls: cur.urls.split(','),
+      })
+      return acc
+    }, {})
+
+    const formattedResults = {
+      store_id: results[0].store_id,
+      store_name: results[0].store_name,
+      items: output,
+    }
+
+    return res.json({ status: 'success', data: formattedResults })
   } catch (error) {
     console.error('Error fetching store products:', error)
     return res
@@ -304,5 +354,53 @@ router.get('/custom/:store_id', async function (req, res) {
       .json({ status: 'error', message: 'Internal server error' })
   }
 })
+
+// // GET - 根據篩選條件得到課程
+// router.get('/search', async function (req, res) {
+//   // 從查詢參數中獲取 category_id 和 store_id
+//   const { category_id, store_id } = req.query
+
+//   // 建立查詢條件
+//   const whereConditions = {}
+//   if (category_id) {
+//     whereConditions.category_id = category_id
+//   }
+//   if (store_id) {
+//     whereConditions.store_id = store_id
+//   }
+
+//   try {
+//     const customTemplateLists = await Custom_Template_List.findAll({
+//       where: whereConditions, // 使用篩選條件
+//       include: [
+//         {
+//           model: Course_Image, // 引入圖片資料表
+//           as: 'images', // 確保在模型定義中使用這個別名
+//           attributes: ['id', 'path', 'is_main'],
+//         },
+//       ],
+//       nest: true,
+//     })
+//     return res.json({ status: 'success', data: { courses } })
+//   } catch (error) {
+//     console.error('Error fetching filtered courses:', error)
+//     return res
+//       .status(500)
+//       .json({ status: 'error', message: 'Internal server error' })
+//   }
+// })
+
+// router.get('/templates', async (req, res) => {
+//   const { sortBy = 'created_at', sortOrder = 'asc' } = req.query
+//   try {
+//     const templates = await Custom_Template_List.findAll({
+//       order: [[sortBy, sortOrder.toUpperCase()]],
+//     })
+//     res.json(templates)
+//   } catch (error) {
+//     console.error('Failed to fetch templates:', error)
+//     res.status(500).send('Internal Server Error')
+//   }
+// })
 
 export default router
