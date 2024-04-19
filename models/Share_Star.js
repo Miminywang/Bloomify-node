@@ -2,36 +2,24 @@ import { DataTypes } from 'sequelize'
 
 export default async function (sequelize) {
   return sequelize.define(
-    'Product_Review',
+    'Share_Star',
     {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      member_id: {
-        type: DataTypes.INTEGER,
+      name: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
-      product_order_detail_id: {
+      numbers: {
         type: DataTypes.INTEGER,
         allowNull: false,
-      },
-      product_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      share_star_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      comment: {
-        type: DataTypes.TEXT,
-        allowNull: true,
       },
     },
     {
-      tableName: 'product_review', //直接提供資料表名稱
+      tableName: 'share_star', //直接提供資料表名稱
       timestamps: true, // 使用時間戳
       paranoid: false, // 軟性刪除
       underscored: true, // 所有自動建立欄位，使用snake_case命名
