@@ -17,6 +17,10 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      directory: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       tableName: 'product_category', //直接提供資料表名稱
