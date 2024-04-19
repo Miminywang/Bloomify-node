@@ -1,4 +1,5 @@
 // login,logout功能
+// register,edit
 
 import express from 'express'
 const router = express.Router()
@@ -6,6 +7,9 @@ const router = express.Router()
 import jsonwebtoken from 'jsonwebtoken'
 // 中介軟體，存取隱私會員資料用
 import authenticate from '#middlewares/authenticate.js'
+
+// 檢查空物件, 轉換req.params為數字
+import { getIdParam } from '#db-helpers/db-tool.js'
 
 // 存取`.env`設定檔案使用
 import 'dotenv/config.js'
@@ -21,6 +25,10 @@ import { compareHash } from '#db-helpers/password-hash.js'
 
 // 定義安全的私鑰字串 .env檔案
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
+
+// 上傳檔案用使用multer
+import path from 'path'
+import multer from 'multer'
 
 // post-login
 // 新增修改參考routes/users.js
@@ -114,6 +122,83 @@ router.post('/logout', authenticate, (req, res) => {
   // res.clearCookie(name [, options])
   res.clearCookie('accessToken', { httpOnly: true })
   res.json({ status: 'success', data: null })
+})
+
+// center/profile
+// GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
+router.get('/:id', authenticate, async function (req, res) {
+  // 轉為數字
+  const id = getIdParam(req)
+
+  // 檢查是否為授權會員，只有授權會員可以存取自己的資料
+  if (req.user.id !== id) {
+    return res.json({ status: 'error', message: '存取會員資料失敗' })
+  }
+
+  const user = await Share_Member.findByPk(id, {
+    raw: true, // 只需要資料表中資料
+  })
+
+  // 不回傳密碼
+  delete user.password
+
+  return res.json({ status: 'success', data: { user } })
+})
+
+// PUT - 更新會員資料(排除更新密碼)
+router.put('/center:id/profile', authenticate, async function (req, res) {
+  const id = getIdParam(req)
+  console.log(id)
+  // 檢查是否為授權會員，只有授權會員可以存取自己的資料
+  if (req.user.id !== id) {
+    return res.json({ status: 'error', message: '存取會員資料失敗' })
+  }
+
+  // user為來自前端的會員資料(準備要修改的資料)
+  const user = req.body
+  console.log(user)
+  // 檢查從前端瀏覽器來的資料，哪些為必要(name, ...)
+  if (!id || !user.name) {
+    return res.json({ status: 'error', message: '缺少必要資料' })
+  }
+
+  // 查詢資料庫目前的資料
+  const dbUser = await Share_Member.findByPk(id, {
+    raw: true, // 只需要資料表中資料
+  })
+
+  // null代表不存在
+  if (!dbUser) {
+    return res.json({ status: 'error', message: '使用者不存在' })
+  }
+
+  // 有些特殊欄位的值沒有時要略過更新，不然會造成資料庫錯誤
+  // if (!user.birth_date) {
+  //   delete user.birth_date
+  // }
+
+  // 對資料庫執行update
+  const [affectedRows] = await Share_Member.update(user, {
+    where: {
+      id,
+    },
+  })
+
+  // 沒有更新到任何資料 -> 失敗或沒有資料被更新
+  if (!affectedRows) {
+    return res.json({ status: 'error', message: '更新失敗或沒有資料被更新' })
+  }
+
+  // 更新成功後，找出更新的資料，updatedUser為更新後的會員資料
+  const updatedUser = await Share_Member.findByPk(id, {
+    raw: true, // 只需要資料表中資料
+  })
+
+  // password資料不需要回應給瀏覽器
+  delete updatedUser.password
+  //console.log(updatedUser)
+  // 回傳
+  return res.json({ status: 'success', data: { user: updatedUser } })
 })
 
 export default router
