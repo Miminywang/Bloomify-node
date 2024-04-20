@@ -108,7 +108,7 @@ router.get('/', async function (req, res) {
         {
           model: Product_Category,
           as: 'category',
-          attributes: ['name'], // 指定需要的屬性
+          attributes: ['id', 'name', 'parent_id'], // 指定需要的屬性
         },
         {
           model: Share_Store,
@@ -164,29 +164,33 @@ router.get('/', async function (req, res) {
 // Define a GET route handler for the '/filter' endpoint.
 router.get('/filter', async function (req, res) {
   // Extract parent_id from the query parameters of the request.
-  const { parent_id, keyword, sort } = req.query
+  const { parent_id, subcategory_id, keyword, sort } = req.query
 
   // Initialize an object to hold conditions for the database query.
   const whereConditions = {}
 
+  // Convert subcategory_id to an array of integers if it exists.
+  const subcategoryIds = subcategory_id
+    ? subcategory_id.split(',').map((id) => parseInt(id.trim(), 10))
+    : []
+
   // If a parent_id is provided, use it to determine the specific categories to filter by.
   if (parent_id) {
     // Map parent categories to their child category IDs.
-    const parentToCategoryMap = {
-      1: [5, 6, 7, 8, 9, 10], // All categories
-      2: [5, 6], // Specific subcategories for parent_id = 2
-      3: [7, 8], // Specific subcategories for parent_id = 3
-      4: [9, 10], // Specific subcategories for parent_id = 4
-    }
-
+    // const parentToCategoryMap = {
+    //   1: [5, 6, 7, 8, 9, 10], // All categories
+    //   2: [5, 6], // Specific subcategories for parent_id = 2
+    //   3: [7, 8], // Specific subcategories for parent_id = 3
+    //   4: [9, 10], // Specific subcategories for parent_id = 4
+    // }
     // Retrieve the category IDs that correspond to the given parent_id.
-    const categoryIds = parentToCategoryMap[parent_id]
-
+    // const categoryIds = parentToCategoryMap[parent_id]
     // If the parent_id is valid and has corresponding category IDs, set them in the conditions.
-    if (categoryIds) {
-      whereConditions.product_category_id = categoryIds
-    }
+    // if (categoryIds) {
+    //   whereConditions.product_category_id = categoryIds
+    // }
   }
+
   if (keyword) {
     // 添加 OR 條件到 whereConditions 以進行關鍵字搜索
     whereConditions[Op.or] = [
