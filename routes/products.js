@@ -1,5 +1,6 @@
 import express from 'express'
 const router = express.Router()
+import { Op } from 'sequelize'
 
 // 檢查空物件, 轉換req.params為數字
 import { getIdParam } from '#db-helpers/db-tool.js'
@@ -163,7 +164,7 @@ router.get('/', async function (req, res) {
 // Define a GET route handler for the '/filter' endpoint.
 router.get('/filter', async function (req, res) {
   // Extract parent_id from the query parameters of the request.
-  const { parent_id } = req.query
+  const { parent_id, keyword } = req.query
 
   // Initialize an object to hold conditions for the database query.
   const whereConditions = {}
@@ -185,6 +186,15 @@ router.get('/filter', async function (req, res) {
     if (categoryIds) {
       whereConditions.product_category_id = categoryIds
     }
+  }
+  if (keyword) {
+    // 添加 OR 條件到 whereConditions 以進行關鍵字搜索
+    whereConditions[Op.or] = [
+      {
+        name: { [Op.like]: `%${keyword}%` }, // 在 name 欄位中搜索 keyword
+      },
+      // 可以添加更多欄位來搜索...
+    ]
   }
 
   try {
