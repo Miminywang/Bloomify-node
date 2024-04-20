@@ -164,7 +164,7 @@ router.get('/', async function (req, res) {
 // Define a GET route handler for the '/filter' endpoint.
 router.get('/filter', async function (req, res) {
   // Extract parent_id from the query parameters of the request.
-  const { parent_id, keyword } = req.query
+  const { parent_id, keyword, sort } = req.query
 
   // Initialize an object to hold conditions for the database query.
   const whereConditions = {}
@@ -195,6 +195,20 @@ router.get('/filter', async function (req, res) {
       },
       // 可以添加更多欄位來搜索...
     ]
+  }
+
+  let orderOptions = [['created_at', 'DESC']] // 最新的(預設)
+  if (sort === 'latest') {
+    orderOptions = [['created_at', 'DESC']]
+  }
+  if (sort === 'oldest') {
+    orderOptions = [['created_at', 'ASC']] // 最舊的
+  }
+  if (sort === 'expensive') {
+    orderOptions = [['price', 'DESC']] // 最貴的
+  }
+  if (sort === 'cheapest') {
+    orderOptions = [['price', 'ASC']] // 最便宜的
   }
 
   try {
@@ -255,6 +269,7 @@ router.get('/filter', async function (req, res) {
           ],
         },
       ],
+      order: orderOptions,
       nest: true, // Enable nested loading of related models.
       limit: 189, // Set a limit for the number of products returned.
     })
