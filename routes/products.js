@@ -145,9 +145,10 @@ router.get('/', async function (req, res) {
           ],
         },
       ],
-      // raw: true,
+      raw: true,
       nest: true,
-      limit: 189,
+      // limit: 15,
+      // offset: 0,
     })
     return res.json({ status: 'success', data: { products } })
   } catch (error) {
@@ -163,35 +164,130 @@ router.get('/', async function (req, res) {
 
 // Define a GET route handler for the '/filter' endpoint.
 router.get('/filter', async function (req, res) {
+  const limit = 6 // Set the limit for each page
+  const page = parseInt(req.query.page) || 1 // Get the page number from query parameter or default to 1
+  const offset = (page - 1) * limit // Calculate the offset
   // Extract parent_id from the query parameters of the request.
   const { parent_id, keyword, sort } = req.query
 
   // Initialize an object to hold conditions for the database query.
   const whereConditions = {}
 
-  // If a parent_id is provided, include products that belong to categories with the specified parent_id.
+  // If a parent_id is provided, use it to determine the specific categories to filter by.
   if (parent_id) {
-    whereConditions['$category.parent_id$'] = parent_id // Use sequelize's nested eager loading syntax.
+    // Map parent categories to their child category IDs.
+    const parentToCategoryMap = {
+      1: [5, 6, 7, 8, 9, 10], // All categories
+      2: [5, 6], // Specific subcategories for parent_id = 2
+      3: [7, 8], // Specific subcategories for parent_id = 3
+      4: [9, 10], // Specific subcategories for parent_id = 4
+    }
+    // Retrieve the category IDs that correspond to the given parent_id.
+    const categoryIds = parentToCategoryMap[parent_id]
+    // If the parent_id is valid and has corresponding category IDs, set them in the conditions.
+    if (categoryIds) {
+      whereConditions.product_category_id = categoryIds
+    }
   }
 
-  // Implement keyword search and sorting as required, omitted for brevity.
+  if (keyword) {
+    // 添加 OR 條件到 whereConditions 以進行關鍵字搜索
+    whereConditions[Op.or] = [
+      {
+        name: { [Op.like]: `%${keyword}%` }, // 在 name 欄位中搜索 keyword
+      },
+    ]
+  }
+
+  let orderOptions = [['created_at', 'DESC']] // 最新的(預設)
+  if (sort === 'latest') {
+    orderOptions = [['created_at', 'DESC']]
+  }
+  if (sort === 'oldest') {
+    orderOptions = [['created_at', 'ASC']] // 最舊的
+  }
+  if (sort === 'expensive') {
+    orderOptions = [['price', 'DESC']] // 最貴的
+  }
+  if (sort === 'cheapest') {
+    orderOptions = [['price', 'ASC']] // 最便宜的
+  }
 
   try {
     // Perform a database query to find all products matching the whereConditions.
-    const products = await Product.findAll({
+    const { rows: products, count } = await Product.findAndCountAll({
+      where: whereConditions, // Conditions used for filtering the products.
       include: [
         // Include related models and specify the attributes to retrieve.
-        // ... Your existing include definitions.
+        {
+          model: Product_Image,
+          as: 'images',
+          attributes: ['id', 'url', 'is_thumbnail'],
+          required: false,
+        },
+        {
+          model: Share_Tag,
+          as: 'tags',
+          attributes: ['id', 'name'],
+          through: { attributes: [] }, // Do not retrieve attributes from the join table.
+
+          required: false,
+        },
+        {
+          model: Product_Category,
+          as: 'category',
+          attributes: ['name', 'parent_id'], // Include parent_id for additional context.
+          required: false,
+        },
+        {
+          model: Share_Store,
+          as: 'stores',
+          attributes: ['store_id', 'store_name', 'store_info'],
+          required: false,
+        },
+        {
+          model: Share_Color,
+          as: 'colors',
+          attributes: ['name', 'code'],
+          required: false,
+        },
+        {
+          model: Product_Review,
+          as: 'reviews',
+          attributes: [
+            'id',
+            'member_id',
+            'share_star_id',
+            'comment',
+            'created_at',
+            'updated_at',
+          ],
+          include: [
+            // Include nested relations within reviews.
+            {
+              model: Share_Star,
+              as: 'star',
+              attributes: ['id', 'name', 'numbers'],
+              required: false,
+            },
+            {
+              model: Member,
+              as: 'member',
+              attributes: ['id', 'name'],
+              required: false,
+            },
+          ],
+          required: false,
+        },
       ],
-      where: whereConditions,
-      // Implement your order options logic here, omitted for brevity.
-      // ...
-      nest: true,
-      limit: 189, // Adjust as necessary.
+      order: orderOptions,
+      nest: true, // Enable nested loading of related models.
+      limit: limit,
+      offset: offset,
     })
 
     // If the query is successful, return the products in the response.
-    return res.json({ status: 'success', data: { products } })
+    return res.json({ status: 'success', data: { products, count } })
   } catch (error) {
     // If there's an error during the database query, log the error and return a server error response.
     console.error('Error fetching Products:', error)
