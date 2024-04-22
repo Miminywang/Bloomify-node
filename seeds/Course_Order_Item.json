@@ -1,20 +1,62 @@
 [
   {
-    "id": 1,
-    "course_order_id": "d1ddc04c-86d1-473a-8698-ff2432d24c65",
+    "order_id": 1,
     "course_id": 3,
     "period": 1
   },
   {
-    "id": 2,
-    "course_order_id": "d1ddc04c-86d1-473a-8698-ff2432d24c65",
+    "order_id": 1,
     "course_id": 6,
     "period": 1
   },
   {
-    "id": 3,
-    "course_order_id": "d1ddc04c-86d1-473a-8698-ff2432d24c65",
+    "order_id": 1,
     "course_id": 9,
+    "period": 1
+  },
+  {
+    "order_id": 2,
+    "course_id": 6,
+    "period": 1
+  },
+  {
+    "order_id": 2,
+    "course_id": 10,
+    "period": 1
+  },
+  {
+    "order_id": 2,
+    "course_id": 12,
+    "period": 1
+  },
+  {
+    "order_id": 3,
+    "course_id": 33,
+    "period": 1
+  },
+  {
+    "order_id": 3,
+    "course_id": 44,
+    "period": 1
+  },
+  {
+    "order_id": 3,
+    "course_id": 55,
+    "period": 1
+  },
+  {
+    "order_id": 4,
+    "course_id": 65,
+    "period": 1
+  },
+  {
+    "order_id": 4,
+    "course_id": 62,
+    "period": 1
+  },
+  {
+    "order_id": 4,
+    "course_id": 3,
     "period": 1
   }
 ]

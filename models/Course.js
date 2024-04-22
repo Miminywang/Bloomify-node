@@ -29,6 +29,10 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      average_stars: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       min_capacity: {
         type: DataTypes.INTEGER,
         allowNull: false,

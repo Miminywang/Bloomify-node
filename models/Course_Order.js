@@ -9,6 +9,11 @@ export default async function (sequelize) {
         primaryKey: true,
         autoIncrement: true,
       },
+      order_number: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        unique: true,
+      },
       member_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -38,14 +43,6 @@ export default async function (sequelize) {
         allowNull: false,
       },
       invoice_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      student_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      student_phone: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

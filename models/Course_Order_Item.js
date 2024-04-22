@@ -9,7 +9,7 @@ export default async function (sequelize) {
         primaryKey: true,
         autoIncrement: true,
       },
-      course_order_id: {
+      order_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

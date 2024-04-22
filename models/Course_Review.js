@@ -17,7 +17,7 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      rating: {
+      stars: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
