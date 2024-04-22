@@ -30,6 +30,23 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
 import path from 'path'
 import multer from 'multer'
 
+// multer的設定值 - START
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    // 存放目錄
+    callback(null, 'public/member/avatar/')
+  },
+  filename: function (req, file, callback) {
+    // 經授權後，req.user帶有會員的id
+    const newFilename = req.user.id
+    // 新檔名由表單傳來的req.body.newFilename決定
+    callback(null, newFilename + path.extname(file.originalname))
+  },
+})
+
+const upload = multer({ storage: storage })
+// multer的設定值 - END
+
 // post-login
 // 新增修改參考routes/users.js
 router.post('/login', async function (req, res) {
@@ -124,8 +141,17 @@ router.post('/logout', authenticate, (req, res) => {
   res.json({ status: 'success', data: null })
 })
 
-// center/profile
+// GET - 得到所有會員資料
+router.get('/', async function (req, res) {
+  const users = await Share_Member.findAll({ logging: console.log })
+  // 處理如果沒找到資料
+
+  // 標準回傳JSON
+  return res.json({ status: 'success', data: { users } })
+})
+
 // GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
+// http://localhost:3005/api/share-members/:id
 router.get('/:id', authenticate, async function (req, res) {
   // 轉為數字
   const id = getIdParam(req)
@@ -146,7 +172,8 @@ router.get('/:id', authenticate, async function (req, res) {
 })
 
 // PUT - 更新會員資料(排除更新密碼)
-router.put('/center:id/profile', authenticate, async function (req, res) {
+// http://localhost:3005/api/share-members/center/1/profile
+router.put('/center/:id/profile', authenticate, async function (req, res) {
   const id = getIdParam(req)
   console.log(id)
   // 檢查是否為授權會員，只有授權會員可以存取自己的資料
@@ -200,5 +227,44 @@ router.put('/center:id/profile', authenticate, async function (req, res) {
   // 回傳
   return res.json({ status: 'success', data: { user: updatedUser } })
 })
+
+// POST - 可同時上傳與更新會員檔案用，使用multer(設定值在此檔案最上面)
+router.post(
+  '/upload-avatar',
+  authenticate,
+  upload.single('avatar'), // 上傳來的檔案(這是單個檔案，表單欄位名稱為avatar)
+  async function (req, res) {
+    // req.file 即上傳來的檔案(avatar這個檔案)
+    // req.body 其它的文字欄位資料…
+    // console.log(req.file, req.body)
+
+    if (req.file) {
+      const id = req.user.id
+      const data = { avatar: req.file.filename }
+
+      // 對資料庫執行update
+      const [affectedRows] = await Share_Member.update(data, {
+        where: {
+          id,
+        },
+      })
+
+      // 沒有更新到任何資料 -> 失敗或沒有資料被更新
+      if (!affectedRows) {
+        return res.json({
+          status: 'error',
+          message: '更新失敗或沒有資料被更新',
+        })
+      }
+
+      return res.json({
+        status: 'success',
+        data: { avatar: req.file.filename },
+      })
+    } else {
+      return res.json({ status: 'fail', data: null })
+    }
+  }
+)
 
 export default router
