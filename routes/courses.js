@@ -248,7 +248,7 @@ router.get('/:id', async function (req, res) {
       {
         model: Course_Review,
         as: 'reviews',
-        attributes: ['member_id', 'rating', 'comment', 'created_at'],
+        attributes: ['member_id', 'stars', 'comment', 'created_at'],
         include: [
           {
             model: Share_Member,
