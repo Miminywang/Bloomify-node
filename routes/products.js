@@ -1,6 +1,5 @@
 import express from 'express'
 const router = express.Router()
-import { Op } from 'sequelize'
 
 // 檢查空物件, 轉換req.params為數字
 import { getIdParam } from '#db-helpers/db-tool.js'
@@ -147,8 +146,6 @@ router.get('/', async function (req, res) {
       ],
       raw: true,
       nest: true,
-      // limit: 15,
-      // offset: 0,
     })
     return res.json({ status: 'success', data: { products } })
   } catch (error) {
@@ -160,15 +157,9 @@ router.get('/', async function (req, res) {
 })
 
 // 篩選子項目
-// Importing required models and other necessary libraries may be assumed here.
-
 // Define a GET route handler for the '/filter' endpoint.
 router.get('/filter', async function (req, res) {
-  const limit = 6 // Set the limit for each page
-  const page = parseInt(req.query.page) || 1 // Get the page number from query parameter or default to 1
-  const offset = (page - 1) * limit // Calculate the offset
-  // Extract parent_id from the query parameters of the request.
-  const { parent_id, keyword, sort } = req.query
+  const { parent_id } = req.query
 
   // Initialize an object to hold conditions for the database query.
   const whereConditions = {}
@@ -177,10 +168,10 @@ router.get('/filter', async function (req, res) {
   if (parent_id) {
     // Map parent categories to their child category IDs.
     const parentToCategoryMap = {
-      1: [5, 6, 7, 8, 9, 10], // All categories
-      2: [5, 6], // Specific subcategories for parent_id = 2
-      3: [7, 8], // Specific subcategories for parent_id = 3
-      4: [9, 10], // Specific subcategories for parent_id = 4
+      1: [5, 6, 7, 8, 9, 10],
+      2: [5, 6],
+      3: [7, 8],
+      4: [9, 10],
     }
     // Retrieve the category IDs that correspond to the given parent_id.
     const categoryIds = parentToCategoryMap[parent_id]
@@ -188,29 +179,6 @@ router.get('/filter', async function (req, res) {
     if (categoryIds) {
       whereConditions.product_category_id = categoryIds
     }
-  }
-
-  if (keyword) {
-    // 添加 OR 條件到 whereConditions 以進行關鍵字搜索
-    whereConditions[Op.or] = [
-      {
-        name: { [Op.like]: `%${keyword}%` }, // 在 name 欄位中搜索 keyword
-      },
-    ]
-  }
-
-  let orderOptions = [['created_at', 'DESC']] // 最新的(預設)
-  if (sort === 'latest') {
-    orderOptions = [['created_at', 'DESC']]
-  }
-  if (sort === 'oldest') {
-    orderOptions = [['created_at', 'ASC']] // 最舊的
-  }
-  if (sort === 'expensive') {
-    orderOptions = [['price', 'DESC']] // 最貴的
-  }
-  if (sort === 'cheapest') {
-    orderOptions = [['price', 'ASC']] // 最便宜的
   }
 
   try {
@@ -280,12 +248,9 @@ router.get('/filter', async function (req, res) {
           required: false,
         },
       ],
-      order: orderOptions,
+      // order: orderOptions,
       nest: true, // Enable nested loading of related models.
-      limit: limit,
-      offset: offset,
     })
-
     // If the query is successful, return the products in the response.
     return res.json({ status: 'success', data: { products, count } })
   } catch (error) {
