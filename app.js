@@ -6,6 +6,7 @@ import express from 'express'
 import logger from 'morgan'
 import path from 'path'
 import session from 'express-session'
+import { initializeAverageStars } from '#services/courseService.js' // 課程平均分數的初始資料載入
 
 // 使用檔案的session store，存在sessions資料夾
 import sessionFileStore from 'session-file-store'
@@ -73,6 +74,9 @@ for (const filename of filenames) {
   app.use(`${apiPath}/${slug === 'index' ? '' : slug}`, item.default)
 }
 // 載入routes中的各路由檔案，並套用api路由 END
+
+// 初始化平均星數
+initializeAverageStars()
 
 // 捕抓404錯誤處理
 app.use(function (req, res, next) {

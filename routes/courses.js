@@ -19,8 +19,12 @@ const {
   Share_Member,
   Share_Tag,
   Course_Tag,
+  Course_Favorite,
 } = sequelize.models
 
+// 外鍵 - 分類資料表定義
+Course_Category.hasMany(Course, { foreignKey: 'category_id' })
+Course.belongsTo(Course_Category, { foreignKey: 'category_id', as: 'category' })
 // 外鍵 - 圖片資料表定義
 Course.hasMany(Course_Image, { foreignKey: 'course_id', as: 'images' })
 Course_Image.belongsTo(Course, { foreignKey: 'course_id' })
@@ -66,11 +70,47 @@ router.get('/', async function (req, res) {
           attributes: ['id', 'path', 'is_main'],
         },
       ],
+      attributes: [
+        'id',
+        'store_id',
+        'category_id',
+        'name',
+        'intro',
+        'price',
+        'average_stars',
+        'min_capacity',
+        'max_capacity',
+        'created_at',
+      ],
       // raw: true,
       nest: true,
       limit: 8,
     })
-    return res.json({ status: 'success', data: { courses } })
+
+    // ---------------- 取得isFavorite值的判斷 start  ----------------
+    // 獲取當前用戶收藏的課程列表
+    const memberId = 1 // TODO:
+    const favoriteCourses = await Course_Favorite.findAll({
+      where: { member_id: memberId },
+      attributes: ['course_id'],
+    })
+
+    // 將收藏的課程id轉換成一個集合
+    const favoriteCoursesIds = new Set(
+      favoriteCourses.map((fav) => fav.course_id)
+    )
+
+    // 為每個課程添加isFavorited屬性
+    const coursesisFavorites = courses.map((course) => {
+      const isFavorited = favoriteCoursesIds.has(course.id)
+      return {
+        ...course.toJSON(),
+        isFavorited,
+      }
+    })
+    // ---------------- 取得isFavorite值的判斷 end  ----------------
+
+    return res.json({ status: 'success', data: { coursesisFavorites } })
   } catch (error) {
     console.error('Error fetching courses:', error)
     return res
@@ -113,7 +153,31 @@ router.get('/latest', async function (req, res) {
       nest: true,
       limit: 8,
     })
-    return res.json({ status: 'success', data: { latestCourses } })
+
+    // ---------------- 取得isFavorite值的判斷 start  ----------------
+    // 獲取當前用戶收藏的課程列表
+    const memberId = 1 //
+    const favoriteCourses = await Course_Favorite.findAll({
+      where: { member_id: memberId },
+      attributes: ['course_id'],
+    })
+
+    // 將收藏的課程id轉換成一個集合
+    const favoriteCoursesIds = new Set(
+      favoriteCourses.map((fav) => fav.course_id)
+    )
+
+    // 為每個課程添加isFavorited屬性
+    const coursesisFavorites = latestCourses.map((course) => {
+      const isFavorited = favoriteCoursesIds.has(course.id)
+      return {
+        ...course.toJSON(),
+        isFavorited,
+      }
+    })
+    // ---------------- 取得isFavorite值的判斷 end  ----------------
+
+    return res.json({ status: 'success', data: { coursesisFavorites } })
   } catch (error) {
     console.error('Error fetching latest courses:', error)
     return res
@@ -204,7 +268,29 @@ router.get('/search', async function (req, res) {
       order: orderOptions,
       nest: true,
     })
-    return res.json({ status: 'success', data: { courses } })
+
+    // 獲取當前用戶收藏的課程列表
+    const memberId = 1 // TODO:
+    const favoriteCourses = await Course_Favorite.findAll({
+      where: { member_id: memberId },
+      attributes: ['course_id'],
+    })
+
+    // 將收藏的課程id轉換成一個集合
+    const favoriteCoursesIds = new Set(
+      favoriteCourses.map((fav) => fav.course_id)
+    )
+
+    // 為每個課程添加isFavorited屬性
+    const coursesisFavorites = courses.map((course) => {
+      const isFavorited = favoriteCoursesIds.has(course.id)
+      return {
+        ...course.toJSON(),
+        isFavorited,
+      }
+    })
+
+    return res.json({ status: 'success', data: { coursesisFavorites } })
   } catch (error) {
     console.error('Error fetching filtered courses:', error)
     return res
@@ -225,6 +311,11 @@ router.get('/:id', async function (req, res) {
 
   const course = await Course.findByPk(id, {
     include: [
+      {
+        model: Course_Category,
+        as: 'category', // 確保在模型定義中使用這個別名
+        attributes: ['id', 'name'],
+      },
       {
         model: Course_Image,
         as: 'images', // 確保在模型定義中使用這個別名
@@ -248,7 +339,7 @@ router.get('/:id', async function (req, res) {
       {
         model: Course_Review,
         as: 'reviews',
-        attributes: ['member_id', 'stars', 'comment', 'created_at'],
+        attributes: ['id', 'member_id', 'stars', 'comment', 'created_at'],
         include: [
           {
             model: Share_Member,
