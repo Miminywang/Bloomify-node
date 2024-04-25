@@ -61,6 +61,14 @@ export default async function (sequelize) {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      city: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      district: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       tableName: 'share_store', //直接提供資料表名稱

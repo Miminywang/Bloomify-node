@@ -13,7 +13,9 @@
     "sub_id": 4,
     "permission_id": 1,
     "logo_path": "",
-    "store_info": ""
+    "store_info": "",
+    "city":"桃園市",
+    "district":"中壢區"
   },
   {
     "store_id": 2,
@@ -29,7 +31,9 @@
     "sub_id": 2,
     "permission_id": 2,
     "logo_path": "/assets/store/logo/img-logo-02.jpg",
-    "store_info": "專門提供奢華定制的花藝設計，適合特殊節日或重要場合。他們的花束以其創意和獨特性著稱，每一件作品都是精心策劃和手工製作的。"
+    "store_info": "專門提供奢華定制的花藝設計，適合特殊節日或重要場合。他們的花束以其創意和獨特性著稱，每一件作品都是精心策劃和手工製作的。",
+    "city":"台北市",
+    "district":"大安區"
   },
   {
     "store_id": 3,
@@ -45,7 +49,9 @@
     "sub_id": 1,
     "permission_id": 2,
     "logo_path": "/assets/store/logo/img-logo-03.jpg",
-    "store_info": "位於繁忙的商業區，提供各式各樣的新鮮花卉。這家花店以其便利的地理位置和合理的價格受到當地居民和辦公室工作人員的喜愛。"
+    "store_info": "位於繁忙的商業區，提供各式各樣的新鮮花卉。這家花店以其便利的地理位置和合理的價格受到當地居民和辦公室工作人員的喜愛。",
+    "city":"新北市",
+    "district":"板橋區"
   },
   {
     "store_id": 4,
@@ -61,7 +67,9 @@
     "sub_id": 3,
     "permission_id": 2,
     "logo_path": "/assets/store/logo/img-logo-04.jpg",
-    "store_info": "這家店以其自然、鄉村風格的布置和有機、野生花卉的選擇著稱。它提供一種回歸自然的購物體驗，非常適合尋求獨特和生態友好選擇的顧客。"
+    "store_info": "這家店以其自然、鄉村風格的布置和有機、野生花卉的選擇著稱。它提供一種回歸自然的購物體驗，非常適合尋求獨特和生態友好選擇的顧客。",
+    "city":"台中市",
+    "district":"西屯區"
   },
   {
     "store_id": 5,
@@ -77,7 +85,9 @@
     "sub_id": 2,
     "permission_id": 2,
     "logo_path": "/assets/store/logo/img-logo-05.jpg",
-    "store_info": "為那些時間緊張或不能親自到店選購的顧客提供便捷的線上訂購服務。該花店提供全國範圍內的快速配送，滿足各種突發的花卉需求。"
+    "store_info": "為那些時間緊張或不能親自到店選購的顧客提供便捷的線上訂購服務。該花店提供全國範圍內的快速配送，滿足各種突發的花卉需求。",
+    "city":"高雄市",
+    "district":"前鎮區"
   },
   {
     "store_id": 6,
@@ -93,7 +103,9 @@
     "sub_id": 1,
     "permission_id": 2,
     "logo_path": "/assets/store/logo/img-logo-06.jpg",
-    "store_info": "專注於提供創意和藝術風格的花藝，並定期舉辦花藝工作坊，教授顧客如何自己創作美麗的花束。"
+    "store_info": "專注於提供創意和藝術風格的花藝，並定期舉辦花藝工作坊，教授顧客如何自己創作美麗的花束。",
+    "city":"桃園市",
+    "district":"中壢區"
   },
   {
     "store_id": 7,
@@ -109,7 +121,9 @@
     "sub_id": 3,
     "permission_id": 2,
     "logo_path": "/assets/store/logo/img-logo-07.jpg",
-    "store_info": "提供全方位的婚禮花卉設計和場地布置服務。從花束到場地裝飾，這家花店專為打造浪漫婚禮而設，確保每個細節都完美無瑕。"
+    "store_info": "提供全方位的婚禮花卉設計和場地布置服務。從花束到場地裝飾，這家花店專為打造浪漫婚禮而設，確保每個細節都完美無瑕。",
+    "city":"台南市",
+    "district":"東區"
   },
   {
     "store_id": 8,
@@ -125,7 +139,9 @@
     "sub_id": 2,
     "permission_id": 2,
     "logo_path": "/assets/store/logo/img-logo-08.jpg",
-    "store_info": "擁有充滿復古魅力的店面，專賣那些帶有懷舊感的經典花藝作品。他們的花卉安排往往帶有復古色彩，非常適合傳統和復古風格的裝飾需求。"
+    "store_info": "擁有充滿復古魅力的店面，專賣那些帶有懷舊感的經典花藝作品。他們的花卉安排往往帶有復古色彩，非常適合傳統和復古風格的裝飾需求。",
+    "city":"彰化縣",
+    "district":"彰化市"
   },
   {
     "store_id": 9,
@@ -141,7 +157,9 @@
     "sub_id": 1,
     "permission_id": 2,
     "logo_path": "/assets/store/logo/img-logo-09.jpg",
-    "store_info": "強調可持續發展，使用來自可持續農場的花卉和全天然材料。這家花店致力於保護環境，是環保意識消費者的理想選擇。"
+    "store_info": "強調可持續發展，使用來自可持續農場的花卉和全天然材料。這家花店致力於保護環境，是環保意識消費者的理想選擇。",
+    "city":"基隆市",
+    "district":"信義區"
   },
   {
     "store_id": 10,
@@ -157,7 +175,9 @@
     "sub_id": 2,
     "permission_id": 2,
     "logo_path": "",
-    "store_info": "利用現代科技，例如3D打印和智能花盆，為顧客提供創新和定制的花卉解決方案。這家店特別適合科技愛好者和尋求非傳統花藝的顧客。"
+    "store_info": "利用現代科技，例如3D打印和智能花盆，為顧客提供創新和定制的花卉解決方案。這家店特別適合科技愛好者和尋求非傳統花藝的顧客。",
+    "city":"新竹市",
+    "district":"東區"
   },
   {
     "store_id": 11,
@@ -173,7 +193,9 @@
     "sub_id": 3,
     "permission_id": 2,
     "logo_path": "",
-    "store_info": "緊密連接當地社區，提供實惠的花卉和友好的服務。這家店經常參與社區活動，並支持當地的慈善事業，深受社區居民的愛戴。"
+    "store_info": "緊密連接當地社區，提供實惠的花卉和友好的服務。這家店經常參與社區活動，並支持當地的慈善事業，深受社區居民的愛戴。",
+    "city":"嘉義市",
+    "district":"西區"
   },
   {
     "store_id": 12,

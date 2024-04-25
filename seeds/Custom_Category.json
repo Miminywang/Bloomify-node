@@ -3,117 +3,270 @@
     "category_id": "1",
     "category_name": "玫瑰花",
     "category_en_name": "rose",
-    "category_url": "/custom/custom/rose.jpg",
-    "category_type": "主花",
-    "created_at": "2024-04-16 16:13:57",
-    "updated_at": "2024-04-16 16:13:57"
+    "category_type": "main",
+    "category_url": "\/custom\/custom\/flowers\/rose.jpg",
+    "created_at": "2024-04-16 00:13:57",
+    "updated_at": "2024-04-19 13:07:16"
   },
   {
     "category_id": "2",
     "category_name": "向日葵",
     "category_en_name": "sunflower",
-    "category_url": "/custom/custom/sunflower.jpg",
-    "category_type": "配花",
-    "created_at": "2024-04-16 16:13:57",
-    "updated_at": "2024-04-16 16:13:57"
+    "category_type": "accent",
+    "category_url": "\/custom\/custom\/flowers\/sunflower.jpg",
+    "created_at": "2024-04-16 00:13:57",
+    "updated_at": "2024-04-19 13:07:16"
   },
   {
     "category_id": "3",
     "category_name": "百合",
     "category_en_name": "lily",
-    "category_url": "/custom/custom/lily.jpg",
-    "category_type": "主花",
-    "created_at": "2024-04-16 16:13:57",
-    "updated_at": "2024-04-16 16:13:57"
+    "category_type": "main",
+    "category_url": "\/custom\/custom\/flowers\/lily.jpg",
+    "created_at": "2024-04-16 00:13:57",
+    "updated_at": "2024-04-19 13:07:16"
   },
   {
     "category_id": "4",
     "category_name": "鬱金香",
     "category_en_name": "tulip",
-    "category_url": "/custom/custom/tulip.jpg",
-    "category_type": "主花",
-    "created_at": "2024-04-16 16:13:57",
-    "updated_at": "2024-04-16 16:13:57"
+    "category_type": "main",
+    "category_url": "\/custom\/custom\/flowers\/tulip.jpg",
+    "created_at": "2024-04-16 00:13:57",
+    "updated_at": "2024-04-19 13:07:16"
   },
   {
     "category_id": "5",
     "category_name": "康乃馨",
     "category_en_name": "carnation",
-    "category_url": "/custom/custom/carnation.jpg",
-    "category_type": "配花",
-    "created_at": "2024-04-16 16:13:57",
-    "updated_at": "2024-04-16 16:13:57"
+    "category_type": "accent",
+    "category_url": "\/custom\/custom\/flowers\/carnation.jpg",
+    "created_at": "2024-04-16 00:13:57",
+    "updated_at": "2024-04-19 13:07:16"
   },
   {
     "category_id": "6",
     "category_name": "雛菊",
     "category_en_name": "daisy",
-    "category_url": "/custom/custom/daisy.jpg",
-    "category_type": "配花",
-    "created_at": "2024-04-16 16:13:57",
-    "updated_at": "2024-04-16 16:13:57"
+    "category_type": "accent",
+    "category_url": "\/custom\/custom\/flowers\/daisy.jpg",
+    "created_at": "2024-04-16 00:13:57",
+    "updated_at": "2024-04-19 13:07:16"
   },
   {
     "category_id": "7",
     "category_name": "透明提袋",
     "category_en_name": null,
-    "category_url": "/custom/custom/package.jpg",
-    "category_type": "包裝",
-    "created_at": "2024-04-15 15:14:51",
-    "updated_at": "2024-04-15 15:14:51"
+    "category_type": "package",
+    "category_url": "\/custom\/custom\/flowers\/package.jpg",
+    "created_at": "2024-04-14 23:14:51",
+    "updated_at": "2024-04-19 13:07:16"
   },
   {
     "category_id": "8",
     "category_name": "櫥窗提盒",
     "category_en_name": null,
+    "category_type": "package",
     "category_url": "",
-    "category_type": "包裝",
-    "created_at": "2024-04-15 15:14:51",
-    "updated_at": "2024-04-15 15:14:51"
+    "created_at": "2024-04-14 23:14:51",
+    "updated_at": "2024-04-19 13:07:16"
   },
   {
     "category_id": "9",
     "category_name": "透明禮盒",
     "category_en_name": null,
-    "category_url": "",
-    "category_type": "包裝",
-    "created_at": "2024-04-15 15:14:51",
-    "updated_at": "2024-04-15 15:14:51"
+    "category_type": "package",
+    "category_url": "\/custom\/custom\/flowers\/plasticbox.jpg",
+    "created_at": "2024-04-14 23:14:51",
+    "updated_at": "2024-04-19 13:07:16"
   },
   {
     "category_id": "10",
     "category_name": "生日卡",
     "category_en_name": null,
-    "category_url": "",
-    "category_type": "卡片",
-    "created_at": "2024-04-15 15:14:51",
-    "updated_at": "2024-04-15 15:14:51"
+    "category_type": "card",
+    "category_url": "\/custom\/custom\/flowers\/birthdaycard.jpg",
+    "created_at": "2024-04-14 23:14:51",
+    "updated_at": "2024-04-19 13:07:16"
   },
   {
     "category_id": "11",
     "category_name": "感謝卡",
     "category_en_name": null,
-    "category_url": "/custom/custom/thankscard.jpg",
-    "category_type": "卡片",
-    "created_at": "2024-04-15 15:14:51",
-    "updated_at": "2024-04-15 15:14:51"
+    "category_type": "card",
+    "category_url": "\/custom\/custom\/flowers\/thankscard.jpg",
+    "created_at": "2024-04-14 23:14:51",
+    "updated_at": "2024-04-19 13:07:16"
   },
   {
     "category_id": "12",
     "category_name": "萬用卡",
     "category_en_name": null,
-    "category_url": "/custom/custom/cards.jpg",
-    "category_type": "卡片",
-    "created_at": "2024-04-15 15:14:51",
-    "updated_at": "2024-04-15 15:14:51"
+    "category_type": "card",
+    "category_url": "\/custom\/custom\/flowers\/cards.jpg",
+    "created_at": "2024-04-14 23:14:51",
+    "updated_at": "2024-04-19 13:07:16"
   },
   {
     "category_id": "13",
     "category_name": "情人卡",
     "category_en_name": null,
+    "category_type": "card",
     "category_url": "",
-    "category_type": "卡片",
-    "created_at": "2024-04-15 15:14:51",
-    "updated_at": "2024-04-15 15:14:51"
+    "created_at": "2024-04-14 23:14:51",
+    "updated_at": "2024-04-19 13:07:16"
+  },
+  {
+    "category_id": "14",
+    "category_name": "高粱穗",
+    "category_en_name": "sorghum spike",
+    "category_type": "leaf",
+    "category_url": "\/custom\/custom\/leaves\/sorghum_spike.png",
+    "created_at": "0000-00-00 00:00:00",
+    "updated_at": "0000-00-00 00:00:00"
+  },
+  {
+    "category_id": "15",
+    "category_name": "圓葉尤加利",
+    "category_en_name": "round-leaved eucalyptus",
+    "category_type": "leaf",
+    "category_url": "\/custom\/custom\/leaves\/round_leaved_eucalyptus.png",
+    "created_at": "0000-00-00 00:00:00",
+    "updated_at": "0000-00-00 00:00:00"
+  },
+  {
+    "category_id": "16",
+    "category_name": "小麥穗",
+    "category_en_name": "wheat spike",
+    "category_type": "leaf",
+    "category_url": "\/custom\/custom\/leaves\/wheat_spike.png",
+    "created_at": "0000-00-00 00:00:00",
+    "updated_at": "0000-00-00 00:00:00"
+  },
+  {
+    "category_id": "17",
+    "category_name": "皮葉蕨類",
+    "category_en_name": "leatherleaf fern",
+    "category_type": "leaf",
+    "category_url": "\/custom\/custom\/leaves\/leatherleaf_fern.png",
+    "created_at": "0000-00-00 00:00:00",
+    "updated_at": "0000-00-00 00:00:00"
+  },
+  {
+    "category_id": "18",
+    "category_name": "棕櫚葉",
+    "category_en_name": "palm_leaves",
+    "category_type": "leaf",
+    "category_url": "\/custom\/custom\/leaves\/palm_leaves.png",
+    "created_at": "0000-00-00 00:00:00",
+    "updated_at": "0000-00-00 00:00:00"
+  },
+  {
+    "category_id": "19",
+    "category_name": "鼠尾草仿真花",
+    "category_en_name": "artificial sage flowers",
+    "category_type": "leaf",
+    "category_url": "\/custom\/custom\/leaves\/artificial_sage_flowers.png",
+    "created_at": "0000-00-00 00:00:00",
+    "updated_at": "0000-00-00 00:00:00"
+  },
+  {
+    "category_id": "20",
+    "category_name": "蕨類",
+    "category_en_name": "ferns",
+    "category_type": "leaf",
+    "category_url": "\/custom\/custom\/leaves\/ferns.png",
+    "created_at": "0000-00-00 00:00:00",
+    "updated_at": "0000-00-00 00:00:00"
+  },
+  {
+    "category_id": "21",
+    "category_name": "人造綠葉",
+    "category_en_name": "artificial greenery",
+    "category_type": "leaf",
+    "category_url": "\/custom\/custom\/leaves\/artificial_greenery.png",
+    "created_at": "0000-00-00 00:00:00",
+    "updated_at": "0000-00-00 00:00:00"
+  },
+  {
+    "category_id": "22",
+    "category_name": "乾燥蘆葦",
+    "category_en_name": "dried reeds",
+    "category_type": "leaf",
+    "category_url": "\/custom\/custom\/leaves\/dried_reeds.png",
+    "created_at": "0000-00-00 00:00:00",
+    "updated_at": "0000-00-00 00:00:00"
+  },
+  {
+    "category_id": "23",
+    "category_name": "波士頓蕨",
+    "category_en_name": "boston fern",
+    "category_type": "leaf",
+    "category_url": "\/custom\/custom\/leaves\/boston_fern.png",
+    "created_at": "0000-00-00 00:00:00",
+    "updated_at": "0000-00-00 00:00:00"
+  },
+  {
+    "category_id": "24",
+    "category_name": "金魚草",
+    "category_en_name": "red_snapdragon",
+    "category_type": "accent",
+    "category_url": "\/custom\/custom\/accent\/red_snapdragon.png",
+    "created_at": "2024-04-20 19:42:51",
+    "updated_at": "2024-04-20 19:42:51"
+  },
+  {
+    "category_id": "25",
+    "category_name": "唐菖蒲",
+    "category_en_name": "gladiola",
+    "category_type": "accent",
+    "category_url": "\/custom\/custom\/accent\/gladiola.png",
+    "created_at": "2024-04-20 19:42:51",
+    "updated_at": "2024-04-20 19:42:51"
+  },
+  {
+    "category_id": "26",
+    "category_name": "旱金蓮",
+    "category_en_name": "tropaeolum",
+    "category_type": "accent",
+    "category_url": "\/custom\/custom\/accent\/tropaeolum.png",
+    "created_at": "2024-04-20 19:42:51",
+    "updated_at": "2024-04-20 19:42:51"
+  },
+  {
+    "category_id": "27",
+    "category_name": "忍冬",
+    "category_en_name": "honeysuckle",
+    "category_type": "accent",
+    "category_url": "\/custom\/custom\/accent\/honeysuckle.png",
+    "created_at": "2024-04-20 19:42:51",
+    "updated_at": "2024-04-20 19:42:51"
+  },
+  {
+    "category_id": "28",
+    "category_name": "香水草",
+    "category_en_name": "garden_heliotrope",
+    "category_type": "accent",
+    "category_url": "\/custom\/custom\/accent\/garden_heliotrope.png",
+    "created_at": "2024-04-20 19:42:51",
+    "updated_at": "2024-04-20 19:42:51"
+  },
+  {
+    "category_id": "29",
+    "category_name": "金雞菊",
+    "category_en_name": "yellow_coreopsis",
+    "category_type": "accent",
+    "category_url": "\/custom\/custom\/accent\/yellow_coreopsis.png",
+    "created_at": "2024-04-20 19:42:51",
+    "updated_at": "2024-04-20 19:42:51"
+  },
+  {
+    "category_id": "30",
+    "category_name": "晚香玉",
+    "category_en_name": "white_tuberose",
+    "category_type": "accent",
+    "category_url": "\/custom\/custom\/accent\/tuberose.png",
+    "created_at": "2024-04-20 19:42:51",
+    "updated_at": "2024-04-20 19:42:51"
   }
 ]
