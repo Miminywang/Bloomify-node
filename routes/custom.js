@@ -16,13 +16,17 @@ const {
   Share_Store,
   Share_Color,
   Share_Occ,
-  Share_Role,
+
   Custom_Product_Variant,
 } = sequelize.models
 
 // 模型關聯
 // Product Variants 和 Categories
 Custom_Product_Variant.belongsTo(Custom_Category, {
+  foreignKey: 'category_id',
+  as: 'category',
+})
+Custom_Template_List.belongsTo(Custom_Category, {
   foreignKey: 'category_id',
   as: 'category',
 })
@@ -60,10 +64,7 @@ Custom_Template_List.belongsTo(Share_Occ, {
   foreignKey: 'occ_id',
   as: 'occ',
 })
-Custom_Template_List.belongsTo(Share_Role, {
-  foreignKey: 'role_id',
-  as: 'role',
-})
+
 Custom_Template_List.belongsTo(Share_Color, {
   foreignKey: 'color_id',
   as: 'color',
@@ -127,7 +128,7 @@ Custom_Template_List.hasMany(Custom_Template_Detail, {
 //           attributes: ['occ'],
 //         },
 //         {
-//           model: Share_Role,
+//           model: Flower_Type,
 //           as: 'role',
 //           attributes: ['role'],
 //         },
@@ -193,237 +194,209 @@ Custom_Template_List.hasMany(Custom_Template_Detail, {
 //   }
 // })
 
-// router.get('/', async function (req, res) {
-//   const sortField = req.query.sortField || 'template_id' // 默認排序字段
-//   const sortOrder = req.query.sortOrder || 'ASC' // 默認排序順序
-//   const filterFields = req.query.filterField
-//     ? req.query.filterField.split(';')
-//     : []
-//   const filterValues = req.query.filterValue
-//     ? req.query.filterValue.split(';').map((v) => v.split(','))
-//     : []
-
-//   const organizedData = {}
-
-//   try {
-//     // 循环每个过滤字段
-//     for (let i = 0; i < filterFields.length; i++) {
-//       const field = filterFields[i]
-//       const values = filterValues[i]
-
-//       // 循环每个值
-//       for (const value of values) {
-//         const condition = `ctl.${field} = '${value}'`
-//         const sql = `
-//           SELECT
-//             ctl.template_id,
-//             ss.store_name AS store_name,
-//             ctl.template_name,
-//             ctl.image_url,
-//             ctl.discount,
-//             sco.occ AS occ,
-//             sro.role AS role,
-//             clr.name AS color_name,
-//             clr.code AS color_code,
-//             (
-//               SELECT SUM(cpl.price)
-//               FROM Custom_Template_Detail AS ctd
-//               LEFT JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
-//               WHERE ctd.template_id = ctl.template_id
-//             ) AS total_price
-//           FROM
-//             Custom_Template_List AS ctl
-//           LEFT JOIN Share_Store AS ss ON ctl.store_id = ss.store_id
-//           LEFT JOIN Share_Occ AS sco ON ctl.occ_id = sco.occ_id
-//           LEFT JOIN Share_Role AS sro ON ctl.role_id = sro.role_id
-//           LEFT JOIN Share_Color AS clr ON ctl.color_id = clr.color_id
-//           WHERE ${condition}
-//           ORDER BY ${sortField} ${sortOrder}
-//         `
-
-//         const results = await sequelize.query(sql, {
-//           type: sequelize.QueryTypes.SELECT,
-//         })
-
-//         // 为每个字段和值创建组织结构
-//         if (!organizedData[field]) {
-//           organizedData[field] = {}
-//         }
-//         if (!organizedData[field][value]) {
-//           organizedData[field][value] = []
-//         }
-//         organizedData[field][value].push(...results)
-//       }
-//     }
-
-//     return res.json({
-//       status: 'success',
-//       data: organizedData,
-//     })
-//   } catch (error) {
-//     console.error('Error fetching template lists:', error)
-//     return res
-//       .status(500)
-//       .json({ status: 'error', message: 'Internal server error' })
-//   }
-// })
-
+// --------------
 // router.get('/', async function (req, res) {
 //   const sortField = req.query.sortField || 'template_id' // 默认排序字段
 //   const sortOrder = req.query.sortOrder || 'ASC' // 默认排序顺序
-//   // 如果没有提供filterField和filterValue，默认使用'occ_id'和1-12的所有值
 //   const filterFields = req.query.filterField
 //     ? req.query.filterField.split(';')
-//     : ['occ_id']
+//     : []
 //   const filterValues = req.query.filterValue
 //     ? req.query.filterValue.split(';').map((v) => v.split(','))
-//     : [['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']]
-//   const organizedData = {}
+//     : []
+
+//   let whereConditions = []
+
+//   // 动态构建 WHERE 子句
+//   filterFields.forEach((field, index) => {
+//     const values = filterValues[index].map((value) => `'${value}'`).join(',')
+//     whereConditions.push(`${field} IN (${values})`)
+//   })
+//   const whereClause =
+//     whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : ''
+
+//   const sql = `
+//     SELECT
+//       sco.occ_id,
+//       sco.occ,
+//       ctl.template_id,
+//       ss.store_name AS store_name,
+//       ctl.template_name,
+//       ctl.image_url,
+//       ctl.discount,
+//       clr.color_id AS color_id,
+//       cc.category_id AS category_id,
+//       cc.category_name AS flower_type,
+//       clr.name AS color_name,
+//       clr.code AS color_code,
+//       (
+//         SELECT SUM(cpl.price)
+//         FROM Custom_Template_Detail AS ctd
+//         LEFT JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
+//         WHERE ctd.template_id = ctl.template_id
+//       ) AS total_price
+//     FROM
+//       Custom_Template_List AS ctl
+//       LEFT JOIN Share_Store AS ss ON ctl.store_id = ss.store_id
+//       LEFT JOIN Share_Occ AS sco ON ctl.occ_id = sco.occ_id
+//       LEFT JOIN Share_Color AS clr ON ctl.color_id = clr.color_id
+//       LEFT JOIN custom_category AS cc ON ctl.category_id = cc.category_id
+//     ${whereClause}
+//     ORDER BY ${sortField === 'total_price' ? `(SELECT SUM(cpl.price) FROM Custom_Template_Detail AS ctd LEFT JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id WHERE ctd.template_id = ctl.template_id)` : `ctl.${sortField}`} ${sortOrder};
+//   `
 
 //   try {
-//     // 循环每个过滤字段
-//     for (let i = 0; i < filterFields.length; i++) {
-//       const field = filterFields[i]
-//       const values = filterValues[i]
+//     const results = await sequelize.query(sql, {
+//       type: sequelize.QueryTypes.SELECT,
+//     })
 
-//       // 循环每个值
-//       for (const value of values) {
-//         const condition = `${field} = '${value}'`
-//         const sql = `
-//           SELECT
-//             ctl.template_id,
-//             ss.store_name AS store_name,
-//             ctl.template_name,
-//             ctl.image_url,
-//             ctl.discount,
-//             sco.occ_id AS occ_id,
-//             sro.role_id AS role_id,
-//             clr.color_id AS color_id,
-//             sco.occ AS occ_name,
-//             sro.role AS role_name,
-//             clr. AS color_name,
-//             clr.code AS color_code,
-//             (
-//               SELECT SUM(cpl.price)
-//               FROM Custom_Template_Detail AS ctd
-//               LEFT JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
-//               WHERE ctd.template_id = ctl.template_id
-//             ) AS total_price
-//           FROM
-//             Custom_Template_List AS ctl
-//           LEFT JOIN Share_Store AS ss ON ctl.store_id = ss.store_id
-//           LEFT JOIN Share_Occ AS sco ON ctl.occ_id = sco.occ_id
-//           LEFT JOIN Share_Role AS sro ON ctl.role_id = sro.role_id
-//           LEFT JOIN Share_Color AS clr ON ctl.color_id = clr.color_id
-//           WHERE ${condition}
-//           ORDER BY ${sortField === 'total_price' ? `(SELECT SUM(cpl.price) FROM Custom_Template_Detail AS ctd LEFT JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id WHERE ctd.template_id = ctl.template_id)` : `ctl.${sortField}`} ${sortOrder};
-//         `
-
-//         const results = await sequelize.query(sql, {
-//           type: sequelize.QueryTypes.SELECT,
+//     const events = results.reduce((acc, item) => {
+//       const occ = acc.find((occ) => occ.occ_id === item.occ_id)
+//       if (!occ) {
+//         acc.push({
+//           occ_id: item.occ_id,
+//           occ_name: item.occ,
+//           products: [],
 //         })
-
-//         // Ensure structure exists
-//         const readableField = field.replace('_id', '') // e.g., 'color_id' -> 'color'
-//         if (!organizedData[readableField]) {
-//           organizedData[readableField] = {}
-//         }
-//         if (!organizedData[readableField][value]) {
-//           organizedData[readableField][value] = []
-//         }
-//         organizedData[readableField][value].push(...results)
 //       }
-//     }
+//       const occIndex = acc.findIndex((occ) => occ.occ_id === item.occ_id)
+//       acc[occIndex].products.push({
+//         template_id: item.template_id,
+//         store_name: item.store_name,
+//         template_name: item.template_name,
+//         image_url: item.image_url,
+//         discount: item.discount,
+//         color_id: item.color_id,
+//         category_id: item.category_id,
+//         flower_type: item.flower_type,
+//         color_name: item.color_name,
+//         color_code: item.color_code,
+//         total_price: item.total_price,
+//       })
+//       return acc
+//     }, [])
 
 //     return res.json({
 //       status: 'success',
-//       data: organizedData,
+//       data: { events: events }, // 封装成期望的格式
 //     })
 //   } catch (error) {
 //     console.error('Error fetching template lists:', error)
-//     return res
-//       .status(500)
-//       .json({ status: 'error', message: 'Internal server error' })
+//     res.status(500).json({ status: 'error', message: 'Internal server error' })
 //   }
 // })
-
 router.get('/', async function (req, res) {
-  const sortField = req.query.sortField || 'template_id' // 默认排序字段
-  const sortOrder = req.query.sortOrder || 'ASC' // 默认排序顺序
+  const sortField = req.query.sortField || 'template_id'
+  const sortOrder = req.query.sortOrder || 'ASC'
   const filterFields = req.query.filterField
     ? req.query.filterField.split(';')
-    : ['occ_id'] // 如果没有提供，默认使用'occ_id'
+    : []
   const filterValues = req.query.filterValue
     ? req.query.filterValue.split(';').map((v) => v.split(','))
-    : [['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']] // 默认值
+    : []
 
-  const organizedData = {}
+  let whereConditions = []
+
+  filterFields.forEach((field, index) => {
+    const values = filterValues[index].map((value) => `'${value}'`).join(',')
+    const prefix =
+      field === 'color_id' ? 'clr' : field === 'category_id' ? 'cc' : 'sco'
+    whereConditions.push(`${prefix}.${field} IN (${values})`)
+  })
+  const whereClause =
+    whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : ''
+
+  const sql = `
+    SELECT
+      sco.occ_id,
+      sco.occ as occ_name,
+      ctl.template_id,
+      ss.store_name AS store_name,
+      ctl.template_name,
+      ctl.image_url,
+      ctl.discount,
+      clr.color_id AS color_id,
+      cc.category_id AS category_id,
+      cc.category_name AS flower_type,
+      clr.name AS color_name,
+      clr.code AS color_code,
+      (
+        SELECT SUM(cpl.price)
+        FROM Custom_Template_Detail AS ctd
+        LEFT JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
+        WHERE ctd.template_id = ctl.template_id
+      ) AS total_price
+    FROM
+      Custom_Template_List AS ctl
+      LEFT JOIN Share_Store AS ss ON ctl.store_id = ss.store_id
+      LEFT JOIN Share_Occ AS sco ON sco.occ_id = ctl.occ_id
+      LEFT JOIN Share_Color AS clr ON clr.color_id = ctl.color_id
+      LEFT JOIN Custom_Category AS cc ON cc.category_id = ctl.category_id
+    ${whereClause}
+    ORDER BY ${sortField === 'total_price' ? `(SELECT SUM(cpl.price) FROM Custom_Template_Detail AS ctd LEFT JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id WHERE ctd.template_id = ctl.template_id)` : `ctl.${sortField}`} ${sortOrder};
+  `
 
   try {
-    // 循环每个过滤字段和值
-    for (let i = 0; i < filterFields.length; i++) {
-      const field = filterFields[i]
-      const values = filterValues[i]
+    const results = await sequelize.query(sql, {
+      type: sequelize.QueryTypes.SELECT,
+    })
 
-      for (const value of values) {
-        const condition = `ctl.${field} = '${value}'` // 指定字段使用别名 ctl
-        const sql = `
-          SELECT 
-            ctl.template_id,
-            ss.store_name AS store_name,
-            ctl.template_name,
-            ctl.image_url,
-            ctl.discount,
-            sco.occ_id AS occ_id,
-            sro.role_id AS role_id,
-            clr.color_id AS color_id,
-            sco.occ AS occ_name,
-            sro.role AS role_name,
-            clr.name AS color_name,
-            clr.code AS color_code,
-            (
-              SELECT SUM(cpl.price)
-              FROM Custom_Template_Detail AS ctd
-              LEFT JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
-              WHERE ctd.template_id = ctl.template_id
-            ) AS total_price
-          FROM
-            Custom_Template_List AS ctl
-          LEFT JOIN Share_Store AS ss ON ctl.store_id = ss.store_id
-          LEFT JOIN Share_Occ AS sco ON ctl.occ_id = sco.occ_id
-          LEFT JOIN Share_Role AS sro ON ctl.role_id = sro.role_id
-          LEFT JOIN Share_Color AS clr ON ctl.color_id = clr.color_id
-          WHERE ${condition}
-          ORDER BY ${sortField === 'total_price' ? `(SELECT SUM(cpl.price) FROM Custom_Template_Detail AS ctd LEFT JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id WHERE ctd.template_id = ctl.template_id)` : `ctl.${sortField}`} ${sortOrder};
-        `
-
-        const results = await sequelize.query(sql, {
-          type: sequelize.QueryTypes.SELECT,
-        })
-
-        const readableField = field.replace('_id', '') // 例如 'color_id' -> 'color'
-        if (!organizedData[readableField]) {
-          organizedData[readableField] = {}
-        }
-        if (!organizedData[readableField][value]) {
-          organizedData[readableField][value] = []
-        }
-        organizedData[readableField][value].push(...results)
+    const events = results.reduce((acc, item) => {
+      const occ = acc.find((occ) => occ.occ_id === item.occ_id) || {
+        occ_id: item.occ_id,
+        occ_name: item.occ_name,
+        products: [],
       }
-    }
+      if (!acc.includes(occ)) {
+        acc.push(occ)
+      }
+      occ.products.push({
+        template_id: item.template_id,
+        store_name: item.store_name,
+        template_name: item.template_name,
+        image_url: item.image_url,
+        discount: item.discount,
+        color_id: item.color_id,
+        category_id: item.category_id,
+        flower_type: item.flower_type,
+        color_name: item.color_name,
+        color_code: item.color_code,
+        total_price: item.total_price,
+      })
+      return acc
+    }, [])
 
-    return res.json({
+    res.json({
       status: 'success',
-      data: organizedData,
+      data: { events },
     })
   } catch (error) {
     console.error('Error fetching template lists:', error)
-    return res
-      .status(500)
-      .json({ status: 'error', message: 'Internal server error' })
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
 })
 
+router.get('/flower-type', async (req, res) => {
+  try {
+    // 使用 Sequelize 查詢 category_type 為 'main' 的資料
+    const flowerTypes = await Custom_Category.findAll({
+      attributes: ['category_id', 'category_name', 'category_type'], // 指定要返回的字段
+      where: {
+        category_type: 'main',
+      },
+    })
+
+    return res.json({
+      status: 'success',
+      data: { flowertype: flowerTypes },
+    })
+  } catch (error) {
+    console.error('Fetching main custom categories failed:', error)
+    res.status(500).send({
+      message: "Error retrieving categories with type 'main'",
+    })
+  }
+})
 router.get('/:template_id', async function (req, res) {
   const template_id = req.params.template_id
 
@@ -435,7 +408,7 @@ router.get('/:template_id', async function (req, res) {
     ctl.image_url,
     ctl.discount,
     sco.occ AS occasion,
-    sro.role AS role,
+   
     clr.name AS base_color,
     cat.category_name ,
     clr.name AS color_name,
@@ -457,8 +430,7 @@ router.get('/:template_id', async function (req, res) {
     Share_Color AS clr ON cpv.color_id = clr.color_id
   LEFT JOIN
     Share_Occ AS sco ON ctl.occ_id = sco.occ_id
-  LEFT JOIN
-    Share_Role AS sro ON ctl.role_id = sro.role_id
+
   WHERE
     ctl.template_id = :template_id
   GROUP BY
@@ -478,7 +450,7 @@ router.get('/:template_id', async function (req, res) {
     const productDetails = {
       template_id: template_id,
       template_occ: results[0].occasion,
-      template_role: results[0].role,
+
       store_name: results[0].store_name,
       template_name: results[0].template_name,
       image_url: results[0].image_url,
@@ -671,8 +643,7 @@ JOIN
   Custom_Product_List cpl ON ss.store_id = cpl.store_id
 JOIN 
   Custom_Product_Variant cpv ON cpl.variant_id = cpv.variant_id
-JOIN 
-  Custom_Category cat ON cpv.category_id = cat.category_id
+
 JOIN 
   Share_Color sc ON cpv.color_id = sc.color_id
 WHERE 
@@ -802,7 +773,7 @@ router.get('/custom-favorite/:member_id', async (req, res) => {
     ctl.image_url,
     ctl.discount,
     sco.occ AS occasion,
-    sro.role AS role,
+    custom_category.category_name AS flower_type,
     clr.name AS color_name,
     (
       SELECT SUM(cpl.price)
@@ -821,11 +792,11 @@ router.get('/custom-favorite/:member_id', async (req, res) => {
   LEFT JOIN
     Share_Occ AS sco ON ctl.occ_id = sco.occ_id
   LEFT JOIN
-    Share_Role AS sro ON ctl.role_id = sro.role_id
+    Custom_Category  ON ctl.category_id = Custom_Category.category_id
   WHERE
     cf.member_id = :memberId
   GROUP BY
-    ctl.template_id, ss.store_name, ctl.template_name, ctl.image_url, ctl.discount, sco.occ, sro.role, clr.name;
+    ctl.template_id, ss.store_name, ctl.template_name, ctl.image_url, ctl.discount, sco.occ, custom_category.category_name, clr.name;
   `
 
   try {

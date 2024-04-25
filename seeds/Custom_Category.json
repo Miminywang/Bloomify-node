@@ -12,7 +12,7 @@
     "category_id": "2",
     "category_name": "向日葵",
     "category_en_name": "sunflower",
-    "category_type": "accent",
+    "category_type": "main",
     "category_url": "\/custom\/custom\/flowers\/sunflower.jpg",
     "created_at": "2024-04-16 00:13:57",
     "updated_at": "2024-04-19 13:07:16"
@@ -39,7 +39,7 @@
     "category_id": "5",
     "category_name": "康乃馨",
     "category_en_name": "carnation",
-    "category_type": "accent",
+    "category_type": "main",
     "category_url": "\/custom\/custom\/flowers\/carnation.jpg",
     "created_at": "2024-04-16 00:13:57",
     "updated_at": "2024-04-19 13:07:16"
@@ -48,7 +48,7 @@
     "category_id": "6",
     "category_name": "雛菊",
     "category_en_name": "daisy",
-    "category_type": "accent",
+    "category_type": "main",
     "category_url": "\/custom\/custom\/flowers\/daisy.jpg",
     "created_at": "2024-04-16 00:13:57",
     "updated_at": "2024-04-19 13:07:16"
