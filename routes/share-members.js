@@ -141,6 +141,22 @@ router.post('/logout', authenticate, (req, res) => {
   res.json({ status: 'success', data: null })
 })
 
+// get-check
+// 檢查登入狀態用
+router.get('/check', authenticate, async (req, res) => {
+  // 查詢資料庫目前的資料
+  const user = await Share_Member.findByPk(req.user.id, {
+    raw: true, // 只需要資料表中資料
+  })
+
+  console.log(user)
+  // 使用者未登入 => authenticate 會判定沒有token
+
+  // 不回傳密碼值
+  delete user.password
+  return res.json({ status: 'success', data: { user } })
+})
+
 // GET - 得到所有會員資料
 router.get('/', async function (req, res) {
   const users = await Share_Member.findAll({ logging: console.log })
