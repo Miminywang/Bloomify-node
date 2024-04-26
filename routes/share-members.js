@@ -297,4 +297,46 @@ router.post(
   }
 )
 
+// register
+// POST - 新增會員資料
+router.post('/register', async function (req, res) {
+  // req.body資料範例
+  // {
+  //     "username":"ginny@test.com",
+  //     "password":"12345"
+  // }
+
+  // 要新增的會員資料
+  const newUser = req.body
+
+  // 檢查從前端來的資料哪些為必要(name, username...)
+  if (!newUser.username || !newUser.password) {
+    return res.json({ status: 'error', message: '缺少必要資料' })
+  }
+
+  // 執行後user是建立的會員資料，created為布林值
+  // where指的是不可以有相同的資料，如username與email不能有相同的
+  // defaults用於建立新資料用
+  const [user, created] = await Share_Member.findOrCreate({
+    where: { username: newUser.username },
+    defaults: {
+      password: newUser.password,
+    },
+  })
+
+  // 新增失敗 created=false 代表沒新增
+  if (!created) {
+    return res.json({ status: 'error', message: '建立會員失敗' })
+  }
+
+  // 成功建立會員的回應
+  // 狀態`201`是建立資料的標準回應，
+  // 如有必要可以加上`Location`會員建立的uri在回應標頭中，或是回應剛建立的資料
+  // res.location(`/users/${user.id}`)
+  return res.status(201).json({
+    status: 'success',
+    data: null,
+  })
+})
+
 export default router
