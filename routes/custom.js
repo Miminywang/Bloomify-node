@@ -5,7 +5,6 @@ import { Op } from 'sequelize'
 
 // 資料庫使用
 import sequelize from '#configs/db.js'
-import Share_Member from '##/models/Share_Member.js'
 
 // 從 sequelize 的模型集合中解構出五個資料表模型
 const {
@@ -16,11 +15,70 @@ const {
   Share_Store,
   Share_Color,
   Share_Occ,
-
   Custom_Product_Variant,
+  Custom_Order_List,
+  Custom_Order_Detail,
+  Share_Member,
+  Share_Payment,
+  Share_Shipping,
+  Share_Shipping_Status,
+  Share_Order_Status,
 } = sequelize.models
 
-// 模型關聯
+// 在 Share_Color 模型中
+Share_Color.hasMany(Custom_Product_Variant, {
+  foreignKey: 'color_id',
+  as: 'variants',
+})
+
+// 在 Custom_Order_Detail 模型中
+Custom_Order_Detail.belongsTo(Custom_Product_List, {
+  foreignKey: 'product_id',
+  as: 'product',
+})
+
+// 在 Custom_Product_List 模型中
+Custom_Product_List.hasMany(Custom_Order_Detail, {
+  foreignKey: 'product_id',
+  as: 'orderDetails',
+})
+
+// Custom_Order_List 模型
+Custom_Order_List.hasMany(Custom_Order_Detail, {
+  foreignKey: 'order_id',
+  as: 'orderDetails',
+})
+
+// Custom_Order_Detail 模型
+Custom_Order_Detail.belongsTo(Custom_Order_List, { foreignKey: 'order_id' })
+// Share_Member 模型
+Share_Member.hasMany(Custom_Order_List, { foreignKey: 'member_id' })
+
+// Order 模型
+Custom_Order_List.belongsTo(Share_Member, {
+  foreignKey: 'member_id',
+  as: 'member',
+})
+Custom_Order_List.belongsTo(Share_Store, {
+  foreignKey: 'store_id',
+  as: 'store',
+})
+Custom_Order_List.belongsTo(Share_Payment, {
+  foreignKey: 'payment_method',
+  as: 'payment',
+})
+Custom_Order_List.belongsTo(Share_Shipping, {
+  foreignKey: 'shipping_method',
+  as: 'shipping',
+})
+Custom_Order_List.belongsTo(Share_Order_Status, {
+  foreignKey: 'order_status',
+  as: 'orderStatus',
+})
+Custom_Order_List.belongsTo(Share_Shipping_Status, {
+  foreignKey: 'shipping_status',
+  as: 'shippingStatus',
+})
 // Product Variants 和 Categories
 Custom_Product_Variant.belongsTo(Custom_Category, {
   foreignKey: 'category_id',
@@ -375,6 +433,306 @@ router.get('/', async function (req, res) {
     res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
 })
+// router.get('/orders', async (req, res) => {
+//   try {
+//     const orders = await Custom_Order_List.findAll({
+//       include: [
+//         {
+//           model: Share_Member,
+//           as: 'member', // 確保使用了正確的別名
+//           attributes: ['name', 'phone'],
+//         },
+//         {
+//           model: Share_Store,
+//           as: 'store', // 確保使用了正確的別名
+//           attributes: ['store_name'],
+//         },
+//         {
+//           model: Share_Payment,
+//           as: 'payment', // 確保使用了正確的別名
+//           attributes: ['name'],
+//         },
+//         {
+//           model: Share_Shipping,
+//           as: 'shipping', // 確保使用了正確的別名
+//           attributes: ['name', 'cost'],
+//         },
+//         {
+//           model: Share_Shipping_Status,
+//           as: 'shippingStatus', // 確保使用了正確的別名
+//           attributes: ['name'],
+//         },
+//         {
+//           model: Share_Order_Status,
+//           as: 'orderStatus', // 確保使用了正確的別名
+//           attributes: ['name'],
+//         },
+//       ],
+//       attributes: [
+//         'order_id',
+//         'image_url',
+//         'order_date',
+//         'delivery_date',
+//         'total_amount',
+//         'discount',
+//         'card_content',
+//         'card_url',
+//         'recipient_name',
+//         'recipient_tel',
+//         'recipient_address',
+//       ],
+//     })
+
+//     const formattedOrders = orders.map((order) => ({
+//       order_id: order.order_id,
+//       image_url: order.image_url,
+//       order_date: order.order_date,
+//       delivery_date: order.delivery_date,
+//       total_amount: order.total_amount,
+//       discount: order.discount,
+//       card_content: order.card_content,
+//       card_url: order.card_url,
+//       recipient_name: order.recipient_name,
+//       recipient_tel: order.recipient_tel,
+//       recipient_address: order.recipient_address,
+//       member_name: order.member?.name,
+//       member_phone: order.member?.phone,
+//       store_name: order.store?.store_name,
+//       payment_name: order.payment?.name,
+//       shipping_name: order.shipping?.name,
+//       shipping_cost: order.shipping?.cost,
+//       shipping_status: order.shippingStatus?.name,
+//       order_status: order.orderStatus?.name,
+//     }))
+
+//     res.json({ status: 'success', data: formattedOrders })
+//   } catch (error) {
+//     console.error('Failed to retrieve orders:', error)
+//     res.status(500).json({ status: 'error', message: 'Internal server error' })
+//   }
+// })
+
+// router.get('/orders', async (req, res) => {
+//   try {
+//     const orders = await Custom_Order_List.findAll({
+//       include: [
+//         {
+//           model: Share_Member,
+//           as: 'member',
+//           attributes: ['name', 'phone'],
+//         },
+//         {
+//           model: Share_Store,
+//           as: 'store',
+//           attributes: ['store_name'],
+//         },
+//         {
+//           model: Share_Payment,
+//           as: 'payment',
+//           attributes: ['name'],
+//         },
+//         {
+//           model: Share_Shipping,
+//           as: 'shipping',
+//           attributes: ['name', 'cost'],
+//         },
+//         {
+//           model: Share_Shipping_Status,
+//           as: 'shippingStatus',
+//           attributes: ['name'],
+//         },
+//         {
+//           model: Share_Order_Status,
+//           as: 'orderStatus',
+//           attributes: ['name'],
+//         },
+//         {
+//           model: Custom_Order_Detail,
+//           as: 'orderDetails',
+//           include: [
+//             {
+//               model: Custom_Product_List,
+//               as: 'product',
+//               include: [
+//                 {
+//                   model: Custom_Product_Variant,
+//                   as: 'variant',
+//                   include: [
+//                     {
+//                       model: Share_Color,
+//                       as: 'color',
+//                       attributes: ['name'], // 包括顏色名稱
+//                     },
+//                   ],
+//                 },
+//               ],
+//             },
+//           ],
+//         },
+//       ],
+//       attributes: [
+//         'order_id',
+//         'image_url',
+//         'order_date',
+//         'delivery_date',
+//         'total_amount',
+//         'discount',
+//         'card_content',
+//         'card_url',
+//         'recipient_name',
+//         'recipient_tel',
+//         'recipient_address',
+//       ],
+//     })
+
+//     const formattedOrders = orders.map((order) => ({
+//       order_id: order.order_id,
+//       image_url: order.image_url,
+//       order_date: order.order_date,
+//       delivery_date: order.delivery_date,
+//       total_amount: order.total_amount,
+//       discount: order.discount,
+//       card_content: order.card_content,
+//       card_url: order.card_url,
+//       recipient_name: order.recipient_name,
+//       recipient_tel: order.recipient_tel,
+//       recipient_address: order.recipient_address,
+//       member_name: order.member?.name,
+//       member_phone: order.member?.phone,
+//       store_name: order.store?.store_name,
+//       payment_name: order.payment?.name,
+//       shipping_name: order.shipping?.name,
+//       shipping_cost: order.shipping?.cost,
+//       shipping_status: order.shippingStatus?.name,
+//       order_status: order.orderStatus?.name,
+//       products: order.orderDetails.map((detail) => ({
+//         product_name: detail.product?.template_name,
+//         color_name: detail.product?.variant?.color?.name,
+//       })),
+//     }))
+
+//     res.json({ status: 'success', data: formattedOrders })
+//   } catch (error) {
+//     console.error('Failed to retrieve orders:', error)
+//     res.status(500).json({ status: 'error', message: 'Internal server error' })
+//   }
+// })
+router.get('/orders', async (req, res) => {
+  try {
+    const orders = await Custom_Order_List.findAll({
+      include: [
+        {
+          model: Share_Member,
+          as: 'member',
+          attributes: ['name', 'phone'],
+        },
+        {
+          model: Share_Store,
+          as: 'store',
+          attributes: ['store_name'],
+        },
+        {
+          model: Share_Payment,
+          as: 'payment',
+          attributes: ['name'],
+        },
+        {
+          model: Share_Shipping,
+          as: 'shipping',
+          attributes: ['name', 'cost'],
+        },
+        {
+          model: Share_Shipping_Status,
+          as: 'shippingStatus',
+          attributes: ['name'],
+        },
+        {
+          model: Share_Order_Status,
+          as: 'orderStatus',
+          attributes: ['name'],
+        },
+        {
+          model: Custom_Order_Detail,
+          as: 'orderDetails',
+          include: [
+            {
+              model: Custom_Product_List,
+              as: 'product',
+              include: [
+                {
+                  model: Custom_Product_Variant,
+                  as: 'variant',
+                  include: [
+                    {
+                      model: Share_Color,
+                      as: 'color',
+                      attributes: ['name'], // 包括顏色名稱
+                    },
+                    {
+                      model: Custom_Category,
+                      as: 'category', // 確保這裡使用的別名與模型定義一致
+                      attributes: ['category_name'], // 拉取分類名稱
+                    },
+                  ],
+                  attributes: ['image_url'], // 包括圖片URL
+                },
+              ],
+              attributes: ['product_id'], // 只包括產品ID
+            },
+          ],
+        },
+      ],
+      attributes: [
+        'order_id',
+        'bouquet_name',
+        'image_url',
+        'order_date',
+        'delivery_date',
+        'total_amount',
+        'discount',
+        'card_content',
+        'card_url',
+        'recipient_name',
+        'recipient_tel',
+        'recipient_address',
+      ],
+    })
+
+    const formattedOrders = orders.map((order) => ({
+      order_id: order.order_id,
+      bouquet: order.bouquet_name,
+      image_url: order.image_url,
+      order_date: order.order_date,
+      delivery_date: order.delivery_date,
+      total_amount: order.total_amount,
+      discount: order.discount,
+      card_content: order.card_content,
+      card_url: order.card_url,
+      recipient_name: order.recipient_name,
+      recipient_tel: order.recipient_tel,
+      recipient_address: order.recipient_address,
+      member_name: order.member?.name,
+      member_phone: order.member?.phone,
+      store_name: order.store?.store_name,
+      payment_name: order.payment?.name,
+      shipping_name: order.shipping?.name,
+      shipping_cost: order.shipping?.cost,
+      shipping_status: order.shippingStatus?.name,
+      order_status: order.orderStatus?.name,
+      products: order.orderDetails.map((detail) => ({
+        product_id: detail.product?.product_id,
+        image_url: detail.product?.variant?.image_url,
+        color_name: detail.product?.variant?.color?.name,
+        category_name: detail.product?.variant?.category?.category_name, // 包括分類名稱
+      })),
+    }))
+
+    res.json({ status: 'success', data: formattedOrders })
+  } catch (error) {
+    console.error('Failed to retrieve orders:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
 
 router.get('/flower-type', async (req, res) => {
   try {
@@ -482,177 +840,56 @@ router.get('/:template_id', async function (req, res) {
   }
 })
 
-// router.get('/custom/:store_id', async function (req, res) {
-//   const store_id = req.params.store_id
-
-//   const sql = `
-//     SELECT
-//       ss.store_id,
-//       ss.store_name,
-//       cat.category_name,
-//       cat.category_url,
-//       cat.category_type,
-//       GROUP_CONCAT(DISTINCT sc.name) AS colors,
-//       GROUP_CONCAT(DISTINCT cpv.image_url) AS urls
-//     FROM
-//       Share_Store ss
-//     JOIN
-//       Custom_Product_List cpl ON ss.store_id = cpl.store_id
-//     JOIN
-//       Custom_Product_Variant cpv ON cpl.variant_id = cpv.variant_id
-//     JOIN
-//       Custom_Category cat ON cpv.category_id = cat.category_id
-//     JOIN
-//       Share_Color sc ON cpv.color_id = sc.color_id
-//     WHERE
-//       ss.store_id = :store_id
-//     GROUP BY
-//       cat.category_name, cat.category_type
-//   `
-
-//   try {
-//     const results = await sequelize.query(sql, {
-//       replacements: { store_id: store_id },
-//       type: sequelize.QueryTypes.SELECT,
-//     })
-
-//     if (results.length === 0) {
-//       return res
-//         .status(404)
-//         .json({ message: 'No products found for this store.' })
-//     }
-
-//     // Reformat the results to match the desired output
-//     const output = results.reduce((acc, cur) => {
-//       const type = cur.category_type
-//       if (!acc[type]) {
-//         acc[type] = []
-//       }
-//       acc[type].push({
-//         category_name: cur.category_name,
-//         category_url: cur.category_url,
-//         colors: cur.colors.split(','),
-//         urls: cur.urls.split(','),
-//       })
-//       return acc
-//     }, {})
-
-//     const formattedResults = {
-//       store_id: results[0].store_id,
-//       store_name: results[0].store_name,
-//       items: output,
-//     }
-
-//     return res.json({ status: 'success', data: formattedResults })
-//   } catch (error) {
-//     console.error('Error fetching store products:', error)
-//     return res
-//       .status(500)
-//       .json({ status: 'error', message: 'Internal server error' })
-//   }
-// })
-// router.get('/custom/:store_id', async function (req, res) {
-//   const store_id = req.params.store_id;
-
-//   const sql = `
-//     SELECT
-//       ss.store_id,
-//       ss.store_name,
-//       cat.category_name,
-//       cat.category_url,
-//       cat.category_type,
-//       sc.name AS color_name,
-//       cpv.image_url AS image_url
-//     FROM
-//       Share_Store ss
-//     JOIN
-//       Custom_Product_List cpl ON ss.store_id = cpl.store_id
-//     JOIN
-//       Custom_Product_Variant cpv ON cpl.variant_id = cpv.variant_id
-//     JOIN
-//       Custom_Category cat ON cpv.category_id = cat.category_id
-//     JOIN
-//       Share_Color sc ON cpv.color_id = sc.color_id
-//     WHERE
-//       ss.store_id = :store_id
-//   `;
-
-//   try {
-//     const results = await sequelize.query(sql, {
-//       replacements: { store_id },
-//       type: sequelize.QueryTypes.SELECT
-//     });
-
-//     if (results.length === 0) {
-//       return res.status(404).json({ message: 'No products found for this store.' });
-//     }
-
-//     // Reformat the results to match the desired output
-//     const output = results.reduce((acc, cur) => {
-//       const type = cur.category_type;
-//       if (!acc[type]) {
-//         acc[type] = [];
-//       }
-//       const existingCategory = acc[type].find(c => c.category_name === cur.category_name);
-//       if (existingCategory) {
-//         existingCategory.attributes.push({
-//           color: cur.color_name,
-//           url: cur.image_url
-//         });
-//       } else {
-//         acc[type].push({
-//           category_name: cur.category_name,
-//           category_url: cur.category_url,
-//           attributes: [{
-//             color: cur.color_name,
-//             url: cur.image_url
-//           }]
-//         });
-//       }
-//       return acc;
-//     }, {});
-
-//     const formattedResults = {
-//       store_id: results[0].store_id,
-//       store_name: results[0].store_name,
-//       items: output
-//     };
-
-//     return res.json({ status: 'success', data: formattedResults });
-//   } catch (error) {
-//     console.error('Error fetching store products:', error);
-//     return res.status(500).json({ status: 'error', message: 'Internal server error' });
-//   }
-// })
-
 router.get('/custom/:store_id', async function (req, res) {
   const store_id = req.params.store_id
 
-  const sql = `
-  SELECT 
-  ss.store_id,
-  ss.store_name,
-  cat.category_name,
-  cat.category_url,
-  cat.category_type,
-  sc.name AS color_name,
-  cpv.image_url AS image_url
-FROM 
-  Share_Store ss
-JOIN 
-  Custom_Product_List cpl ON ss.store_id = cpl.store_id
-JOIN 
-  Custom_Product_Variant cpv ON cpl.variant_id = cpv.variant_id
+  //   const sql = `
+  //   SELECT
+  //   ss.store_id,
+  //   ss.store_name,
+  //   cat.category_name,
+  //   cat.category_url,
+  //   cat.category_type,
+  //   sc.name AS color_name,
+  //   cpv.image_url AS image_url
+  // FROM
+  //   Share_Store ss
+  // JOIN
+  //   Custom_Product_List cpl ON ss.store_id = cpl.store_id
+  // JOIN
+  //   Custom_Product_Variant cpv ON cpl.variant_id = cpv.variant_id
 
-JOIN 
-  Share_Color sc ON cpv.color_id = sc.color_id
-WHERE 
-  ss.store_id = :store_id
-GROUP BY 
-  cat.category_name, sc.name, cpv.image_url
+  // JOIN
+  //   Share_Color sc ON cpv.color_id = sc.color_id
+  // WHERE
+  //   ss.store_id = :store_id
+  // GROUP BY
+  //   cat.category_name, sc.name, cpv.image_url
 
-  `
-
+  //   `
+  const sql = `SELECT
+ss.store_id,
+ss.store_name,
+cat.category_name,
+cat.category_url,
+cat.category_type,
+sc.name AS color_name,
+cpv.image_url AS image_url
+FROM
+Share_Store ss
+JOIN
+Custom_Product_List cpl ON ss.store_id = cpl.store_id
+JOIN
+Custom_Product_Variant cpv ON cpl.variant_id = cpv.variant_id
+JOIN
+Custom_Category cat ON cpv.category_id = cat.category_id  -- 正確聯結 Custom_Category
+JOIN
+Share_Color sc ON cpv.color_id = sc.color_id
+WHERE
+ss.store_id = :store_id
+GROUP BY
+cat.category_name, sc.name, cpv.image_url;
+`
   try {
     const results = await sequelize.query(sql, {
       replacements: { store_id },

@@ -1,6 +1,7 @@
 [
   {
       "order_id": "2024040101234",
+      "bouquet_name":"客製化花束",
       "image_url": "http://example.com/image1.jpg",
       "order_date": "2024-04-01T12:00:00Z",
       "delivery_date": "2024-04-05",
@@ -16,13 +17,14 @@
       "payment_method": 1,
       "shipping_method": 2,
       "shipping_status": 1,
-      "order_status": 2,
+      "order_status": 4,
       "discount": 80,
       "card_content": "Happy Birthday!<3",
       "card_url":"http://example.com/image2.jpg"
   },
   {
       "order_id": "2024040102345",
+      "bouquet_name":"情人節玫瑰花束",
       "image_url": "http://example.com/image2.jpg",
       "order_date": "2024-04-02T15:30:00Z",
       "delivery_date": "2024-04-06",
@@ -45,6 +47,7 @@
   },
   {
       "order_id": "2024040103456",
+      "bouquet_name":"經典花束1",
       "image_url": "http://example.com/image3.jpg",
       "order_date": "2024-04-03T10:20:00Z",
       "delivery_date": "2024-04-07",
@@ -60,7 +63,7 @@
       "payment_method": 1,
       "shipping_method": 2,
       "shipping_status": 1,
-      "order_status": 1,
+      "order_status": 3,
       "discount": 0,
       "card_content": "跟雷歐娜和好沒?",
       "card_url":"http://example.com/image2.jpg"

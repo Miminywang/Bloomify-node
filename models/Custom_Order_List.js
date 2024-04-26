@@ -9,6 +9,9 @@ export default async function (sequelize) {
         allowNull: false,
         primaryKey: true,
       },
+      bouquet_name: {
+        type: DataTypes.STRING(255),
+      },
       image_url: {
         type: DataTypes.STRING(255),
         allowNull: true,
