@@ -30,20 +30,33 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
 import path from 'path'
 import multer from 'multer'
 
+// 靜態文件存放目錄
+router.use(express.static('/member/avatar'))
+
 // multer的設定值 - START
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
     // 存放目錄
-    callback(null, 'public/member/avatar/')
+    callback(null, 'public/member/avatar/') // 設定檔案存放的目錄，此處為 public/member/avatar/
+  },
+  fileFilter(req, file, cb) {
+    // 只接受三種圖片格式
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      cb(new Error('Please upload an image'))
+    }
+    cb(null, true)
   },
   filename: function (req, file, callback) {
+    callback(null, file.originalname)
+
     // 經授權後，req.user帶有會員的id
-    const newFilename = req.user.id
+    // const newFilename = req.user.id
     // 新檔名由表單傳來的req.body.newFilename決定
-    callback(null, newFilename + path.extname(file.originalname))
+    // callback(null, newFilename + path.extname(file.originalname))
   },
 })
 
+// 設定 Multer 使用上述的 storage
 const upload = multer({ storage: storage })
 // multer的設定值 - END
 
@@ -110,6 +123,7 @@ router.post('/login', async function (req, res) {
   const returnUser = {
     id: user.id,
     username: user.username,
+    name: user.name,
   }
   // 創建JWT
   // 產生存取令牌(access token)，其中包含會員資料
@@ -226,7 +240,6 @@ router.put('/center/:id/profile', authenticate, async function (req, res) {
       id,
     },
   })
-
   // 沒有更新到任何資料 -> 失敗或沒有資料被更新
   if (!affectedRows) {
     return res.json({ status: 'error', message: '更新失敗或沒有資料被更新' })
@@ -252,9 +265,10 @@ router.post(
   async function (req, res) {
     // req.file 即上傳來的檔案(avatar這個檔案)
     // req.body 其它的文字欄位資料…
-    // console.log(req.file, req.body)
+    console.log(req.file, req.body)
 
     if (req.file) {
+      console.log(req.file)
       const id = req.user.id
       const data = { avatar: req.file.filename }
 
