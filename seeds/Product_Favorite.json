@@ -13,35 +13,5 @@
     "id": 3,
     "member_id": 1,
     "product_id": 3
-  },
-  {
-    "id": 4,
-    "member_id": 1,
-    "product_id": 4
-  },
-  {
-    "id": 5,
-    "member_id": 1,
-    "product_id": 5
-  },
-  {
-    "id": 6,
-    "member_id": 1,
-    "product_id": 6
-  },
-  {
-    "id": 7,
-    "member_id": 1,
-    "product_id": 7
-  },
-  {
-    "id": 8,
-    "member_id": 1,
-    "product_id": 8
-  },
-  {
-    "id": 9,
-    "member_id": 1,
-    "product_id": 9
   }
 ]

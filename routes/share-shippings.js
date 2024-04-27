@@ -9,8 +9,8 @@ const { Share_Shipping } = sequelize.models
 // GET - 得到所有顏色
 router.get('/', async function (req, res) {
   try {
-    const shipping = await Share_Shipping.findAll()
-    return res.json({ status: 'success', data: { shipping } })
+    const shippings = await Share_Shipping.findAll()
+    return res.json({ status: 'success', data: { shippings } })
   } catch (error) {
     console.error('Error fetching shipping:', error)
     return res
