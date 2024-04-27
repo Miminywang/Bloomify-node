@@ -1,4 +1,5 @@
 import express from 'express'
+import authenticate from '#middlewares/authenticate.js'
 const router = express.Router()
 
 // 檢查空物件, 轉換 req.params 為數字
@@ -56,9 +57,21 @@ Share_Tag.belongsToMany(Course, {
   through: Course_Tag,
   foreignKey: 'tag_id',
 })
+// 多對多 - 會員與收藏
+Course.belongsToMany(Share_Member, {
+  through: Course_Favorite,
+  foreignKey: 'course_id',
+  otherKey: 'member_id',
+  as: 'MembersWhoFavorited',
+})
+Share_Member.belongsToMany(Course, {
+  through: Course_Favorite,
+  foreignKey: 'member_id',
+  otherKey: 'course_id',
+  as: 'FavoriteCourses',
+})
 
 // 路由建構 ---------------------------------
-
 // GET - 得到所有課程
 router.get('/', async function (req, res) {
   try {
@@ -82,56 +95,15 @@ router.get('/', async function (req, res) {
         'max_capacity',
         'created_at',
       ],
-      // raw: true,
       nest: true,
       limit: 8,
     })
-
-    // ---------------- 取得isFavorite值的判斷 start  ----------------
-    // 獲取當前用戶收藏的課程列表
-    const memberId = 1 // TODO:
-    const favoriteCourses = await Course_Favorite.findAll({
-      where: { member_id: memberId },
-      attributes: ['course_id'],
+    return res.json({
+      status: 'success',
+      data: { courses },
     })
-
-    // 將收藏的課程id轉換成一個集合
-    const favoriteCoursesIds = new Set(
-      favoriteCourses.map((fav) => fav.course_id)
-    )
-
-    // 為每個課程添加isFavorited屬性
-    const coursesisFavorites = courses.map((course) => {
-      const isFavorited = favoriteCoursesIds.has(course.id)
-      return {
-        ...course.toJSON(),
-        isFavorited,
-      }
-    })
-    // ---------------- 取得isFavorite值的判斷 end  ----------------
-
-    return res.json({ status: 'success', data: { coursesisFavorites } })
   } catch (error) {
     console.error('Error fetching courses:', error)
-    return res
-      .status(500)
-      .json({ status: 'error', message: 'Internal server error' })
-  }
-})
-
-// GET - 得到所有課程分類
-router.get('/categories', async function (req, res) {
-  console.log('Fetching categories...')
-  try {
-    const categories = await Course_Category.findAll({
-      attributes: ['id', 'name', 'path'],
-      order: [['id', 'ASC']],
-      raw: true,
-      nest: true,
-    })
-    return res.json({ status: 'success', data: { categories } })
-  } catch (error) {
-    console.error('Error fetching categories:', error)
     return res
       .status(500)
       .json({ status: 'error', message: 'Internal server error' })
@@ -177,7 +149,10 @@ router.get('/latest', async function (req, res) {
     })
     // ---------------- 取得isFavorite值的判斷 end  ----------------
 
-    return res.json({ status: 'success', data: { coursesisFavorites } })
+    return res.json({
+      status: 'success',
+      data: { courses: coursesisFavorites },
+    })
   } catch (error) {
     console.error('Error fetching latest courses:', error)
     return res
@@ -201,7 +176,7 @@ router.get('/random', async function (req, res) {
       nest: true,
       limit: 8,
     })
-    return res.json({ status: 'success', data: { randomCourses } })
+    return res.json({ status: 'success', data: { courses: randomCourses } })
   } catch (error) {
     console.error('Error fetching latest courses:', error)
     return res
@@ -269,33 +244,140 @@ router.get('/search', async function (req, res) {
       nest: true,
     })
 
-    // 獲取當前用戶收藏的課程列表
-    const memberId = 1 // TODO:
-    const favoriteCourses = await Course_Favorite.findAll({
-      where: { member_id: memberId },
-      attributes: ['course_id'],
-    })
-
-    // 將收藏的課程id轉換成一個集合
-    const favoriteCoursesIds = new Set(
-      favoriteCourses.map((fav) => fav.course_id)
-    )
-
-    // 為每個課程添加isFavorited屬性
-    const coursesisFavorites = courses.map((course) => {
-      const isFavorited = favoriteCoursesIds.has(course.id)
-      return {
-        ...course.toJSON(),
-        isFavorited,
-      }
-    })
-
-    return res.json({ status: 'success', data: { coursesisFavorites } })
+    return res.json({ status: 'success', data: { courses } })
   } catch (error) {
     console.error('Error fetching filtered courses:', error)
     return res
       .status(500)
       .json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+// GET - 得到所有課程分類
+router.get('/categories', async function (req, res) {
+  console.log('Fetching categories...')
+  try {
+    const categories = await Course_Category.findAll({
+      attributes: ['id', 'name', 'path'],
+      order: [['id', 'ASC']],
+      raw: true,
+      nest: true,
+    })
+    return res.json({ status: 'success', data: { categories } })
+  } catch (error) {
+    console.error('Error fetching categories:', error)
+    return res
+      .status(500)
+      .json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+// GET - 取得某個會員收藏的課程
+router.get('/get-fav', authenticate, async (req, res) => {
+  console.log(req.user)
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+
+  // 取得id,名稱,介紹,價格,主圖
+  const sql = `
+      SELECT
+          cf.id,
+          cf.course_id,
+          c.name,
+          c.intro,
+          c.price,
+          ci.path AS image_path,
+          ci.is_main
+      FROM
+          course_favorite AS cf
+      JOIN
+          course AS c ON cf.course_id = c.id
+      LEFT JOIN
+          course_image AS ci ON c.id = ci.course_id AND ci.is_main = 1
+      WHERE
+          cf.member_id = :memberId
+      ORDER BY
+          cf.course_id ASC;
+  `
+
+  try {
+    // 執行 SQL 查詢
+    const results = await sequelize.query(sql, {
+      replacements: { memberId: memberId },
+      type: sequelize.QueryTypes.SELECT,
+    })
+
+    // 發送結果
+    res.json({ status: 'success', data: results })
+  } catch (error) {
+    console.error('Error fetching favorite courses:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+// POST - 新增收藏的課程
+router.post('/add-fav/:courseId', authenticate, async (req, res) => {
+  console.log(req.user)
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+  const courseId = parseInt(req.params.courseId)
+
+  try {
+    // 檢查
+    const existing = await Course_Favorite.findOne({
+      where: { member_id: memberId, course_id: courseId },
+    })
+
+    if (existing) {
+      // 如果已存在，可選擇更新紀錄或返回已收藏
+      return res.status(409).json({ message: 'Course already favorited.' })
+    }
+
+    // 插入新的收藏紀錄
+    const newFavorite = await Course_Favorite.create({
+      member_id: memberId,
+      course_id: courseId,
+    })
+
+    res
+      .status(201)
+      .json({ message: 'Course favorited successfully.', data: newFavorite })
+  } catch (error) {
+    console.error('Error adding course to favorites:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+// DELETE - 删除收藏的课程
+router.delete('/remove-fav/:courseId', authenticate, async (req, res) => {
+  console.log(req.user)
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+  const courseId = parseInt(req.params.courseId)
+
+  try {
+    // 檢查這個收藏是否存在
+    const favorite = await Course_Favorite.findOne({
+      where: { member_id: memberId, course_id: courseId },
+    })
+    if (!favorite) {
+      // 如果不存在，返回一个 404 错误
+      return res.status(404).json({ message: 'Favorite not found.' })
+    }
+
+    // 存在的话，删除这个收藏
+    await favorite.destroy()
+
+    res.json({ message: 'Favorite deleted successfully.' })
+  } catch (error) {
+    console.error('Error removing course from favorites:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
 })
 
