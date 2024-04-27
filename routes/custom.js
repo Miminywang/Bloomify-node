@@ -671,13 +671,13 @@ router.get('/orders', async (req, res) => {
                     {
                       model: Custom_Category,
                       as: 'category', // 確保這裡使用的別名與模型定義一致
-                      attributes: ['category_name'], // 拉取分類名稱
+                      attributes: ['category_name', 'category_type'], // 拉取分類名稱
                     },
                   ],
                   attributes: ['image_url'], // 包括圖片URL
                 },
               ],
-              attributes: ['product_id'], // 只包括產品ID
+              attributes: ['product_id', 'price'],
             },
           ],
         },
@@ -719,12 +719,27 @@ router.get('/orders', async (req, res) => {
       shipping_cost: order.shipping?.cost,
       shipping_status: order.shippingStatus?.name,
       order_status: order.orderStatus?.name,
-      products: order.orderDetails.map((detail) => ({
-        product_id: detail.product?.product_id,
-        image_url: detail.product?.variant?.image_url,
-        color_name: detail.product?.variant?.color?.name,
-        category_name: detail.product?.variant?.category?.category_name, // 包括分類名稱
-      })),
+      products: order.orderDetails.reduce((acc, detail) => {
+        const foundIndex = acc.findIndex(
+          (item) => item.product_id === detail.product?.product_id
+        )
+        if (foundIndex >= 0) {
+          // 如果這個 product_id 已經存在於累加器中，增加其計數
+          acc[foundIndex].count += 1
+        } else {
+          // 如果這是首次遇到這個 product_id，新增到累加器
+          acc.push({
+            product_id: detail.product?.product_id,
+            image_url: detail.product?.variant?.image_url,
+            color_name: detail.product?.variant?.color?.name,
+            category_name: detail.product?.variant?.category?.category_name,
+            category_type: detail.product?.variant?.category?.category_type,
+            product_price: detail.product?.price,
+            count: 1, // 初始化計數
+          })
+        }
+        return acc
+      }, []), // 初始化空陣列作為累加器
     }))
 
     res.json({ status: 'success', data: formattedOrders })
@@ -736,9 +751,8 @@ router.get('/orders', async (req, res) => {
 
 router.get('/flower-type', async (req, res) => {
   try {
-    // 使用 Sequelize 查詢 category_type 為 'main' 的資料
     const flowerTypes = await Custom_Category.findAll({
-      attributes: ['category_id', 'category_name', 'category_type'], // 指定要返回的字段
+      attributes: ['category_id', 'category_name', 'category_type'],
       where: {
         category_type: 'main',
       },
@@ -755,78 +769,173 @@ router.get('/flower-type', async (req, res) => {
     })
   }
 })
+// router.get('/:template_id', async function (req, res) {
+//   const template_id = req.params.template_id
+
+//   const sql = `
+//     SELECT
+//     ctl.template_id,
+//     ss.store_name AS store_name,
+//     ctl.template_name,
+//     ctl.image_url,
+//     ctl.discount,
+//     sco.occ AS occasion,
+//     clr.name AS base_color,
+//     cat.category_name ,
+//     clr.name AS color_name,
+//     SUM(cpl.price) AS total_price,
+//     COUNT(*) AS quantity
+//   FROM
+//     Custom_Template_List AS ctl
+//   LEFT JOIN
+//     Share_Store AS ss ON ctl.store_id = ss.store_id
+//   LEFT JOIN
+//     Custom_Template_Detail AS ctd ON ctl.template_id = ctd.template_id
+//   LEFT JOIN
+//     Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
+//   LEFT JOIN
+//     Custom_Product_Variant AS cpv ON cpl.variant_id = cpv.variant_id
+//   LEFT JOIN
+//     Custom_Category AS cat ON cpv.category_id = cat.category_id
+//   LEFT JOIN
+//     Share_Color AS clr ON cpv.color_id = clr.color_id
+//   LEFT JOIN
+//     Share_Occ AS sco ON ctl.occ_id = sco.occ_id
+
+//   WHERE
+//     ctl.template_id = :template_id
+//   GROUP BY
+//     cat.category_name, clr.name, cpv.variant_name;
+
+//     `
+
+//   try {
+//     const results = await sequelize.query(sql, {
+//       replacements: { template_id: template_id },
+//       type: sequelize.QueryTypes.SELECT,
+//     })
+//     if (results.length === 0) {
+//       return res.status(404).json({ message: 'Product not found' })
+//     }
+
+//     const productDetails = {
+//       template_id: template_id,
+//       template_occ: results[0].occasion,
+//       store_name: results[0].store_name,
+//       template_name: results[0].template_name,
+//       image_url: results[0].image_url,
+//       color: results[0].base_color,
+//       discount: results[0].discount,
+//       products: results.map((result) => ({
+//         category_name: result.category_name,
+//         color: result.color_name,
+//         product_name: result.product_name,
+//         product_price: result.total_price / result.quantity,
+//         quantity: result.quantity,
+//       })),
+//       total_price: results.reduce(
+//         (acc, curr) => acc + parseFloat(curr.total_price),
+//         0
+//       ),
+//     }
+
+//     return res.json({
+//       status: 'success',
+//       data: productDetails,
+//     })
+//   } catch (error) {
+//     console.error('Error fetching product details:', error)
+//     return res
+//       .status(500)
+//       .json({ status: 'error', message: 'Internal server error' })
+//   }
+// })
 router.get('/:template_id', async function (req, res) {
   const template_id = req.params.template_id
 
   const sql = `
     SELECT
-    ctl.template_id,
-    ss.store_name AS store_name,
-    ctl.template_name,
-    ctl.image_url,
-    ctl.discount,
-    sco.occ AS occasion,
-   
-    clr.name AS base_color,
-    cat.category_name ,
-    clr.name AS color_name,
-    SUM(cpl.price) AS total_price,
-    COUNT(*) AS quantity
-  FROM
-    Custom_Template_List AS ctl
-  LEFT JOIN
-    Share_Store AS ss ON ctl.store_id = ss.store_id
-  LEFT JOIN
-    Custom_Template_Detail AS ctd ON ctl.template_id = ctd.template_id
-  LEFT JOIN
-    Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
-  LEFT JOIN
-    Custom_Product_Variant AS cpv ON cpl.variant_id = cpv.variant_id
-  LEFT JOIN
-    Custom_Category AS cat ON cpv.category_id = cat.category_id
-  LEFT JOIN
-    Share_Color AS clr ON cpv.color_id = clr.color_id
-  LEFT JOIN
-    Share_Occ AS sco ON ctl.occ_id = sco.occ_id
+      ctl.template_id,
+      ss.store_name AS store_name,
+      ctl.template_name,
+      ctl.image_url,
+      ctl.discount,
+      sco.occ AS occasion,
+      clr.name AS base_color,
+      cat.category_name,
+      clr.name AS color_name,
+      cpl.product_id,
+      cpl.price,
+      ctd.top,
+      ctd.left,
+      ctd.z_index AS zIndex,
+      ctd.rotate
+    FROM
+      Custom_Template_List AS ctl
+    LEFT JOIN
+      Share_Store AS ss ON ctl.store_id = ss.store_id
+    LEFT JOIN
+      Custom_Template_Detail AS ctd ON ctl.template_id = ctd.template_id
+    LEFT JOIN
+      Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
+    LEFT JOIN
+      Custom_Product_Variant AS cpv ON cpl.variant_id = cpv.variant_id
+    LEFT JOIN
+      Custom_Category AS cat ON cpv.category_id = cat.category_id
+    LEFT JOIN
+      Share_Color AS clr ON cpv.color_id = clr.color_id
+    LEFT JOIN
+      Share_Occ AS sco ON ctl.occ_id = sco.occ_id
+    WHERE
+      ctl.template_id = :template_id;
 
-  WHERE
-    ctl.template_id = :template_id
-  GROUP BY
-    cat.category_name, clr.name, cpv.variant_name;
-
-    `
+  `
 
   try {
     const results = await sequelize.query(sql, {
       replacements: { template_id: template_id },
       type: sequelize.QueryTypes.SELECT,
     })
+
     if (results.length === 0) {
       return res.status(404).json({ message: 'Product not found' })
     }
 
-    const productDetails = {
+    // 組織產品資訊及位置資訊
+    let productDetails = {
       template_id: template_id,
       template_occ: results[0].occasion,
-
       store_name: results[0].store_name,
       template_name: results[0].template_name,
       image_url: results[0].image_url,
       color: results[0].base_color,
       discount: results[0].discount,
-
-      products: results.map((result) => ({
-        category_name: result.category_name,
-        color: result.color_name,
-        product_name: result.product_name,
-        product_price: result.total_price / result.quantity,
-        quantity: result.quantity,
-      })),
-      total_price: results.reduce(
-        (acc, curr) => acc + parseFloat(curr.total_price),
-        0
-      ),
+      products: [],
+      total_price: 0,
     }
+
+    results.forEach((result) => {
+      let product = productDetails.products.find(
+        (p) => p.product_id === result.product_id
+      )
+      if (!product) {
+        product = {
+          product_id: result.product_id,
+          category_name: result.category_name,
+          color: result.color_name,
+          price: result.price,
+          positions: [],
+        }
+        productDetails.products.push(product)
+      }
+      product.positions.push({
+        top: result.top,
+        left: result.left,
+        zIndex: result.zIndex,
+        rotate: result.rotate,
+      })
+      productDetails.total_price += parseFloat(result.price)
+    })
 
     return res.json({
       status: 'success',
@@ -868,27 +977,29 @@ router.get('/custom/:store_id', async function (req, res) {
 
   //   `
   const sql = `SELECT
-ss.store_id,
-ss.store_name,
-cat.category_name,
-cat.category_url,
-cat.category_type,
-sc.name AS color_name,
-cpv.image_url AS image_url
-FROM
-Share_Store ss
-JOIN
-Custom_Product_List cpl ON ss.store_id = cpl.store_id
-JOIN
-Custom_Product_Variant cpv ON cpl.variant_id = cpv.variant_id
-JOIN
-Custom_Category cat ON cpv.category_id = cat.category_id  -- 正確聯結 Custom_Category
-JOIN
-Share_Color sc ON cpv.color_id = sc.color_id
-WHERE
-ss.store_id = :store_id
-GROUP BY
-cat.category_name, sc.name, cpv.image_url;
+  ss.store_id,
+  ss.store_name,
+  cat.category_name,
+  cat.category_url,
+  cat.category_type,
+  sc.name AS color_name,
+  cpv.image_url AS image_url,
+  cpl.price AS price,
+  cpl.product_id AS product_id  
+  FROM
+  Share_Store ss
+  JOIN
+  Custom_Product_List cpl ON ss.store_id = cpl.store_id
+  JOIN
+  Custom_Product_Variant cpv ON cpl.variant_id = cpv.variant_id
+  JOIN
+  Custom_Category cat ON cpv.category_id = cat.category_id
+  JOIN
+  Share_Color sc ON cpv.color_id = sc.color_id
+  WHERE
+  ss.store_id =:store_id
+  GROUP BY
+  cat.category_name, sc.name, cpv.image_url, cpl.product_id;
 `
   try {
     const results = await sequelize.query(sql, {
@@ -902,7 +1013,6 @@ cat.category_name, sc.name, cpv.image_url;
         .json({ message: 'No products found for this store.' })
     }
 
-    // Reformat the results to match the desired output
     const output = results.reduce((acc, cur) => {
       const type = cur.category_type
       if (!acc[type]) {
@@ -919,11 +1029,13 @@ cat.category_name, sc.name, cpv.image_url;
             {
               color: cur.color_name,
               url: cur.image_url,
+              product_id: cur.product_id,
+              product_category: cur.category_type,
+              product_price: cur.price,
             },
           ],
         })
       } else {
-        // 檢查是否已存在相同的顏色和 URL 組合
         const existingAttribute = category.attributes.find(
           (a) => a.color === cur.color_name && a.url === cur.image_url
         )
@@ -931,6 +1043,9 @@ cat.category_name, sc.name, cpv.image_url;
           category.attributes.push({
             color: cur.color_name,
             url: cur.image_url,
+            product_id: cur.product_id,
+            product_category: cur.category_type,
+            product_price: cur.price,
           })
         }
       }
