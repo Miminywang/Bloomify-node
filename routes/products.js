@@ -1,5 +1,6 @@
 import express from 'express'
 const router = express.Router()
+import authenticate from '#middlewares/authenticate.js'
 
 // 檢查空物件, 轉換req.params為數字
 import { getIdParam } from '#db-helpers/db-tool.js'
@@ -18,6 +19,7 @@ const {
   Product_Review,
   Share_Star,
   Member,
+  Product_Favorite
 } = sequelize.models
 
 // 建立一對多關聯：圖片資料表定義
@@ -261,6 +263,116 @@ router.get('/filter', async function (req, res) {
       .json({ status: 'error', message: 'Internal server error' })
   }
 })
+
+// GET - 取得某個會員收藏的商品
+router.get('/get-fav', authenticate, async (req, res) => {
+  console.log(req.user)
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+
+  // 取得id,名稱,介紹,價格,主圖
+  const sql = `
+      SELECT
+          pf.id,
+          pf.product_id,
+          p.name,
+          p.info,
+          p.price,
+          pi.url AS url,
+          pi.is_thumbnail
+      FROM
+          product_favorite AS pf
+      JOIN
+          product AS p ON pf.product_id = p.id
+      LEFT JOIN
+          product_image AS pi ON p.id = pi.product_id AND pi.is_thumbnail = 1
+      WHERE
+          pf.member_id = :memberId
+      ORDER BY
+          pf.product_id ASC;
+  `
+
+  try {
+    // 執行 SQL 查詢
+    const results = await sequelize.query(sql, {
+      replacements: { memberId: memberId },
+      type: sequelize.QueryTypes.SELECT,
+    })
+
+    // 發送結果
+    res.json({ status: 'success', data: results })
+  } catch (error) {
+    console.error('Error fetching favorite courses:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+// POST - 新增收藏的商品
+router.post('/add-fav/:productId', authenticate, async (req, res) => {
+  console.log(req.user)
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+  const productId = parseInt(req.params.productId)
+
+  try {
+    // 檢查
+    const existing = await Product_Favorite.findOne({
+      where: { member_id: memberId, product_id: productId },
+    })
+
+    if (existing) {
+      // 如果已存在，可選擇更新紀錄或返回已收藏
+      return res.status(409).json({ message: 'Product already favorited.' })
+    }
+
+    // 插入新的收藏紀錄
+    const newFavorite = await Product_Favorite.create({
+      member_id: memberId,
+      product_id: productId,
+    })
+
+    res
+      .status(201)
+      .json({ message: 'Course favorited successfully.', data: newFavorite })
+  } catch (error) {
+    console.error('Error adding course to favorites:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+// DELETE - 删除收藏的课程
+router.delete('/remove-fav/:productId', authenticate, async (req, res) => {
+  console.log(req.user)
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+  const courseId = parseInt(req.params.courseId)
+
+  try {
+    // 檢查這個收藏是否存在
+    const favorite = await Product_Favorite.findOne({
+      where: { member_id: memberId, course_id: courseId },
+    })
+    if (!favorite) {
+      // 如果不存在，返回一个 404 錯誤
+      return res.status(404).json({ message: 'Favorite not found.' })
+    }
+
+    // 存在的话，删除这个收藏
+    await favorite.destroy()
+
+    res.json({ message: 'Favorite deleted successfully.' })
+  } catch (error) {
+    console.error('Error removing course from favorites:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
+// 收藏結束
 
 // GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
 router.get('/:id', async function (req, res) {
