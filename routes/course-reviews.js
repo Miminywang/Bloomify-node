@@ -15,13 +15,13 @@ const { Course, Share_Member, Course_Review } = sequelize.models
 // 函數建構 ---------------------------------
 // 更新課程平均星數
 async function updateCourseAverageStars(courseId) {
-  console.log('Updating average stars for course:', courseId) // 添加日志
+  console.log('Updating average stars for course:', courseId) // 添加日誌
   try {
     const reviews = await Course_Review.findAll({
       where: { course_id: courseId },
       attributes: ['stars'],
     })
-    console.log('Fetched reviews:', reviews.length) // 查看获取到的评价数量
+    console.log('Fetched reviews:', reviews.length) // 查看獲取到的評價數量
     if (reviews.length > 0) {
       const totalStars = reviews.reduce((acc, review) => acc + review.stars, 0)
       const averageStars = totalStars / reviews.length

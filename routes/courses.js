@@ -188,7 +188,8 @@ router.get('/random', async function (req, res) {
 // GET - 根據篩選條件得到課程
 router.get('/search', async function (req, res) {
   // 從查詢參數中獲取 category_id 和 store_id
-  const { category_id, store_id, keyword, price, sort } = req.query
+  const { category_id, store_id, keyword, min_price, max_price, sort } =
+    req.query
 
   // 建立查詢條件
   const whereConditions = {}
@@ -200,13 +201,12 @@ router.get('/search', async function (req, res) {
   if (store_id) {
     whereConditions.store_id = store_id
   }
-  // TODO:
+
   // 價格區間
-  // if (price) {
-  //   whereConditions.price = price
-  // }
-  // TODO:
-  // 日期區間
+  if (min_price && max_price) {
+    whereConditions.price = { [Op.gte]: min_price, [Op.lte]: max_price }
+  }
+
   // 關鍵字搜尋
   if (keyword) {
     whereConditions[Op.or] = [
@@ -228,6 +228,9 @@ router.get('/search', async function (req, res) {
   }
   if (sort === 'cheapest') {
     orderOptions = [['price', 'ASC']] // 最便宜的
+  }
+  if (sort === 'highestRated') {
+    orderOptions = [['average_stars', 'DESC']] // 評價最高的
   }
 
   try {
@@ -274,7 +277,7 @@ router.get('/categories', async function (req, res) {
 
 // GET - 取得某個會員收藏的課程
 router.get('/get-fav', authenticate, async (req, res) => {
-  console.log(req.user)
+  // console.log(req.user)
   if (!req.user || !req.user.id) {
     return res.status(401).json({ status: 'error', message: 'Unauthorized' })
   }

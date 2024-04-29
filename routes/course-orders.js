@@ -1,4 +1,5 @@
 import express from 'express'
+import authenticate from '#middlewares/authenticate.js'
 const router = express.Router()
 
 // 檢查空物件, 轉換 req.params 為數字
@@ -57,15 +58,14 @@ Course_Order.belongsTo(Share_Order_Status, {
 // 路由建構 ---------------------------------
 
 // GET - 得到所有訂單
-router.get('/', async function (req, res) {
+router.get('/', authenticate, async (req, res) => {
+  // console.log(req.user)
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+
   try {
-    // const memberId = req.query.memberId // 从请求中获取memberId
-    const memberId = 1 // 从请求中获取memberId
-    // if (!memberId) {
-    //   return res
-    //     .status(400)
-    //     .json({ status: 'error', message: 'Member ID is required' })
-    // }
     const orders = await Course_Order.findAll({
       where: { member_id: memberId },
       include: [
@@ -84,7 +84,7 @@ router.get('/', async function (req, res) {
                   as: 'images',
                   attributes: ['path'],
                   where: {
-                    is_main: 1, // 这将确保只包括主图片
+                    is_main: 1, // 只包含主圖
                   },
                   required: false,
                 },
@@ -92,7 +92,7 @@ router.get('/', async function (req, res) {
                   model: Course_Datetime,
                   as: 'datetimes',
                   where: {
-                    period: sequelize.col('items.period'), // 这里尝试引用外层的 period 字段
+                    period: sequelize.col('items.period'), // 這裡嘗試對應外層的period，但好像沒用
                   },
                   required: false,
                   attributes: [
@@ -128,8 +128,9 @@ router.get('/', async function (req, res) {
     })
 
     // 過濾datetimes
+    // TODO:
     const filteredOrders = orders.map((order) => ({
-      ...order.get({ plain: true }), // 转换为简单对象
+      ...order.get({ plain: true }), // 轉換為簡單對象
       items: order.items.map((item) => ({
         ...item.get({ plain: true }),
         course: {
