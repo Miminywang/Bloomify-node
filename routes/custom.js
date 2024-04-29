@@ -2,11 +2,15 @@ import express from 'express'
 const router = express.Router()
 import { getIdParam } from '#db-helpers/db-tool.js'
 import { Op } from 'sequelize'
+import fs from 'fs'
+import multer from 'multer'
 
-// 資料庫使用
+const upload = multer()
+
+import { v4 as uuidv4 } from 'uuid'
 import sequelize from '#configs/db.js'
+import path from 'path'
 
-// 從 sequelize 的模型集合中解構出五個資料表模型
 const {
   Custom_Template_List,
   Custom_Template_Detail,
@@ -686,9 +690,9 @@ router.get('/orders', async (req, res) => {
         'order_id',
         'bouquet_name',
         'image_url',
-        'order_date',
+        'created_at',
         'delivery_date',
-        'total_amount',
+        'total',
         'discount',
         'card_content',
         'card_url',
@@ -702,9 +706,9 @@ router.get('/orders', async (req, res) => {
       order_id: order.order_id,
       bouquet: order.bouquet_name,
       image_url: order.image_url,
-      order_date: order.order_date,
+      order_date: order.created_at,
       delivery_date: order.delivery_date,
-      total_amount: order.total_amount,
+      total: order.total,
       discount: order.discount,
       card_content: order.card_content,
       card_url: order.card_url,
@@ -946,6 +950,155 @@ router.get('/:template_id', async function (req, res) {
     return res
       .status(500)
       .json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+router.post('/submit-order', upload.none(), async (req, res) => {
+  const {
+    image_url, // 從客戶端傳來的Base64圖片數據
+    products, // 包含產品資訊的陣列
+    bouquet_name,
+    delivery_date,
+    delivery_time,
+    member_id,
+    store_id,
+    shipping_id,
+    sender_name,
+    sender_tel,
+    recipient_name,
+    recipient_tel,
+    recipient_address,
+    total,
+    payment_method,
+    shipping_method,
+    shipping_status,
+    order_status,
+    discount,
+    card_content,
+    card_url,
+  } = req.body
+
+  // const decodeAndSaveImage = (base64Data, directory, filename) => {
+  //   console.log(base64Data.slice(0, 50)) // 輸出Base64數據的前50個字符來檢查格式
+
+  //   const matches = base64Data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
+  //   if (!matches || matches.length !== 3) {
+  //     console.error('Failed to match Base64 pattern', base64Data.slice(0, 100))
+  //     throw new Error('Invalid base64 image data')
+  //   }
+
+  //   console.log('Matched MIME type:', matches[1]) // 輸出匹配到的MIME類型
+  //   const imageBuffer = Buffer.from(matches[2], 'base64')
+  //   const relativePath = path.join(directory, filename)
+  //   const fullPath = path.join(process.cwd(), relativePath)
+
+  //   if (!fs.existsSync(path.dirname(fullPath))) {
+  //     fs.mkdirSync(path.dirname(fullPath), { recursive: true })
+  //   }
+
+  //   fs.writeFileSync(fullPath, imageBuffer)
+  //   return relativePath
+  //
+  const decodeAndSaveImage = (base64Data, directory, filename) => {
+    console.log(base64Data.slice(0, 50)) // 輸出Base64數據的前50個字符來檢查格式
+
+    const matches = base64Data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
+    if (!matches || matches.length !== 3) {
+      console.warn(
+        'Base64 pattern not fully matched, continuing anyway:',
+        base64Data.slice(0, 100)
+      )
+
+      if (!matches) return
+    }
+
+    console.log('Matched MIME type:', matches[1])
+    const imageBuffer = Buffer.from(matches[2], 'base64')
+    const relativePath = path.join(directory, filename)
+    const fullPath = path.join(process.cwd(), relativePath)
+
+    if (!fs.existsSync(path.dirname(fullPath))) {
+      fs.mkdirSync(path.dirname(fullPath), { recursive: true })
+    }
+
+    fs.writeFileSync(fullPath, imageBuffer)
+    return relativePath
+  }
+
+  try {
+    const uploadsDir = 'uploads'
+    const imageName = `${uuidv4()}.png`
+    const cardImageName = `${uuidv4()}.png`
+
+    const imagePath = decodeAndSaveImage(image_url, uploadsDir, imageName)
+    const cardImagePath = decodeAndSaveImage(
+      card_url,
+      uploadsDir,
+      cardImageName
+    )
+
+    const orderId = uuidv4()
+    const lastSegment = orderId.substring(orderId.lastIndexOf('-') + 1)
+    const result = await sequelize.transaction(async (t) => {
+      const order = await Custom_Order_List.create(
+        {
+          order_id: orderId,
+          bouquet_name,
+          image_url: `/${imagePath}`, // 儲存路徑而非原始Base64資料
+          delivery_date,
+          delivery_time,
+          member_id,
+          store_id,
+          shipping_id,
+          sender_name,
+          sender_tel,
+          recipient_name,
+          recipient_tel,
+          recipient_address,
+          total,
+          payment_method,
+          shipping_method,
+          shipping_status,
+          order_status,
+          discount: discount || 0, // 使用預設值
+          card_content,
+          card_url: `/${cardImagePath}`,
+        },
+        { transaction: t }
+      )
+
+      const orderItems = products.map((product) => ({
+        detail_id: product.detail_id, // 假設產品資料中包含此欄位
+        order_id: orderId,
+        product_id: product.product_id,
+        top: product.top,
+        left: product.left,
+        z_index: product.z_index,
+        rotate: product.rotate,
+      }))
+
+      await Custom_Order_Detail.bulkCreate(orderItems, { transaction: t })
+
+      return order
+    })
+    // const orderStatusDetails = await Share_Order_Status.findByPk(order_status)
+    // const paymentDetails = await Share_Payment.findByPk(payment_method)
+    res.json({
+      status: 'success',
+      message: '訂單建立成功!',
+      data: {
+        order_id: lastSegment,
+        total: `NT$${total}`,
+        // created_at: result.createdAt.toISOString(),
+        // order_status: orderStatusDetails.name,
+        // payment_method: paymentDetails.name,
+        payment_status: '已付款', // 假設付款狀態直接為已付款
+        invoice: '載具',
+      },
+    })
+  } catch (error) {
+    console.error('訂單建立失敗:', error)
+    res.status(500).send({ message: 'Failed to place order' })
   }
 })
 

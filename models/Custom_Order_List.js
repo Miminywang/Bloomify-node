@@ -16,13 +16,12 @@ export default async function (sequelize) {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      order_date: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
       delivery_date: {
         type: DataTypes.DATEONLY,
         allowNull: false,
+      },
+      delivery_time: {
+        type: DataTypes.STRING(255),
       },
       member_id: {
         type: DataTypes.INTEGER,
@@ -56,7 +55,7 @@ export default async function (sequelize) {
         type: DataTypes.STRING(255),
         allowNull: false,
       },
-      total_amount: {
+      total: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

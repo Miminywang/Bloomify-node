@@ -6,7 +6,7 @@ import express from 'express'
 import logger from 'morgan'
 import path from 'path'
 import session from 'express-session'
-
+import bodyParser from 'body-parser'
 // 使用檔案的session store，存在sessions資料夾
 import sessionFileStore from 'session-file-store'
 const FileStore = sessionFileStore(session)
@@ -40,13 +40,16 @@ app.set('view engine', 'pug')
 // 記錄HTTP要求
 app.use(logger('dev'))
 // 剖析 POST 與 PUT 要求的JSON格式資料
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+// app.use(express.json())
+// app.use(express.urlencoded({ extended: false }))
+app.use(express.json({ limit: '50mb' }))
+app.use(express.urlencoded({ limit: '50mb', extended: true }))
+
 // 剖折 Cookie 標頭與增加至 req.cookies
 app.use(cookieParser())
 // 在 public 的目錄，提供影像、CSS 等靜態檔案
 app.use(express.static(path.join(__dirname, 'public')))
-
+app.use(bodyParser.json({ limit: '50mb' }))
 // fileStore的選項 session-cookie使用
 const fileStoreOptions = { logFn: function () {} }
 app.use(
@@ -85,10 +88,13 @@ app.use(function (err, req, res, next) {
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
 
-  // render the error page
-  res.status(err.status || 500)
-  // 更改為錯誤訊息預設為JSON格式
-  res.status(500).send({ error: err })
+  res.status(err.status || 500).send({
+    error: {
+      message: err.message,
+      status: err.status || 500,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+    },
+  })
 })
 
 export default app
