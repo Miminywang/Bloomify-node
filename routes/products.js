@@ -19,7 +19,9 @@ const {
   Product_Review,
   Share_Star,
   Member,
-  Product_Favorite
+  Product_Favorite,
+  Product_Cart,
+  Product_Cart_Item,
 } = sequelize.models
 
 // 建立一對多關聯：圖片資料表定義
@@ -304,7 +306,7 @@ router.get('/get-fav', authenticate, async (req, res) => {
     // 發送結果
     res.json({ status: 'success', data: results })
   } catch (error) {
-    console.error('Error fetching favorite courses:', error)
+    console.error('Error fetching favorite products:', error)
     res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
 })
@@ -337,42 +339,182 @@ router.post('/add-fav/:productId', authenticate, async (req, res) => {
 
     res
       .status(201)
-      .json({ message: 'Course favorited successfully.', data: newFavorite })
+      .json({ message: 'Product favorited successfully.', data: newFavorite })
   } catch (error) {
-    console.error('Error adding course to favorites:', error)
+    console.error('Error adding product to favorites:', error)
     res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
 })
 
-// DELETE - 删除收藏的课程
+// DELETE - 删除收藏的商品
 router.delete('/remove-fav/:productId', authenticate, async (req, res) => {
   console.log(req.user)
   if (!req.user || !req.user.id) {
     return res.status(401).json({ status: 'error', message: 'Unauthorized' })
   }
   const memberId = req.user.id
-  const courseId = parseInt(req.params.courseId)
+  const productId = parseInt(req.params.productId)
 
   try {
     // 檢查這個收藏是否存在
     const favorite = await Product_Favorite.findOne({
-      where: { member_id: memberId, course_id: courseId },
+      where: { member_id: memberId, product_id: productId },
     })
     if (!favorite) {
       // 如果不存在，返回一个 404 錯誤
       return res.status(404).json({ message: 'Favorite not found.' })
     }
 
-    // 存在的话，删除这个收藏
+    // 存在的话，刪除这个收藏
     await favorite.destroy()
 
     res.json({ message: 'Favorite deleted successfully.' })
   } catch (error) {
-    console.error('Error removing course from favorites:', error)
+    console.error('Error removing product from favorites:', error)
     res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
 })
 // 收藏結束
+
+//  GET - 取得某個會員的購物車
+router.get('/get-cart-items', authenticate, async (req, res) => {
+  console.log(req.user)
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+
+  // 取得購物車商品
+  const sql = `
+      SELECT
+    pc.id AS cart_id,
+    pc.total_cost,
+    pci.id AS cart_item_id,
+    pci.product_id,
+    p.*,
+    (p.price * pci.quantity) AS item_total,
+    p.name,
+    p.price,
+    pi.url AS image_url, -- Get the URL of the image where is_thumbnail is 0
+    pci.quantity,
+    ss.store_name
+FROM
+    product_cart AS pc
+INNER JOIN
+    product_cart_item AS pci ON pc.id = pci.product_cart_id
+INNER JOIN
+    product AS p ON pci.product_id = p.id
+LEFT JOIN
+    product_image AS pi ON p.id = pi.product_id AND pi.is_thumbnail = 0 -- Only join where is_thumbnail is 0
+LEFT JOIN
+    share_store AS ss ON p.share_store_id = ss.store_id
+WHERE
+    pc.member_id = :memberId;
+  `
+
+  try {
+    // 執行 SQL 查詢
+    const results = await sequelize.query(sql, {
+      replacements: { memberId: memberId },
+      type: sequelize.QueryTypes.SELECT,
+    })
+
+    // 發送結果
+    res.json({ status: 'success', data: results })
+  } catch (error) {
+    console.error('Error fetching shop cart:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+// GET - 取得某個會員的填寫資料
+router.get('/get-order-list', authenticate, async (req, res) => {
+  console.log(req.user)
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+
+  const sql = `
+      SELECT
+  pod.*,
+  poi.quantity,
+  poi.product_id,
+  p.name,
+  shipping.shipping_name,
+  shipping.shipping_cost,
+  payment.payment_name,
+  invoice.invoice_name
+FROM
+  product_order_detail pod
+INNER JOIN product_order_item poi ON pod.id = poi.product_order_detail_id
+LEFT JOIN product p ON p.id = poi.product_id
+
+LEFT JOIN share_shipping shipping ON shipping.shipping_id = pod.share_shipping_id
+
+LEFT JOIN share_payment payment ON payment.payment_id = pod.share_payment_id
+
+LEFT JOIN share_invoice invoice ON invoice.invoice_id = pod.share_invoice_id
+
+WHERE
+  pod.member_id = :memberId;
+  `
+
+  try {
+    // 執行 SQL 查詢
+    const results = await sequelize.query(sql, {
+      replacements: { memberId: memberId },
+      type: sequelize.QueryTypes.SELECT,
+    })
+
+    // 發送結果
+    res.json({ status: 'success', data: results })
+  } catch (error) {
+    console.error('Error fetching shop cart:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+// POST - 儲存購物車和填寫的資料
+router.post('/save-cart-checkout', authenticate, async (req, res) => {
+  console.log(req.user)
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+  // 取值
+  const { cartItems, fillOutDetails } = req.body
+  const t = await sequelize.transaction()
+
+  try {
+    // 插入購物車 cart
+    const newCart = await Product_Cart.create(
+      {
+        member_id: memberId,
+        total_cost: cartItems.totalCost,
+      },
+      { transaction: t }
+    )
+    // 插入cart items
+    for (const item of cartItems) {
+      await Product_Cart_Item.create(
+        {
+          product_cart_id: newCart.id,
+          product_id: item.id,
+          quantity: item.quantity,
+        },
+        { transaction: t }
+      )
+    }
+
+    res
+      .status(201)
+      .json({ message: 'Product favorited successfully.', data: newCart })
+  } catch (error) {
+    console.error('Error adding product to favorites:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
 
 // GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
 router.get('/:id', async function (req, res) {
