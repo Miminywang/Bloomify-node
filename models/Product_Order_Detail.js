@@ -22,15 +22,15 @@ export default async function (sequelize) {
         allowNull: false,
       },
       recipient_name: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       recipient_phone: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       recipient_address: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       estimated_delivery: {
@@ -69,7 +69,7 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      invoice_id: {
+      share_invoice_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
