@@ -153,4 +153,57 @@ router.get('/', authenticate, async (req, res) => {
   }
 })
 
+// POST - 新增訂單
+router.post('/add-order', authenticate, async (req, res) => {
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+  // 課程數組
+  const { courses } = req.body
+
+  // 使用事務處理創建訂單和訂單項目
+  try {
+    const result = await sequelize.transaction(async (t) => {
+      // 建立新的訂單項目
+      const newOrder = await Course_Order.create(
+        {
+          member_id: memberId,
+          // total_cost: total_cost,
+          // discount: discount,
+          // payment_amount: payment_amount,
+          // share_payment_id: share_payment_id,
+          // share_payment_status_id: share_payment_status_id,
+          // share_order_status_id: share_order_status_id,
+          // invoice_id: invoice_id,
+        },
+        { transaction: t }
+      )
+
+      // 遍歷課程數組，為每個課程創建訂單明細
+      const orderItems = courses.map((course) => ({
+        order_id: newOrder.id,
+        course_id: course.id,
+        period: course.period,
+        // date: course.date,
+        // start_time: course.start_time,
+        // end_time: course.end_time,
+        price: course.price,
+      }))
+      await Course_Order_Item.bulkCreate(orderItems, { transaction: t })
+
+      return newOrder
+    })
+
+    res
+      .status(201)
+      .json({ message: 'Order created successfully.', data: result })
+  } catch (error) {
+    console.error('Error processing order:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+// DELETE - 刪除訂單
+
 export default router

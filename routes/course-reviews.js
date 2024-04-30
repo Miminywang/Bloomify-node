@@ -39,7 +39,7 @@ async function updateCourseAverageStars(courseId) {
 }
 
 // 路由建構 ---------------------------------
-// GET
+// GET - 獲取課程評價
 router.get('/', async function (req, res) {
   console.log('Fetching Reivews...')
   try {
