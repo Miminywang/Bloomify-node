@@ -346,7 +346,7 @@ router.post('/add-fav/:productId', authenticate, async (req, res) => {
   }
 })
 
-// DELETE - 删除收藏的商品
+// DELETE - 刪除收藏的商品
 router.delete('/remove-fav/:productId', authenticate, async (req, res) => {
   console.log(req.user)
   if (!req.user || !req.user.id) {
@@ -476,45 +476,45 @@ WHERE
 })
 
 // POST - 儲存購物車和填寫的資料
-router.post('/save-cart-checkout', authenticate, async (req, res) => {
-  console.log(req.user)
-  if (!req.user || !req.user.id) {
-    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
-  }
-  const memberId = req.user.id
-  // 取值
-  const { cartItems, fillOutDetails } = req.body
-  const t = await sequelize.transaction()
+// router.post('/save-cart-checkout', authenticate, async (req, res) => {
+//   console.log(req.user)
+//   if (!req.user || !req.user.id) {
+//     return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+//   }
+//   const memberId = req.user.id
+//   // 取值
+//   const { cartItems, fillOutDetails } = req.body
+//   const t = await sequelize.transaction()
 
-  try {
-    // 插入購物車 cart
-    const newCart = await Product_Cart.create(
-      {
-        member_id: memberId,
-        total_cost: cartItems.totalCost,
-      },
-      { transaction: t }
-    )
-    // 插入cart items
-    for (const item of cartItems) {
-      await Product_Cart_Item.create(
-        {
-          product_cart_id: newCart.id,
-          product_id: item.id,
-          quantity: item.quantity,
-        },
-        { transaction: t }
-      )
-    }
+//   try {
+//     // 插入購物車 cart
+//     const newCart = await Product_Cart.create(
+//       {
+//         member_id: memberId,
+//         total_cost: cartItems.totalCost,
+//       },
+//       { transaction: t }
+//     )
+//     // 插入cart items
+//     for (const item of cartItems) {
+//       await Product_Cart_Item.create(
+//         {
+//           product_cart_id: newCart.id,
+//           product_id: item.id,
+//           quantity: item.quantity,
+//         },
+//         { transaction: t }
+//       )
+//     }
 
-    res
-      .status(201)
-      .json({ message: 'Product favorited successfully.', data: newCart })
-  } catch (error) {
-    console.error('Error adding product to favorites:', error)
-    res.status(500).json({ status: 'error', message: 'Internal server error' })
-  }
-})
+//     res
+//       .status(201)
+//       .json({ message: 'Product favorited successfully.', data: newCart })
+//   } catch (error) {
+//     console.error('Error adding product to favorites:', error)
+//     res.status(500).json({ status: 'error', message: 'Internal server error' })
+//   }
+// })
 
 // GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
 router.get('/:id', async function (req, res) {

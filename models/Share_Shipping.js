@@ -14,7 +14,7 @@ export default async function (sequelize) {
         allowNull: false,
       },
       cost: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
     },
