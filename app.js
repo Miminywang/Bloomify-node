@@ -27,7 +27,11 @@ const app = express()
 // cors設定，參數為必要，注意不要只寫`app.use(cors())`
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://localhost:9000'],
+    origin: [
+      'http://localhost:3000',
+      'https://localhost:9000',
+      'http://127.0.0.1:3000',
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })
