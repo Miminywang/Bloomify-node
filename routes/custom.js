@@ -4,7 +4,7 @@ import { getIdParam } from '#db-helpers/db-tool.js'
 import { Op } from 'sequelize'
 import fs from 'fs'
 import multer from 'multer'
-
+import { fileURLToPath } from 'url'
 const upload = multer()
 
 import { v4 as uuidv4 } from 'uuid'
@@ -999,52 +999,68 @@ router.post('/submit-order', upload.none(), async (req, res) => {
   //   fs.writeFileSync(fullPath, imageBuffer)
   //   return relativePath
   //
-  const decodeAndSaveImage = (base64Data, directory, filename) => {
-    console.log(base64Data.slice(0, 50)) // 輸出Base64數據的前50個字符來檢查格式
+  // const decodeAndSaveImage = (base64Data, directory, filename) => {
+  //   console.log(base64Data.slice(0, 50)) // 輸出Base64數據的前50個字符來檢查格式
 
+  //   const matches = base64Data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
+  //   if (!matches || matches.length !== 3) {
+  //     console.warn(
+  //       'Base64 pattern not fully matched, continuing anyway:',
+  //       base64Data.slice(0, 100)
+  //     )
+
+  //     if (!matches) return
+  //   }
+
+  //   console.log('Matched MIME type:', matches[1])
+  //   const imageBuffer = Buffer.from(matches[2], 'base64')
+  //   const relativePath = path.join('uploads', filename)
+  //   const fullPath = path.join(process.cwd(), 'public', relativePath)
+
+  //   if (!fs.existsSync(path.dirname(fullPath))) {
+  //     fs.mkdirSync(path.dirname(fullPath), { recursive: true })
+  //   }
+
+  //   fs.writeFileSync(fullPath, imageBuffer)
+  //   return '/' + relativePath
+  // }
+
+  const __filename = fileURLToPath(import.meta.url)
+
+  const decodeAndSaveImage = (base64Data, filename) => {
     const matches = base64Data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
     if (!matches || matches.length !== 3) {
       console.warn(
         'Base64 pattern not fully matched, continuing anyway:',
         base64Data.slice(0, 100)
       )
-
-      if (!matches) return
+      return
     }
 
-    console.log('Matched MIME type:', matches[1])
     const imageBuffer = Buffer.from(matches[2], 'base64')
-    const relativePath = path.join(directory, filename)
-    const fullPath = path.join(process.cwd(), relativePath)
-
-    if (!fs.existsSync(path.dirname(fullPath))) {
-      fs.mkdirSync(path.dirname(fullPath), { recursive: true })
+    const serverPath = path.join('public', 'uploads', filename)
+    if (!fs.existsSync(path.dirname(serverPath))) {
+      fs.mkdirSync(path.dirname(serverPath), { recursive: true })
     }
 
-    fs.writeFileSync(fullPath, imageBuffer)
-    return relativePath
+    fs.writeFileSync(serverPath, imageBuffer)
+    return `/uploads/${filename}`
   }
 
   try {
-    const uploadsDir = 'uploads'
     const imageName = `${uuidv4()}.png`
     const cardImageName = `${uuidv4()}.png`
 
-    const imagePath = decodeAndSaveImage(image_url, uploadsDir, imageName)
-    const cardImagePath = decodeAndSaveImage(
-      card_url,
-      uploadsDir,
-      cardImageName
-    )
+    const imagePath = decodeAndSaveImage(image_url, imageName)
+    const cardImagePath = decodeAndSaveImage(card_url, cardImageName)
 
     const orderId = uuidv4()
-    const lastSegment = orderId.substring(orderId.lastIndexOf('-') + 1)
     const result = await sequelize.transaction(async (t) => {
       const order = await Custom_Order_List.create(
         {
           order_id: orderId,
           bouquet_name,
-          image_url: `/${imagePath}`, // 儲存路徑而非原始Base64資料
+          image_url: imagePath, // 儲存簡化的路徑到資料庫
           delivery_date,
           delivery_time,
           member_id,
@@ -1087,7 +1103,7 @@ router.post('/submit-order', upload.none(), async (req, res) => {
       status: 'success',
       message: '訂單建立成功!',
       data: {
-        order_id: lastSegment,
+        order_id: result.order_id,
         total: `NT$${total}`,
         // created_at: result.createdAt.toISOString(),
         // order_status: orderStatusDetails.name,
