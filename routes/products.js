@@ -377,6 +377,43 @@ router.delete('/remove-fav/:productId', authenticate, async (req, res) => {
 // 收藏結束
 
 // GET - 取得訂單明細
+// router.get('/get-order-details', authenticate, async (req, res) => {
+//   console.log(req.user)
+//   if (!req.user || !req.user.id) {
+//     return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+//   }
+//   const memberId = req.user.id
+
+//   const sql = `
+//       SELECT
+//   pod.*,
+//   poi.quantity,
+//   poi.product_id,
+//   p.name
+// FROM
+//   product_order_detail pod
+// INNER JOIN product_order_item poi ON pod.id = poi.product_order_detail_id
+// LEFT JOIN product p ON p.id = poi.product_id
+
+// WHERE
+//   pod.member_id = :memberId;
+//   `
+
+//   try {
+//     // 執行 SQL 查詢
+//     const results = await sequelize.query(sql, {
+//       replacements: { memberId: memberId },
+//       type: sequelize.QueryTypes.SELECT,
+//     })
+
+//     // 發送結果
+//     res.json({ status: 'success', data: results })
+//   } catch (error) {
+//     console.error('Error fetching shop cart:', error)
+//     res.status(500).json({ status: 'error', message: 'Internal server error' })
+//   }
+// })
+
 router.get('/get-order-details', authenticate, async (req, res) => {
   console.log(req.user)
   if (!req.user || !req.user.id) {
@@ -386,14 +423,9 @@ router.get('/get-order-details', authenticate, async (req, res) => {
 
   const sql = `
       SELECT
-  pod.*,
-  poi.quantity,
-  poi.product_id,
-  p.name
+  pod.*
 FROM
   product_order_detail pod
-INNER JOIN product_order_item poi ON pod.id = poi.product_order_detail_id
-LEFT JOIN product p ON p.id = poi.product_id
 
 WHERE
   pod.member_id = :memberId;
@@ -421,13 +453,13 @@ router.post('/save-order-details', authenticate, async (req, res) => {
     return res.status(401).json({ status: 'error', message: 'Unauthorized' })
   }
   const memberId = req.user.id
-  const { products, detail } = req.body
+  const { products, detail, totalAmount } = req.body
   console.log('Received user:', req.user)
   try {
     // 插入新的訂單明細紀錄
     const newOrderDetail = await Product_Order_Detail.create({
       member_id: memberId,
-      total_cost: 0,
+      total_cost: totalAmount,
       sender_name: detail.senderName,
       sender_phone: detail.senderNumber,
       sender_mail: detail.senderEmail,
@@ -439,7 +471,7 @@ router.post('/save-order-details', authenticate, async (req, res) => {
       payment_method: detail.paymentMethod,
       coupon_code: detail.couponCode,
       discount: 0,
-      invoiceOption: detail.invoiceOption,
+      invoice_option: detail.invoiceOption,
     })
     for (const item of products) {
       await Product_Order_Item.create({
