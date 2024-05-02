@@ -368,34 +368,74 @@ router.get('/', async function (req, res) {
   const whereClause =
     whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : ''
 
-  const sql = `
-    SELECT
-      sco.occ_id,
-      sco.occ as occ_name,
-      ctl.template_id,
-      ss.store_name AS store_name,
-      ctl.template_name,
-      ctl.image_url,
-      ctl.discount,
-      clr.color_id AS color_id,
-      cc.category_id AS category_id,
-      cc.category_name AS flower_type,
-      clr.name AS color_name,
-      clr.code AS color_code,
-      (
-        SELECT SUM(cpl.price)
-        FROM Custom_Template_Detail AS ctd
-        LEFT JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
-        WHERE ctd.template_id = ctl.template_id
-      ) AS total_price
-    FROM
-      Custom_Template_List AS ctl
-      LEFT JOIN Share_Store AS ss ON ctl.store_id = ss.store_id
-      LEFT JOIN Share_Occ AS sco ON sco.occ_id = ctl.occ_id
-      LEFT JOIN Share_Color AS clr ON clr.color_id = ctl.color_id
-      LEFT JOIN Custom_Category AS cc ON cc.category_id = ctl.category_id
-    ${whereClause}
-    ORDER BY ${sortField === 'total_price' ? `(SELECT SUM(cpl.price) FROM Custom_Template_Detail AS ctd LEFT JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id WHERE ctd.template_id = ctl.template_id)` : `ctl.${sortField}`} ${sortOrder};
+  // const sql = `
+  //   SELECT
+  //     sco.occ_id,
+  //     sco.occ as occ_name,
+  //     ctl.template_id,
+  //     ss.store_name AS store_name,
+  //     ctl.template_name,
+  //     ctl.image_url,
+  //     ctl.discount,
+  //     clr.color_id AS color_id,
+  //     cc.category_id AS category_id,
+  //     cc.category_name AS flower_type,
+  //     clr.name AS color_name,
+  //     clr.code AS color_code,
+  //     (
+  //       SELECT SUM(cpl.price)
+  //       FROM Custom_Template_Detail AS ctd
+  //       LEFT JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
+  //       WHERE ctd.template_id = ctl.template_id
+  //     ) AS total_price
+  //   FROM
+  //     Custom_Template_List AS ctl
+  //     LEFT JOIN Share_Store AS ss ON ctl.store_id = ss.store_id
+  //     LEFT JOIN Share_Occ AS sco ON sco.occ_id = ctl.occ_id
+  //     LEFT JOIN Share_Color AS clr ON clr.color_id = ctl.color_id
+  //     LEFT JOIN Custom_Category AS cc ON cc.category_id = ctl.category_id
+  //   ${whereClause}
+  //   ORDER BY ${sortField === 'total_price' ? `(SELECT SUM(cpl.price) FROM Custom_Template_Detail AS ctd LEFT JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id WHERE ctd.template_id = ctl.template_id)` : `ctl.${sortField}`} ${sortOrder};
+  // `
+
+  const sql = `SELECT
+    sco.occ_id,
+    sco.occ AS occ_name,
+    ctl.template_id,
+    ss.store_name AS store_name,
+    ctl.template_name,
+    ctl.image_url,
+    ctl.discount,
+    clr.color_id AS color_id,
+    cc.category_id AS category_id,
+    cc.category_name AS flower_type,
+    clr.name AS color_name,
+    clr.code AS color_code,
+    (
+      SELECT SUM(cpl.price)
+      FROM Custom_Template_Detail AS ctd
+      JOIN Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
+      WHERE ctd.template_id = ctl.template_id
+    ) AS total_price,
+    GROUP_CONCAT(
+      CONCAT(
+        '{"product_id": "', ctd.product_id,
+        '", "top": "', ctd.top,
+        '", "left": "', ctd.left,
+        '", "rotate": "', ctd.rotate,
+        '", "z_index": "', ctd.z_index, '"}'
+      ) SEPARATOR ','
+    ) AS products_json
+  FROM
+    Custom_Template_List AS ctl
+    LEFT JOIN Share_Store AS ss ON ctl.store_id = ss.store_id
+    LEFT JOIN Share_Occ AS sco ON sco.occ_id = ctl.occ_id
+    LEFT JOIN Share_Color AS clr ON clr.color_id = ctl.color_id
+    LEFT JOIN Custom_Category AS cc ON cc.category_id = ctl.category_id
+    LEFT JOIN Custom_Template_Detail AS ctd ON ctd.template_id = ctl.template_id
+  ${whereClause}
+  GROUP BY ctl.template_id
+  ORDER BY ${sortField === 'total_price' ? 'total_price' : `ctl.${sortField}`} ${sortOrder};
   `
 
   try {
@@ -403,15 +443,42 @@ router.get('/', async function (req, res) {
       type: sequelize.QueryTypes.SELECT,
     })
 
+    // const events = results.reduce((acc, item) => {
+    //   const occ = acc.find((occ) => occ.occ_id === item.occ_id) || {
+    //     occ_id: item.occ_id,
+    //     occ_name: item.occ_name,
+    //     products: [],
+    //   }
+    //   if (!acc.includes(occ)) {
+    //     acc.push(occ)
+    //   }
+    //   occ.products.push({
+    //     template_id: item.template_id,
+    //     store_name: item.store_name,
+    //     template_name: item.template_name,
+    //     image_url: item.image_url,
+    //     discount: item.discount,
+    //     color_id: item.color_id,
+    //     category_id: item.category_id,
+    //     flower_type: item.flower_type,
+    //     color_name: item.color_name,
+    //     color_code: item.color_code,
+    //     total_price: item.total_price,
+    //   })
+    //   return acc
+    // }, [])
+
     const events = results.reduce((acc, item) => {
       const occ = acc.find((occ) => occ.occ_id === item.occ_id) || {
         occ_id: item.occ_id,
         occ_name: item.occ_name,
         products: [],
       }
+
       if (!acc.includes(occ)) {
         acc.push(occ)
       }
+
       occ.products.push({
         template_id: item.template_id,
         store_name: item.store_name,
@@ -425,9 +492,9 @@ router.get('/', async function (req, res) {
         color_code: item.color_code,
         total_price: item.total_price,
       })
+
       return acc
     }, [])
-
     res.json({
       status: 'success',
       data: { events },
@@ -857,12 +924,55 @@ router.get('/flower-type', async (req, res) => {
 router.get('/:template_id', async function (req, res) {
   const template_id = req.params.template_id
 
+  // const sql = `
+  //   SELECT
+  //     ctl.template_id,
+  //     ss.store_name AS store_name,
+  //     ss.store_id AS store_id,
+  //     ss.store_address AS store_address,
+  //     ctl.template_name,
+  //     ctl.image_url,
+  //     ctl.discount,
+  //     sco.occ AS occasion,
+  //     clr.name AS base_color,
+  //     cat.category_name,
+  //     clr.name AS color_name,
+  //     cpl.product_id,
+
+  //     cpl.price,
+  //     ctd.top,
+  //     ctd.left,
+  //     ctd.z_index AS zIndex,
+  //     ctd.rotate
+  //   FROM
+  //     Custom_Template_List AS ctl
+  //   LEFT JOIN
+  //     Share_Store AS ss ON ctl.store_id = ss.store_id
+  //   LEFT JOIN
+  //     Custom_Template_Detail AS ctd ON ctl.template_id = ctd.template_id
+  //   LEFT JOIN
+  //     Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
+  //   LEFT JOIN
+  //     Custom_Product_Variant AS cpv ON cpl.variant_id = cpv.variant_id
+  //   LEFT JOIN
+  //     Custom_Category AS cat ON cpv.category_id = cat.category_id
+  //   LEFT JOIN
+  //     Share_Color AS clr ON cpv.color_id = clr.color_id
+  //   LEFT JOIN
+  //     Share_Occ AS sco ON ctl.occ_id = sco.occ_id
+  //   WHERE
+  //     ctl.template_id = :template_id;
+
+  // `
+
   const sql = `
     SELECT
       ctl.template_id,
       ss.store_name AS store_name,
+      ss.store_id AS store_id,
+      ss.store_address AS store_address,
       ctl.template_name,
-      ctl.image_url,
+      ctl.image_url AS template_image_url,  
       ctl.discount,
       sco.occ AS occasion,
       clr.name AS base_color,
@@ -870,7 +980,7 @@ router.get('/:template_id', async function (req, res) {
       clr.name AS color_name,
       cpl.product_id,
       cpl.price,
-      ctd.top,
+      cpv.image_url AS product_image_url, 
       ctd.left,
       ctd.z_index AS zIndex,
       ctd.rotate
@@ -892,8 +1002,7 @@ router.get('/:template_id', async function (req, res) {
       Share_Occ AS sco ON ctl.occ_id = sco.occ_id
     WHERE
       ctl.template_id = :template_id;
-
-  `
+`
 
   try {
     const results = await sequelize.query(sql, {
@@ -905,13 +1014,14 @@ router.get('/:template_id', async function (req, res) {
       return res.status(404).json({ message: 'Product not found' })
     }
 
-    // 組織產品資訊及位置資訊
     let productDetails = {
       template_id: template_id,
       template_occ: results[0].occasion,
       store_name: results[0].store_name,
+      store_id: results[0].store_id,
+      store_address: results[0].store_address,
       template_name: results[0].template_name,
-      image_url: results[0].image_url,
+      image_url: results[0].template_image_url,
       color: results[0].base_color,
       discount: results[0].discount,
       products: [],
@@ -928,6 +1038,7 @@ router.get('/:template_id', async function (req, res) {
           category_name: result.category_name,
           color: result.color_name,
           price: result.price,
+          product_url: result.product_image_url,
           positions: [],
         }
         productDetails.products.push(product)
