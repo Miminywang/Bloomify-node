@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, UUIDV4 } from 'sequelize'
 
 export default async function (sequelize) {
   return sequelize.define(
@@ -11,6 +11,7 @@ export default async function (sequelize) {
       },
       order_number: {
         type: DataTypes.UUID,
+        defaultValue: UUIDV4, // 設定默認值為UUIDV4生成的UUID
         allowNull: false,
         unique: true,
       },

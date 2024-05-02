@@ -270,7 +270,9 @@ router.post(
     if (req.file) {
       console.log(req.file)
       const id = req.user.id
-      const data = { avatar: req.file.filename }
+      const data = {
+        avatar: `http://localhost:3005/member/avatar/${req.file.filename}`,
+      }
 
       // 對資料庫執行update
       const [affectedRows] = await Share_Member.update(data, {
@@ -278,7 +280,7 @@ router.post(
           id,
         },
       })
-
+      console.log(data)
       // 沒有更新到任何資料 -> 失敗或沒有資料被更新
       if (!affectedRows) {
         return res.json({

@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, UUIDV4 } from 'sequelize'
 
 export default async function (sequelize) {
   return sequelize.define(
@@ -9,73 +9,71 @@ export default async function (sequelize) {
         primaryKey: true,
         autoIncrement: true,
       },
+      order_number: {
+        type: DataTypes.UUID,
+        defaultValue: UUIDV4, // 設定默認值為UUIDV4生成的UUID
+        allowNull: false,
+        unique: true,
+      },
       member_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
       total_cost: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
-      is_buyer_recipient: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      sender_name: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      sender_phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      sender_mail: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       recipient_name: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       recipient_phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      delivery_option: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      delivery_address: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      delivery_cost: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
-      recipient_address: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      payment_method: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
-      estimated_delivery: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      actual_delivery: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      share_shipping_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      share_shipping_status_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      share_payment_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      share_payment_status_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      payment_amount: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      has_confirmed: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      coupon_code: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       discount: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
-      invoice_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      invoice_option: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
-      share_order_status_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      order_status: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
     },
     {

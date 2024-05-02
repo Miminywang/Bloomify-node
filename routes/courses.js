@@ -126,32 +126,9 @@ router.get('/latest', async function (req, res) {
       limit: 8,
     })
 
-    // ---------------- 取得isFavorite值的判斷 start  ----------------
-    // 獲取當前用戶收藏的課程列表
-    const memberId = 1 //
-    const favoriteCourses = await Course_Favorite.findAll({
-      where: { member_id: memberId },
-      attributes: ['course_id'],
-    })
-
-    // 將收藏的課程id轉換成一個集合
-    const favoriteCoursesIds = new Set(
-      favoriteCourses.map((fav) => fav.course_id)
-    )
-
-    // 為每個課程添加isFavorited屬性
-    const coursesisFavorites = latestCourses.map((course) => {
-      const isFavorited = favoriteCoursesIds.has(course.id)
-      return {
-        ...course.toJSON(),
-        isFavorited,
-      }
-    })
-    // ---------------- 取得isFavorite值的判斷 end  ----------------
-
     return res.json({
       status: 'success',
-      data: { courses: coursesisFavorites },
+      data: { courses: latestCourses },
     })
   } catch (error) {
     console.error('Error fetching latest courses:', error)
@@ -370,11 +347,11 @@ router.delete('/remove-fav/:courseId', authenticate, async (req, res) => {
       where: { member_id: memberId, course_id: courseId },
     })
     if (!favorite) {
-      // 如果不存在，返回一个 404 错误
+      // 如果不存在，返回一个 404 錯誤
       return res.status(404).json({ message: 'Favorite not found.' })
     }
 
-    // 存在的话，删除这个收藏
+    // 存在的話，刪除這個收藏
     await favorite.destroy()
 
     res.json({ message: 'Favorite deleted successfully.' })

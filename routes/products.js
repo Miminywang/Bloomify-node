@@ -19,7 +19,9 @@ const {
   Product_Review,
   Share_Star,
   Member,
-  Product_Favorite
+  Product_Favorite,
+  Product_Order_Detail,
+  Product_Order_Item,
 } = sequelize.models
 
 // 建立一對多關聯：圖片資料表定義
@@ -304,7 +306,7 @@ router.get('/get-fav', authenticate, async (req, res) => {
     // 發送結果
     res.json({ status: 'success', data: results })
   } catch (error) {
-    console.error('Error fetching favorite courses:', error)
+    console.error('Error fetching favorite products:', error)
     res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
 })
@@ -337,42 +339,121 @@ router.post('/add-fav/:productId', authenticate, async (req, res) => {
 
     res
       .status(201)
-      .json({ message: 'Course favorited successfully.', data: newFavorite })
+      .json({ message: 'Product favorited successfully.', data: newFavorite })
   } catch (error) {
-    console.error('Error adding course to favorites:', error)
+    console.error('Error adding product to favorites:', error)
     res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
 })
 
-// DELETE - 删除收藏的课程
+// DELETE - 刪除收藏的商品
 router.delete('/remove-fav/:productId', authenticate, async (req, res) => {
   console.log(req.user)
   if (!req.user || !req.user.id) {
     return res.status(401).json({ status: 'error', message: 'Unauthorized' })
   }
   const memberId = req.user.id
-  const courseId = parseInt(req.params.courseId)
+  const productId = parseInt(req.params.productId)
 
   try {
     // 檢查這個收藏是否存在
     const favorite = await Product_Favorite.findOne({
-      where: { member_id: memberId, course_id: courseId },
+      where: { member_id: memberId, product_id: productId },
     })
     if (!favorite) {
       // 如果不存在，返回一个 404 錯誤
       return res.status(404).json({ message: 'Favorite not found.' })
     }
 
-    // 存在的话，删除这个收藏
+    // 存在的话，刪除这个收藏
     await favorite.destroy()
 
     res.json({ message: 'Favorite deleted successfully.' })
   } catch (error) {
-    console.error('Error removing course from favorites:', error)
+    console.error('Error removing product from favorites:', error)
     res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
 })
 // 收藏結束
+
+// GET - 取得訂單明細
+router.get('/get-order-details', authenticate, async (req, res) => {
+  console.log(req.user)
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+
+  const sql = `
+      SELECT
+  pod.*
+FROM
+  product_order_detail pod
+
+WHERE
+  pod.member_id = :memberId;
+  `
+
+  try {
+    // 執行 SQL 查詢
+    const results = await sequelize.query(sql, {
+      replacements: { memberId: memberId },
+      type: sequelize.QueryTypes.SELECT,
+    })
+
+    // 發送結果
+    res.json({ status: 'success', data: results })
+  } catch (error) {
+    console.error('Error fetching shop cart:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+// POST - 儲存訂單明細
+router.post('/save-order-details', authenticate, async (req, res) => {
+  console.log('Received body:', req.body)
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+  const { products, detail, totalAmount, orderStatus } = req.body
+  console.log('Received user:', req.user)
+  try {
+    // 插入新的訂單明細紀錄
+    const newOrderDetail = await Product_Order_Detail.create({
+      member_id: memberId,
+      total_cost: totalAmount,
+      sender_name: detail.senderName,
+      sender_phone: detail.senderNumber,
+      sender_mail: detail.senderEmail,
+      recipient_name: detail.recipientName,
+      recipient_phone: detail.recipientNumber,
+      delivery_option: detail.deliveryOption,
+      delivery_address: detail.deliveryAddress,
+      delivery_cost: detail.deliveryShipping,
+      payment_method: detail.paymentMethod,
+      coupon_code: detail.couponCode,
+      discount: 0,
+      invoice_option: detail.invoiceOption,
+      order_status: orderStatus,
+    })
+    for (const item of products) {
+      await Product_Order_Item.create({
+        product_order_detail_id: newOrderDetail.id,
+        product_id: item.id,
+        quantity: item.quantity,
+      })
+    }
+
+    res.status(201).json({
+      message: 'new order detail saves successfully.',
+      data: newOrderDetail,
+    })
+  } catch (error) {
+    console.error('Error adding new order detail:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
 
 // GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
 router.get('/:id', async function (req, res) {
