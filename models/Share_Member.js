@@ -75,6 +75,12 @@ export default async function (sequelize) {
         // 有加密的情況下，驗證密碼無法用 sql 直接where找符合的帳號密碼組合，
         // 而是先找到帳號，進而拿到密碼 routes=>auth.js
         beforeCreate: async (user) => {
+          if (!user.avatar) {
+            user.avatar = 'http://localhost:3005/member/avatar/default.png' // 如果 avatar 為 null，設置為預設值
+          }
+          if (!user.join_date) {
+            user.join_date = new Date() // 填入現在時間
+          }
           if (user.password) {
             user.password = await generateHash(user.password)
           }
