@@ -56,16 +56,17 @@ router.post('/', async function (req, res, next) {
     // 回傳給前端的資料
     returnUser = {
       id: dbUser.id,
-      username: dbUser.username,
+      username: dbUser.google_name,
       google_uid: dbUser.google_uid,
     }
   } else {
     // 2-2. 不存在 -> 建立一個新會員資料(無帳號與密碼)，只有google來的資料 -> 執行登入工作
+    // google來的資料直接放入name,username,avatar
     const user = {
-      google_name: displayName,
-      google_email: email,
+      name: displayName,
+      username: email,
       google_uid,
-      google_pic: photoURL,
+      avatar: photoURL,
     }
 
     // 新增會員資料

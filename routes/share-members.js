@@ -123,7 +123,7 @@ router.post('/login', async function (req, res) {
   const returnUser = {
     id: user.id,
     username: user.username,
-    name: user.name,
+    google_uid: user.google_uid,
   }
   // 創建JWT
   // 產生存取令牌(access token)，其中包含會員資料
