@@ -15,67 +15,55 @@ export default async function (sequelize) {
       },
       total_cost: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
-      is_buyer_recipient: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      sender_name: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      sender_phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      sender_mail: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       recipient_name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       recipient_phone: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
-      recipient_address: {
+      delivery_option: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
-      estimated_delivery: {
-        type: DataTypes.DATE,
-        allowNull: false,
+      delivery_address: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
-      actual_delivery: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      share_shipping_id: {
+      delivery_cost: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
-      share_shipping_status_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      payment_method: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
-      share_payment_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      share_payment_status_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      payment_amount: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      has_confirmed: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      coupon_code: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       discount: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
-      share_invoice_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      share_order_status_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      invoice_option: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
     },
     {

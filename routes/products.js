@@ -20,8 +20,8 @@ const {
   Share_Star,
   Member,
   Product_Favorite,
-  Product_Cart,
-  Product_Cart_Item,
+  Product_Order_Detail,
+  Product_Order_Item,
 } = sequelize.models
 
 // 建立一對多關聯：圖片資料表定義
@@ -376,59 +376,8 @@ router.delete('/remove-fav/:productId', authenticate, async (req, res) => {
 })
 // 收藏結束
 
-//  GET - 取得某個會員的購物車
-router.get('/get-cart-items', authenticate, async (req, res) => {
-  console.log(req.user)
-  if (!req.user || !req.user.id) {
-    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
-  }
-  const memberId = req.user.id
-
-  // 取得購物車商品
-  const sql = `
-      SELECT
-    pc.id AS cart_id,
-    pc.total_cost,
-    pci.id AS cart_item_id,
-    pci.product_id,
-    p.*,
-    (p.price * pci.quantity) AS item_total,
-    p.name,
-    p.price,
-    pi.url AS image_url, -- Get the URL of the image where is_thumbnail is 0
-    pci.quantity,
-    ss.store_name
-FROM
-    product_cart AS pc
-INNER JOIN
-    product_cart_item AS pci ON pc.id = pci.product_cart_id
-INNER JOIN
-    product AS p ON pci.product_id = p.id
-LEFT JOIN
-    product_image AS pi ON p.id = pi.product_id AND pi.is_thumbnail = 0 -- Only join where is_thumbnail is 0
-LEFT JOIN
-    share_store AS ss ON p.share_store_id = ss.store_id
-WHERE
-    pc.member_id = :memberId;
-  `
-
-  try {
-    // 執行 SQL 查詢
-    const results = await sequelize.query(sql, {
-      replacements: { memberId: memberId },
-      type: sequelize.QueryTypes.SELECT,
-    })
-
-    // 發送結果
-    res.json({ status: 'success', data: results })
-  } catch (error) {
-    console.error('Error fetching shop cart:', error)
-    res.status(500).json({ status: 'error', message: 'Internal server error' })
-  }
-})
-
-// GET - 取得某個會員的填寫資料
-router.get('/get-order-list', authenticate, async (req, res) => {
+// GET - 取得訂單明細
+router.get('/get-order-details', authenticate, async (req, res) => {
   console.log(req.user)
   if (!req.user || !req.user.id) {
     return res.status(401).json({ status: 'error', message: 'Unauthorized' })
@@ -440,21 +389,11 @@ router.get('/get-order-list', authenticate, async (req, res) => {
   pod.*,
   poi.quantity,
   poi.product_id,
-  p.name,
-  shipping.shipping_name,
-  shipping.shipping_cost,
-  payment.payment_name,
-  invoice.invoice_name
+  p.name
 FROM
   product_order_detail pod
 INNER JOIN product_order_item poi ON pod.id = poi.product_order_detail_id
 LEFT JOIN product p ON p.id = poi.product_id
-
-LEFT JOIN share_shipping shipping ON shipping.shipping_id = pod.share_shipping_id
-
-LEFT JOIN share_payment payment ON payment.payment_id = pod.share_payment_id
-
-LEFT JOIN share_invoice invoice ON invoice.invoice_id = pod.share_invoice_id
 
 WHERE
   pod.member_id = :memberId;
@@ -475,46 +414,50 @@ WHERE
   }
 })
 
-// POST - 儲存購物車和填寫的資料
-// router.post('/save-cart-checkout', authenticate, async (req, res) => {
-//   console.log(req.user)
-//   if (!req.user || !req.user.id) {
-//     return res.status(401).json({ status: 'error', message: 'Unauthorized' })
-//   }
-//   const memberId = req.user.id
-//   // 取值
-//   const { cartItems, fillOutDetails } = req.body
-//   const t = await sequelize.transaction()
+// POST - 儲存訂單明細
+router.post('/save-order-details', authenticate, async (req, res) => {
+  console.log('Received body:', req.body)
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+  const { products, detail } = req.body
+  console.log('Received user:', req.user)
+  try {
+    // 插入新的訂單明細紀錄
+    const newOrderDetail = await Product_Order_Detail.create({
+      member_id: memberId,
+      total_cost: 0,
+      sender_name: detail.senderName,
+      sender_phone: detail.senderNumber,
+      sender_mail: detail.senderEmail,
+      recipient_name: detail.recipientName,
+      recipient_phone: detail.recipientNumber,
+      delivery_option: detail.deliveryOption,
+      delivery_address: detail.deliveryAddress,
+      delivery_cost: detail.deliveryShipping,
+      payment_method: detail.paymentMethod,
+      coupon_code: detail.couponCode,
+      discount: 0,
+      invoiceOption: detail.invoiceOption,
+    })
+    for (const item of products) {
+      await Product_Order_Item.create({
+        product_order_detail_id: newOrderDetail.id,
+        product_id: item.id,
+        quantity: item.quantity,
+      })
+    }
 
-//   try {
-//     // 插入購物車 cart
-//     const newCart = await Product_Cart.create(
-//       {
-//         member_id: memberId,
-//         total_cost: cartItems.totalCost,
-//       },
-//       { transaction: t }
-//     )
-//     // 插入cart items
-//     for (const item of cartItems) {
-//       await Product_Cart_Item.create(
-//         {
-//           product_cart_id: newCart.id,
-//           product_id: item.id,
-//           quantity: item.quantity,
-//         },
-//         { transaction: t }
-//       )
-//     }
-
-//     res
-//       .status(201)
-//       .json({ message: 'Product favorited successfully.', data: newCart })
-//   } catch (error) {
-//     console.error('Error adding product to favorites:', error)
-//     res.status(500).json({ status: 'error', message: 'Internal server error' })
-//   }
-// })
+    res.status(201).json({
+      message: 'new order detail saves successfully.',
+      data: newOrderDetail,
+    })
+  } catch (error) {
+    console.error('Error adding new order detail:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
 
 // GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
 router.get('/:id', async function (req, res) {
