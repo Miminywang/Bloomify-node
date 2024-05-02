@@ -22,6 +22,9 @@ router.post('/', async function (req, res, next) {
 
   const { uid, displayName, email, photoURL } = req.body
   const google_uid = uid
+  const avatar = photoURL.startsWith('http')
+    ? photoURL
+    : `http://localhost:3005/member/avatar/${photoURL}`
   console.log(req.body)
 
   // 以下流程:
@@ -66,9 +69,8 @@ router.post('/', async function (req, res, next) {
       name: displayName,
       username: email,
       google_uid,
-      avatar: photoURL,
+      avatar: avatar,
     }
-
     // 新增會員資料
     const newUser = await Share_Member.create(user)
 
