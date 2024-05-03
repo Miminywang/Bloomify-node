@@ -268,6 +268,7 @@ router.get('/get-fav', authenticate, async (req, res) => {
           c.name,
           c.intro,
           c.price,
+          c.average_stars,
           ci.path AS image_path,
           ci.is_main
       FROM

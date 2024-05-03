@@ -19,6 +19,10 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      subtotal: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       total_cost: {
         type: DataTypes.INTEGER,
         allowNull: true,
