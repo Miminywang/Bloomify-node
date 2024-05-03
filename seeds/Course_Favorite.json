@@ -60,6 +60,36 @@
     "created_at": "2024-05-20 14:00:00"
   },
   {
+    "course_id": 21,
+    "member_id": 1,
+    "created_at": "2024-04-02 08:30:00"
+  },
+  {
+    "course_id": 39,
+    "member_id": 1,
+    "created_at": "2024-03-28 07:30:00"
+  },
+  {
+    "course_id": 14,
+    "member_id": 1,
+    "created_at": "2024-03-26 07:30:00"
+  },
+  {
+    "course_id": 44,
+    "member_id": 1,
+    "created_at": "2024-03-29 07:30:00"
+  },
+  {
+    "course_id": 75,
+    "member_id": 1,
+    "created_at": "2024-03-18 07:30:00"
+  },
+  {
+    "course_id": 41,
+    "member_id": 1,
+    "created_at": "2024-03-17 07:30:00"
+  },
+  {
     "course_id": 12,
     "member_id": 2,
     "created_at": "2024-04-05 10:30:00"
