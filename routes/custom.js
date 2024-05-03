@@ -1,4 +1,28 @@
 import express from 'express'
+import ecpay_payment from 'ecpay_aio_nodejs'
+import crypto from 'crypto'
+import dotenv from 'dotenv'
+import moment from 'moment'
+dotenv.config()
+const { MERCHANTID, HASHKEY, HASHIV, HOST } = process.env
+const options = {
+  OperationMode: 'Test', //Test or Production
+  MercProfile: {
+    MerchantID: MERCHANTID,
+    HashKey: HASHKEY,
+    HashIV: HASHIV,
+  },
+  IgnorePayment: [
+    //    "Credit",
+    //    "WebATM",
+    //    "ATM",
+    //    "CVS",
+    //    "BARCODE",
+    //    "AndroidPay"
+  ],
+  IsProjectContractor: false,
+}
+const ecpay = new ecpay_payment(options)
 const router = express.Router()
 import { getIdParam } from '#db-helpers/db-tool.js'
 import { Op } from 'sequelize'
@@ -1064,10 +1088,178 @@ router.get('/:template_id', async function (req, res) {
   }
 })
 
+// router.post('/submit-order', upload.none(), async (req, res) => {
+//   const {
+//     image_url, // 從客戶端傳來的Base64圖片數據
+//     products, // 包含產品資訊的陣列
+//     bouquet_name,
+//     delivery_date,
+//     delivery_time,
+//     member_id,
+//     store_id,
+//     shipping_id,
+//     sender_name,
+//     sender_tel,
+//     recipient_name,
+//     recipient_tel,
+//     recipient_address,
+//     total,
+//     payment_method,
+//     shipping_method,
+//     shipping_status,
+//     order_status,
+//     discount,
+//     card_content,
+//     card_url,
+//   } = req.body
+
+//   // const decodeAndSaveImage = (base64Data, directory, filename) => {
+//   //   console.log(base64Data.slice(0, 50)) // 輸出Base64數據的前50個字符來檢查格式
+
+//   //   const matches = base64Data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
+//   //   if (!matches || matches.length !== 3) {
+//   //     console.error('Failed to match Base64 pattern', base64Data.slice(0, 100))
+//   //     throw new Error('Invalid base64 image data')
+//   //   }
+
+//   //   console.log('Matched MIME type:', matches[1]) // 輸出匹配到的MIME類型
+//   //   const imageBuffer = Buffer.from(matches[2], 'base64')
+//   //   const relativePath = path.join(directory, filename)
+//   //   const fullPath = path.join(process.cwd(), relativePath)
+
+//   //   if (!fs.existsSync(path.dirname(fullPath))) {
+//   //     fs.mkdirSync(path.dirname(fullPath), { recursive: true })
+//   //   }
+
+//   //   fs.writeFileSync(fullPath, imageBuffer)
+//   //   return relativePath
+//   //
+//   // const decodeAndSaveImage = (base64Data, directory, filename) => {
+//   //   console.log(base64Data.slice(0, 50)) // 輸出Base64數據的前50個字符來檢查格式
+
+//   //   const matches = base64Data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
+//   //   if (!matches || matches.length !== 3) {
+//   //     console.warn(
+//   //       'Base64 pattern not fully matched, continuing anyway:',
+//   //       base64Data.slice(0, 100)
+//   //     )
+
+//   //     if (!matches) return
+//   //   }
+
+//   //   console.log('Matched MIME type:', matches[1])
+//   //   const imageBuffer = Buffer.from(matches[2], 'base64')
+//   //   const relativePath = path.join('uploads', filename)
+//   //   const fullPath = path.join(process.cwd(), 'public', relativePath)
+
+//   //   if (!fs.existsSync(path.dirname(fullPath))) {
+//   //     fs.mkdirSync(path.dirname(fullPath), { recursive: true })
+//   //   }
+
+//   //   fs.writeFileSync(fullPath, imageBuffer)
+//   //   return '/' + relativePath
+//   // }
+
+//   const __filename = fileURLToPath(import.meta.url)
+
+//   const decodeAndSaveImage = (base64Data, filename) => {
+//     const matches = base64Data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
+//     if (!matches || matches.length !== 3) {
+//       console.warn(
+//         'Base64 pattern not fully matched, continuing anyway:',
+//         base64Data.slice(0, 100)
+//       )
+//       return
+//     }
+
+//     const imageBuffer = Buffer.from(matches[2], 'base64')
+//     const serverPath = path.join('public', 'uploads', filename)
+//     if (!fs.existsSync(path.dirname(serverPath))) {
+//       fs.mkdirSync(path.dirname(serverPath), { recursive: true })
+//     }
+
+//     fs.writeFileSync(serverPath, imageBuffer)
+//     return `/uploads/${filename}`
+//   }
+
+//   try {
+//     const imageName = `${uuidv4()}.png`
+//     const cardImageName = `${uuidv4()}.png`
+
+//     const imagePath = decodeAndSaveImage(image_url, imageName)
+//     const cardImagePath = decodeAndSaveImage(card_url, cardImageName)
+
+//     const orderId = uuidv4()
+//     const result = await sequelize.transaction(async (t) => {
+//       const order = await Custom_Order_List.create(
+//         {
+//           order_id: orderId,
+//           bouquet_name,
+//           image_url: imagePath, // 儲存簡化的路徑到資料庫
+//           delivery_date,
+//           delivery_time,
+//           member_id,
+//           store_id,
+//           shipping_id,
+//           sender_name,
+//           sender_tel,
+//           recipient_name,
+//           recipient_tel,
+//           recipient_address,
+//           total,
+//           payment_method,
+//           shipping_method,
+//           shipping_status,
+//           order_status,
+//           discount: discount || 0, // 使用預設值
+//           card_content,
+//           card_url: `/${cardImagePath}`,
+//         },
+//         { transaction: t }
+//       )
+
+//       const orderItems = products.map((product) => ({
+//         detail_id: product.detail_id, // 假設產品資料中包含此欄位
+//         order_id: orderId,
+//         product_id: product.product_id,
+//         top: product.top,
+//         left: product.left,
+//         z_index: product.z_index,
+//         rotate: product.rotate,
+//       }))
+
+//       await Custom_Order_Detail.bulkCreate(orderItems, { transaction: t })
+
+//       return order
+//     })
+
+//     // const orderStatusDetails = await Share_Order_Status.findByPk(order_status)
+//     // const paymentDetails = await Share_Payment.findByPk(payment_method)
+//     // res.json({
+//     //   status: 'success',
+//     //   message: '訂單建立成功!',
+//     //   data: {
+//     //     order_id: result.order_id,
+//     //     total: `NT$${total}`,
+//     //     // created_at: result.createdAt.toISOString(),
+//     //     // order_status: orderStatusDetails.name,
+//     //     // payment_method: paymentDetails.name,
+//     //     payment_status: '已付款', // 假設付款狀態直接為已付款
+//     //     invoice: '載具',
+//     //   },
+//     // })
+
+//     res.redirect(`/initiate-payment/${result.order_id}`)
+//   } catch (error) {
+//     console.error('訂單建立失敗:', error)
+//     res.status(500).send({ message: 'Failed to place order' })
+//   }
+// })
+
 router.post('/submit-order', upload.none(), async (req, res) => {
   const {
-    image_url, // 從客戶端傳來的Base64圖片數據
-    products, // 包含產品資訊的陣列
+    image_url,
+    products,
     bouquet_name,
     delivery_date,
     delivery_time,
@@ -1089,71 +1281,20 @@ router.post('/submit-order', upload.none(), async (req, res) => {
     card_url,
   } = req.body
 
-  // const decodeAndSaveImage = (base64Data, directory, filename) => {
-  //   console.log(base64Data.slice(0, 50)) // 輸出Base64數據的前50個字符來檢查格式
-
-  //   const matches = base64Data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
-  //   if (!matches || matches.length !== 3) {
-  //     console.error('Failed to match Base64 pattern', base64Data.slice(0, 100))
-  //     throw new Error('Invalid base64 image data')
-  //   }
-
-  //   console.log('Matched MIME type:', matches[1]) // 輸出匹配到的MIME類型
-  //   const imageBuffer = Buffer.from(matches[2], 'base64')
-  //   const relativePath = path.join(directory, filename)
-  //   const fullPath = path.join(process.cwd(), relativePath)
-
-  //   if (!fs.existsSync(path.dirname(fullPath))) {
-  //     fs.mkdirSync(path.dirname(fullPath), { recursive: true })
-  //   }
-
-  //   fs.writeFileSync(fullPath, imageBuffer)
-  //   return relativePath
-  //
-  // const decodeAndSaveImage = (base64Data, directory, filename) => {
-  //   console.log(base64Data.slice(0, 50)) // 輸出Base64數據的前50個字符來檢查格式
-
-  //   const matches = base64Data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
-  //   if (!matches || matches.length !== 3) {
-  //     console.warn(
-  //       'Base64 pattern not fully matched, continuing anyway:',
-  //       base64Data.slice(0, 100)
-  //     )
-
-  //     if (!matches) return
-  //   }
-
-  //   console.log('Matched MIME type:', matches[1])
-  //   const imageBuffer = Buffer.from(matches[2], 'base64')
-  //   const relativePath = path.join('uploads', filename)
-  //   const fullPath = path.join(process.cwd(), 'public', relativePath)
-
-  //   if (!fs.existsSync(path.dirname(fullPath))) {
-  //     fs.mkdirSync(path.dirname(fullPath), { recursive: true })
-  //   }
-
-  //   fs.writeFileSync(fullPath, imageBuffer)
-  //   return '/' + relativePath
-  // }
-
-  const __filename = fileURLToPath(import.meta.url)
-
-  const decodeAndSaveImage = (base64Data, filename) => {
+  const decodeAndSaveImage = async (base64Data, filename) => {
     const matches = base64Data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/)
     if (!matches || matches.length !== 3) {
       console.warn(
         'Base64 pattern not fully matched, continuing anyway:',
         base64Data.slice(0, 100)
       )
-      return
+      return null
     }
-
     const imageBuffer = Buffer.from(matches[2], 'base64')
     const serverPath = path.join('public', 'uploads', filename)
     if (!fs.existsSync(path.dirname(serverPath))) {
       fs.mkdirSync(path.dirname(serverPath), { recursive: true })
     }
-
     fs.writeFileSync(serverPath, imageBuffer)
     return `/uploads/${filename}`
   }
@@ -1161,9 +1302,8 @@ router.post('/submit-order', upload.none(), async (req, res) => {
   try {
     const imageName = `${uuidv4()}.png`
     const cardImageName = `${uuidv4()}.png`
-
-    const imagePath = decodeAndSaveImage(image_url, imageName)
-    const cardImagePath = decodeAndSaveImage(card_url, cardImageName)
+    const imagePath = await decodeAndSaveImage(image_url, imageName)
+    const cardImagePath = await decodeAndSaveImage(card_url, cardImageName)
 
     const orderId = uuidv4()
     const result = await sequelize.transaction(async (t) => {
@@ -1171,7 +1311,7 @@ router.post('/submit-order', upload.none(), async (req, res) => {
         {
           order_id: orderId,
           bouquet_name,
-          image_url: imagePath, // 儲存簡化的路徑到資料庫
+          image_url: imagePath,
           delivery_date,
           delivery_time,
           member_id,
@@ -1187,15 +1327,15 @@ router.post('/submit-order', upload.none(), async (req, res) => {
           shipping_method,
           shipping_status,
           order_status,
-          discount: discount || 0, // 使用預設值
+          discount: discount || 0,
           card_content,
-          card_url: `/${cardImagePath}`,
+          card_url: cardImagePath,
         },
         { transaction: t }
       )
 
       const orderItems = products.map((product) => ({
-        detail_id: product.detail_id, // 假設產品資料中包含此欄位
+        detail_id: product.detail_id,
         order_id: orderId,
         product_id: product.product_id,
         top: product.top,
@@ -1205,29 +1345,213 @@ router.post('/submit-order', upload.none(), async (req, res) => {
       }))
 
       await Custom_Order_Detail.bulkCreate(orderItems, { transaction: t })
-
       return order
     })
-    // const orderStatusDetails = await Share_Order_Status.findByPk(order_status)
-    // const paymentDetails = await Share_Payment.findByPk(payment_method)
+
     res.json({
       status: 'success',
       message: '訂單建立成功!',
       data: {
         order_id: result.order_id,
         total: `NT$${total}`,
-        // created_at: result.createdAt.toISOString(),
-        // order_status: orderStatusDetails.name,
-        // payment_method: paymentDetails.name,
-        payment_status: '已付款', // 假設付款狀態直接為已付款
+
+        payment_status: '已付款',
         invoice: '載具',
       },
     })
   } catch (error) {
-    console.error('訂單建立失敗:', error)
-    res.status(500).send({ message: 'Failed to place order' })
+    console.error('Order Creation Failed:', error)
+    res.status(500).send({ message: 'Failed to place order', error })
   }
 })
+
+const getOrderDetails = async (orderId) => {
+  try {
+    const order = await Custom_Order_List.findByPk(orderId)
+    if (!order) {
+      console.log('沒找到訂單')
+      return null
+    }
+    return {
+      orderId: order.order_id,
+      totalAmount: order.total,
+      tradeDesc: order.bouquet_name,
+      itemName: order.bouquet_name,
+    }
+  } catch (error) {
+    console.error('查詢有問題:', error)
+    throw error
+  }
+}
+
+// const generatePaymentFormData = (orderDetails) => {
+//   const { orderId, totalAmount } = orderDetails
+//   const formData = {
+//     // MerchantID: '2000132',
+//     MerchantTradeNo: orderId.replace(/-/g, '').substring(0, 20),
+//     MerchantTradeDate: new Date()
+//       .toLocaleString('zh-TW', {
+//         year: 'numeric',
+//         month: '2-digit',
+//         day: '2-digit',
+//         hour: '2-digit',
+//         minute: '2-digit',
+//         second: '2-digit',
+//         hour12: false,
+//         timeZone: 'Asia/Taipei',
+//       })
+//       .replace(/\//g, '/')
+//       .replace(',', ''),
+//     TotalAmount: parseInt(totalAmount, 10),
+//     TradeDesc: '客製花束',
+//     ItemName: '客製花束',
+//     ReturnURL: 'https://yourdomain.com/api/custom/payment-callback',
+//     ClientBackURL: 'https://yourdomain.com/api/custom/clientReturn',
+//     ChoosePayment: 'ALL',
+//     EncryptType: '1',
+//   }
+
+//   return formData
+// }
+const generatePaymentFormData = (orderDetails) => {
+  const { orderId, totalAmount } = orderDetails
+  const base_param = {
+    MerchantID: MERCHANTID,
+    MerchantTradeNo: orderId.replace(/-/g, '').substring(0, 20),
+    MerchantTradeDate: moment().format('YYYY/MM/DD HH:mm:ss'),
+    PaymentType: 'aio',
+    TotalAmount: `${totalAmount}`,
+    TradeDesc: '客製花束',
+    ItemName: '客製花束',
+    ReturnURL: 'http://localhost:3005/api/custom/payment-callback',
+    ChoosePayment: 'ALL',
+    EncryptType: 1,
+    ClientBackURL: 'http://localhost:3000/cart/payment-successful',
+  }
+
+  return base_param
+}
+const generateCheckMacValue = (params, hashKey, hashIV) => {
+  const keys = Object.keys(params).sort()
+  const baseString = keys.map((key) => `${key}=${params[key]}`).join('&')
+
+  const stringToEncode = `HashKey=${hashKey}&${baseString}&HashIV=${hashIV}`
+
+  let encodedString = encodeURIComponent(stringToEncode).toLowerCase()
+
+  encodedString = encodedString
+    .replace(/%2d/g, '-')
+    .replace(/%5f/g, '_')
+    .replace(/%2e/g, '.')
+    .replace(/%21/g, '!')
+    .replace(/%2a/g, '*')
+    .replace(/%28/g, '(')
+    .replace(/%29/g, ')')
+    .replace(/%20/g, '+')
+
+  // 對最終的字符串進行 SHA256 哈希計算，然後轉換為大寫
+  const hash = crypto.createHash('sha256')
+  hash.update(encodedString)
+  return hash.digest('hex').toUpperCase()
+}
+
+router.get('/initiate-payment/:orderId', async (req, res) => {
+  try {
+    const { orderId } = req.params
+    const orderDetails = await getOrderDetails(orderId)
+    const paymentFormData = generatePaymentFormData(orderDetails)
+    const checkMacValue = generateCheckMacValue(
+      paymentFormData,
+      HASHKEY,
+      HASHIV
+    )
+
+    if (checkMacValue) {
+      const form = `<form action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="POST" name="payment" style="display: none;">
+      <input name="MerchantID" value="${paymentFormData.MerchantID}"/>
+      <input name="MerchantTradeNo" value="${paymentFormData.MerchantTradeNo}" />
+      <input name="MerchantTradeDate" value="${paymentFormData.MerchantTradeDate}" />
+      <input name="PaymentType" value="${paymentFormData.PaymentType}" />
+      <input name="TotalAmount" value="${paymentFormData.TotalAmount}" />
+      <input name="TradeDesc" value="${paymentFormData.TradeDesc}" />
+      <input name="ItemName" value="${paymentFormData.ItemName}" />
+      <input name="ReturnURL" value="${paymentFormData.ReturnURL}" />
+      <input name="ChoosePayment" value="${paymentFormData.ChoosePayment}" />
+      <input name="EncryptType" value="${paymentFormData.EncryptType}" />
+      <input name="ClientBackURL" value="${paymentFormData.ClientBackURL}" />
+      <input name="CheckMacValue" value="${checkMacValue}" />
+      <button type="submit">Submit</button>
+    </form>`
+
+      const formHtml = form.replace(/\s+/g, ' ').trim()
+
+      res.json({
+        status: 'success',
+        data: formHtml,
+      })
+    }
+  } catch (error) {
+    console.error('Error in initiate-payment:', error)
+    res.status(500).json({ success: false, message: 'Internal Server Error' })
+  }
+})
+// router.get('/initiate-payment/:orderId', async (req, res) => {
+//   const { orderId } = req.params
+//   const orderDetails = await getOrderDetails(orderId)
+//   const paymentFormData = generatePaymentFormData(orderDetails)
+//   const html = ecpay.payment_client.aio_check_out_all(paymentFormData)
+//   // res.render('payment', { title: 'Initiate Payment', html })
+//   res.send(html)
+// })
+
+router.get('/get-payment-data/:orderId', async (req, res) => {
+  const { orderId } = req.params // 修正这里
+  try {
+    const orderDetails = await getOrderDetails(orderId)
+    if (!orderDetails) {
+      // 如果没有找到订单，返回一个错误或者相应的HTTP状态码
+      return res.status(404).json({ message: 'Order not found' })
+    }
+    const paymentFormData = generatePaymentFormData(orderDetails)
+    res.json(paymentFormData)
+  } catch (error) {
+    console.error('Error fetching order details:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+})
+
+router.post('/payment-callback', async (req, res) => {
+  // console.log('req.body:', req.body)
+
+  const data = { ...req.body }
+  const receivedCheckMacValue = data.CheckMacValue
+  delete data.CheckMacValue // 刪除CheckMacValue以便重新計算
+
+  const create = new ecpay_payment(options)
+  const calculatedCheckMacValue =
+    create.payment_client.helper.gen_chk_mac_value(data)
+
+  console.log(
+    '確認交易正確性：',
+    receivedCheckMacValue === calculatedCheckMacValue
+  )
+
+  if (receivedCheckMacValue === calculatedCheckMacValue) {
+    res.send('1|OK') // 確認收到的數據無誤，告知綠界
+  } else {
+    res.status(400).send('CheckMacValue validation failed')
+  }
+})
+
+router.get('/payment-success/:orderId', (req, res) => {
+  res.render('success', { orderId: req.params.orderId })
+})
+
+router.get('/payment-failure/:orderId', (req, res) => {
+  res.render('failure', { orderId: req.params.orderId })
+})
+
+// ------------------------------------------------------------------------------------------
 
 router.get('/custom/:store_id', async function (req, res) {
   const store_id = req.params.store_id
