@@ -76,7 +76,8 @@ export default async function (sequelize) {
         // 而是先找到帳號，進而拿到密碼 routes=>auth.js
         beforeCreate: async (user) => {
           if (!user.avatar) {
-            user.avatar = 'http://localhost:3005/member/avatar/default.png' // 如果 avatar 為 null，設置為預設值
+            user.avatar =
+              'http://localhost:3005/member/avatar/pink_Gladiola_0.jpg' // 如果 avatar 為 null，設置為預設值
           }
           if (!user.join_date) {
             user.join_date = new Date() // 填入現在時間
