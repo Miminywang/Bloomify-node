@@ -376,35 +376,63 @@ router.delete('/remove-fav/:productId', authenticate, async (req, res) => {
 })
 // 收藏結束
 
-// GET - 取得訂單明細
-router.get('/get-order-details', authenticate, async (req, res) => {
-  console.log(req.user)
+// GET - 取得訂單和單筆商品明細
+router.get('/get-all-order-details', authenticate, async (req, res) => {
   if (!req.user || !req.user.id) {
     return res.status(401).json({ status: 'error', message: 'Unauthorized' })
   }
   const memberId = req.user.id
 
-  const sql = `
-      SELECT
-  pod.*
-FROM
-  product_order_detail pod
-
-WHERE
-  pod.member_id = :memberId;
-  `
-
   try {
-    // 執行 SQL 查詢
-    const results = await sequelize.query(sql, {
+    // Query to get order details
+    const sqlOrderDetails = `
+      SELECT
+          pod.*
+      FROM
+          product_order_detail AS pod
+      WHERE
+          pod.member_id = :memberId;
+    `
+    const orderDetails = await sequelize.query(sqlOrderDetails, {
       replacements: { memberId: memberId },
       type: sequelize.QueryTypes.SELECT,
     })
 
-    // 發送結果
-    res.json({ status: 'success', data: results })
+    // Query to get order items with product details and images
+    const sqlOrderItems = `
+      SELECT
+          poi.*,
+          p.name,
+          p.price,
+          p.directory,
+          pi.url AS thumbnail_url,
+          ss.store_name
+      FROM
+          product_order_item AS poi
+      JOIN
+          product_order_detail AS pod ON pod.id = poi.product_order_detail_id
+      JOIN
+          product AS p ON poi.product_id = p.id
+      LEFT JOIN
+          product_image AS pi ON p.id = pi.product_id AND pi.is_thumbnail = 1
+      LEFT JOIN
+          Share_Store AS ss ON p.share_store_id = ss.store_id
+      WHERE
+          pod.member_id = :memberId;
+    `
+    const orderItems = await sequelize.query(sqlOrderItems, {
+      replacements: { memberId: memberId },
+      type: sequelize.QueryTypes.SELECT,
+    })
+
+    // Combine and send the results
+    res.json({
+      status: 'success',
+      orderDetails: orderDetails,
+      orderItems: orderItems,
+    })
   } catch (error) {
-    console.error('Error fetching shop cart:', error)
+    console.error('Error fetching order data:', error)
     res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
 })
@@ -416,12 +444,13 @@ router.post('/save-order-details', authenticate, async (req, res) => {
     return res.status(401).json({ status: 'error', message: 'Unauthorized' })
   }
   const memberId = req.user.id
-  const { products, detail, totalAmount, orderStatus } = req.body
+  const { products, detail, subtotal, totalAmount, orderStatus } = req.body
   console.log('Received user:', req.user)
   try {
     // 插入新的訂單明細紀錄
     const newOrderDetail = await Product_Order_Detail.create({
       member_id: memberId,
+      subtotal: subtotal,
       total_cost: totalAmount,
       sender_name: detail.senderName,
       sender_phone: detail.senderNumber,
