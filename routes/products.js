@@ -361,7 +361,7 @@ router.delete('/remove-fav/:productId', authenticate, async (req, res) => {
       where: { member_id: memberId, product_id: productId },
     })
     if (!favorite) {
-      // 如果不存在，返回一个 404 錯誤
+      // 如果不存在，返回一個 404 錯誤
       return res.status(404).json({ message: 'Favorite not found.' })
     }
 
@@ -445,7 +445,6 @@ router.post('/save-order-details', authenticate, async (req, res) => {
   }
   const memberId = req.user.id
   const { products, detail, subtotal, totalAmount, orderStatus } = req.body
-  console.log('Received user:', req.user)
   try {
     // 插入新的訂單明細紀錄
     const newOrderDetail = await Product_Order_Detail.create({
