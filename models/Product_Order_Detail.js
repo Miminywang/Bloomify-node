@@ -79,6 +79,18 @@ export default async function (sequelize) {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      store_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      store_name: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      store_address: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       tableName: 'product_order_detail', //直接提供資料表名稱
