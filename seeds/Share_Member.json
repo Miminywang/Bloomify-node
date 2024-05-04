@@ -8,11 +8,7 @@
     "city": "台北市",
     "district": "信義區",
     "address": "忠孝東路四段101號",
-    "avatar": "http://localhost:3005/member/avatar/member_avatar01.jpg",
-    "google_id": "NULL",
-    "google_name": "NULL",
-    "google_email": "NULL",
-    "google_pic": "NULL",
+    "avatar": "http://localhost:3005/member/avatar/avatar01.jpg",
     "join_date": "2020/1/1"
   },
   {
@@ -24,11 +20,7 @@
     "city": "台中市",
     "district": "西屯區",
     "address": "市政北一路168號",
-    "avatar": "http://localhost:3005/member/avatar/member_avatar02.jpg",
-    "google_id": "NULL",
-    "google_name": "NULL",
-    "google_email": "NULL",
-    "google_pic": "NULL",
+    "avatar": "http://localhost:3005/member/avatar/avatar02.jpg",
     "join_date": "2019/9/23"
   },
   {
@@ -40,11 +32,6 @@
     "city": "高雄市",
     "district": "鼓山區",
     "address": "蓮海路1號",
-    "avatar": "http://localhost:3005/member/avatar/member_avatar03.jpg",
-    "google_id": "NULL",
-    "google_name": "NULL",
-    "google_email": "NULL",
-    "google_pic": "NULL",
     "join_date": "2020/4/22"
   },
   {
