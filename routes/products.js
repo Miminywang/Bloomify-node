@@ -361,7 +361,7 @@ router.delete('/remove-fav/:productId', authenticate, async (req, res) => {
       where: { member_id: memberId, product_id: productId },
     })
     if (!favorite) {
-      // 如果不存在，返回一个 404 錯誤
+      // 如果不存在，返回一個 404 錯誤
       return res.status(404).json({ message: 'Favorite not found.' })
     }
 
@@ -444,8 +444,7 @@ router.post('/save-order-details', authenticate, async (req, res) => {
     return res.status(401).json({ status: 'error', message: 'Unauthorized' })
   }
   const memberId = req.user.id
-  const { products, detail, subtotal, totalAmount, orderStatus } = req.body
-  console.log('Received user:', req.user)
+  const { products, detail, store711, subtotal, totalAmount, orderStatus } = req.body
   try {
     // 插入新的訂單明細紀錄
     const newOrderDetail = await Product_Order_Detail.create({
@@ -465,6 +464,9 @@ router.post('/save-order-details', authenticate, async (req, res) => {
       discount: 0,
       invoice_option: detail.invoiceOption,
       order_status: orderStatus,
+      store_id: store711.storeid,
+      store_name: store711.storename,
+      store_address: store711.storeaddress,
     })
     for (const item of products) {
       await Product_Order_Item.create({
@@ -482,6 +484,17 @@ router.post('/save-order-details', authenticate, async (req, res) => {
     console.error('Error adding new order detail:', error)
     res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
+})
+
+// 7-11 店到店：與資料庫無關，單純轉向使用
+const callback_url = process.env.SHIP_711_STORE_CALLBACK_URL
+
+router.post('/711', function (req, res) {
+  console.log(req.body)
+  res.redirect(callback_url + '?' + new URLSearchParams(req.body).toString())
+  // const queryString = QueryString.stringify(req.body)
+  // console.log(queryString)
+  // res.redirect(callback_url + '?' + queryString)
 })
 
 // GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
