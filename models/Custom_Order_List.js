@@ -63,6 +63,10 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      payment_status: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       shipping_method: {
         type: DataTypes.INTEGER,
         allowNull: false,

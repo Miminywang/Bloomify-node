@@ -4,7 +4,7 @@ import crypto from 'crypto'
 import dotenv from 'dotenv'
 import moment from 'moment'
 dotenv.config()
-const { MERCHANTID, HASHKEY, HASHIV, HOST } = process.env
+const { MERCHANTID, HASHKEY, HASHIV, EC_HOST } = process.env
 const options = {
   OperationMode: 'Test', //Test or Production
   MercProfile: {
@@ -48,6 +48,7 @@ const {
   Custom_Order_Detail,
   Share_Member,
   Share_Payment,
+  Share_Payment_Status,
   Share_Shipping,
   Share_Shipping_Status,
   Share_Order_Status,
@@ -106,6 +107,10 @@ Custom_Order_List.belongsTo(Share_Order_Status, {
 Custom_Order_List.belongsTo(Share_Shipping_Status, {
   foreignKey: 'shipping_status',
   as: 'shippingStatus',
+})
+Custom_Order_List.belongsTo(Share_Payment_Status, {
+  foreignKey: 'payment_status',
+  as: 'paymentStatus',
 })
 // Product Variants 和 Categories
 Custom_Product_Variant.belongsTo(Custom_Category, {
@@ -1273,6 +1278,7 @@ router.post('/submit-order', upload.none(), async (req, res) => {
     recipient_address,
     total,
     payment_method,
+    payment_status,
     shipping_method,
     shipping_status,
     order_status,
@@ -1324,6 +1330,7 @@ router.post('/submit-order', upload.none(), async (req, res) => {
           recipient_address,
           total,
           payment_method,
+          payment_status,
           shipping_method,
           shipping_status,
           order_status,
@@ -1423,10 +1430,10 @@ const generatePaymentFormData = (orderDetails) => {
     TotalAmount: `${totalAmount}`,
     TradeDesc: '客製花束',
     ItemName: '客製花束',
-    ReturnURL: 'http://localhost:3005/api/custom/payment-callback',
+    ReturnURL: `${EC_HOST}/api/custom/payment-callback/${orderId}`,
     ChoosePayment: 'ALL',
     EncryptType: 1,
-    ClientBackURL: 'http://localhost:3000/cart/payment-successful',
+    ClientBackURL: `http://localhost:3000/cart/payment-successful?source=flower&orderId=${orderId}`,
   }
 
   return base_param
@@ -1465,7 +1472,7 @@ router.get('/initiate-payment/:orderId', async (req, res) => {
       HASHKEY,
       HASHIV
     )
-
+    console.log(checkMacValue)
     if (checkMacValue) {
       const form = `<form action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="POST" name="payment" style="display: none;">
       <input name="MerchantID" value="${paymentFormData.MerchantID}"/>
@@ -1504,53 +1511,173 @@ router.get('/initiate-payment/:orderId', async (req, res) => {
 //   res.send(html)
 // })
 
-router.get('/get-payment-data/:orderId', async (req, res) => {
-  const { orderId } = req.params // 修正这里
+// router.post('/payment-callback', async (req, res) => {
+//   // console.log('req.body:', req.body)
+
+//   const data = { ...req.body }
+//   const receivedCheckMacValue = data.CheckMacValue
+//   delete data.CheckMacValue // 刪除CheckMacValue以便重新計算
+
+//   const create = new ecpay_payment(options)
+//   const calculatedCheckMacValue =
+//     create.payment_client.helper.gen_chk_mac_value(data)
+
+//   console.log(
+//     '確認交易正確性：',
+//     receivedCheckMacValue === calculatedCheckMacValue
+//   )
+
+//   if (receivedCheckMacValue === calculatedCheckMacValue) {
+//     res.send('1|OK') // 確認收到的數據無誤，告知綠界
+//   } else {
+//     res.status(400).send('CheckMacValue validation failed')
+//   }
+// })
+// router.post('/payment-callback/:orderId', async (req, res) => {
+//   console.log(req.body)
+//   const { orderId } = req.params
+//   const data = { ...req.body }
+//   const receivedCheckMacValue = data.CheckMacValue
+//   delete data.CheckMacValue
+//   const create = new ecpay_payment(options)
+//   const calculatedCheckMacValue =
+//     create.payment_client.helper.gen_chk_mac_value(data)
+//   console.log(
+//     '确认交易正确性：',
+//     receivedCheckMacValue === calculatedCheckMacValue
+//   )
+//   try {
+//     if (receivedCheckMacValue === calculatedCheckMacValue) {
+//       if (data.RtnCode === '1') {
+//         // 支付成功，RtnCode '1' 表示成功
+//         await Custom_Order_List.update(
+//           {
+//             payment_status: 1, // 假设支付成功状态为 'paid'
+//             updated_at: new Date(), // 可以根据需要记录支付成功的确切时间
+//           },
+//           {
+//             where: { order_id: orderId }, // 确保字段名正确，这里使用 order_id 匹配
+//           }
+//         )
+//         res.send('1|OK') // 告知绿界支付成功
+//       } else {
+//         await Custom_Order_List.update(
+//           {
+//             payment_status: 2, // 假设支付失败状态为 'failed'
+//             updated_at: new Date(),
+//           },
+//           {
+//             where: { order_id: orderId },
+//           }
+//         )
+//         res.status(200).send('Payment failed')
+//       }
+//     } else {
+//       res.status(400).send('CheckMacValue validation failed')
+//     }
+//   } catch (error) {
+//     console.error('Payment callback handling error:', error)
+//     res.status(500).send('Internal Server Error')
+//   }
+// })
+
+router.post('/payment-callback/:orderId', async (req, res) => {
+  const { orderId } = req.params
+  const { RtnCode, PaymentDate } = req.body
+
+  console.log('Received callback for orderId:', orderId)
+  console.log('Request body:', req.body) // 输出请求体
+  console.log('Request headers:', req.headers) // 输出请求头
+
   try {
-    const orderDetails = await getOrderDetails(orderId)
-    if (!orderDetails) {
-      // 如果没有找到订单，返回一个错误或者相应的HTTP状态码
-      return res.status(404).json({ message: 'Order not found' })
+    if (RtnCode === '1') {
+      await Custom_Order_List.update(
+        {
+          payment_status: 1,
+          updated_at: new Date(PaymentDate),
+        },
+        {
+          where: { order_id: orderId },
+        }
+      )
+      res.send('1|OK')
+    } else {
+      await Custom_Order_List.update(
+        {
+          payment_status: 2,
+          updated_at: new Date(PaymentDate),
+        },
+        {
+          where: { order_id: orderId },
+        }
+      )
+      res.status(200).send('Payment failed')
     }
-    const paymentFormData = generatePaymentFormData(orderDetails)
-    res.json(paymentFormData)
+  } catch (error) {
+    console.error('Payment callback handling error:', error)
+    res.status(500).send('Internal Server Error')
+  }
+})
+
+router.get('/order-result/:orderId', async (req, res) => {
+  const { orderId } = req.params
+
+  try {
+    const orderDetails = await Custom_Order_List.findOne({
+      where: { order_id: orderId },
+      attributes: ['order_id', 'total', 'created_at'],
+      include: [
+        {
+          model: Share_Order_Status,
+          as: 'orderStatus',
+          attributes: ['name'],
+        },
+        {
+          model: Share_Payment,
+          as: 'payment',
+          attributes: ['name'],
+        },
+        {
+          model: Share_Payment_Status,
+          as: 'paymentStatus',
+          attributes: ['name'],
+        },
+      ],
+    })
+
+    if (!orderDetails) {
+      console.log('Order not found')
+      return null
+    }
+
+    const formattedCreatedAt = moment(orderDetails.created_at).format(
+      'YYYY-MM-DD HH:mm:ss'
+    )
+
+    const shortOrderId = orderDetails.order_id.slice(-10)
+    res.json({
+      status: 'success',
+      message: '訂單建立成功!',
+      data: {
+        orderId: shortOrderId,
+        total: orderDetails.total,
+        createdAt: formattedCreatedAt,
+        orderStatus: orderDetails.orderStatus
+          ? orderDetails.orderStatus.name
+          : 'Unknown',
+        paymentMethod: orderDetails.payment
+          ? orderDetails.payment.name
+          : 'Unknown',
+        paymentStatus: orderDetails.paymentStatus
+          ? orderDetails.paymentStatus.name
+          : 'Unknown',
+      },
+    })
   } catch (error) {
     console.error('Error fetching order details:', error)
-    res.status(500).json({ message: 'Internal server error' })
+    throw error
   }
 })
-
-router.post('/payment-callback', async (req, res) => {
-  // console.log('req.body:', req.body)
-
-  const data = { ...req.body }
-  const receivedCheckMacValue = data.CheckMacValue
-  delete data.CheckMacValue // 刪除CheckMacValue以便重新計算
-
-  const create = new ecpay_payment(options)
-  const calculatedCheckMacValue =
-    create.payment_client.helper.gen_chk_mac_value(data)
-
-  console.log(
-    '確認交易正確性：',
-    receivedCheckMacValue === calculatedCheckMacValue
-  )
-
-  if (receivedCheckMacValue === calculatedCheckMacValue) {
-    res.send('1|OK') // 確認收到的數據無誤，告知綠界
-  } else {
-    res.status(400).send('CheckMacValue validation failed')
-  }
-})
-
-router.get('/payment-success/:orderId', (req, res) => {
-  res.render('success', { orderId: req.params.orderId })
-})
-
-router.get('/payment-failure/:orderId', (req, res) => {
-  res.render('failure', { orderId: req.params.orderId })
-})
-
 // ------------------------------------------------------------------------------------------
 
 router.get('/custom/:store_id', async function (req, res) {
