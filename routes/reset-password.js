@@ -20,14 +20,15 @@ ${otpToken}
 
 // create otp
 router.post('/otp', async (req, res, next) => {
-  const { email } = req.body
-
-  if (!email) return res.json({ status: 'error', message: '缺少必要資料' })
+  const { username } = req.body
+  console.log(username)
+  // easy09150915@gmail.com
+  if (!username) return res.json({ status: 'error', message: '缺少必要資料' })
 
   // 建立otp資料表記錄，成功回傳otp記錄物件，失敗為空物件{}
-  const otp = await createOtp(email)
+  const otp = await createOtp(username)
 
-  // console.log(otp)
+  console.log(otp)
 
   if (!otp.token)
     return res.json({ status: 'error', message: 'Email錯誤或期間內重覆要求' })
@@ -36,7 +37,7 @@ router.post('/otp', async (req, res, next) => {
   const mailOptions = {
     // 這裡要改寄送人名稱，email在.env檔中代入
     from: `"support"<${process.env.SMTP_TO_EMAIL}>`,
-    to: email,
+    to: username,
     subject: '重設密碼要求的電子郵件驗証碼',
     text: mailText(otp.token),
   }
@@ -56,14 +57,17 @@ router.post('/otp', async (req, res, next) => {
 
 // 重設密碼用
 router.post('/reset', async (req, res) => {
-  const { email, token, password } = req.body
+  const { username, token, password } = req.body
+  console.log(username)
+  console.log(token)
+  console.log(password)
 
-  if (!token || !email || !password) {
+  if (!token || !username || !password) {
     return res.json({ status: 'error', message: '缺少必要資料' })
   }
 
   // updatePassword中驗証otp的存在與合法性(是否有到期)
-  const result = await updatePassword(email, token, password)
+  const result = await updatePassword(username, token, password)
 
   if (!result) {
     return res.json({ status: 'error', message: '修改密碼失敗' })
