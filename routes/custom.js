@@ -3,6 +3,7 @@ import ecpay_payment from 'ecpay_aio_nodejs'
 import crypto from 'crypto'
 import dotenv from 'dotenv'
 import moment from 'moment'
+import authenticate from '#middlewares/authenticate.js'
 dotenv.config()
 const { MERCHANTID, HASHKEY, HASHIV, EC_HOST } = process.env
 const options = {
@@ -39,6 +40,7 @@ const {
   Custom_Template_List,
   Custom_Template_Detail,
   Custom_Product_List,
+  Custom_Favorite,
   Custom_Category,
   Share_Store,
   Share_Color,
@@ -1057,6 +1059,29 @@ router.get('/:template_id', async function (req, res) {
       total_price: 0,
     }
 
+    // results.forEach((result) => {
+    //   let product = productDetails.products.find(
+    //     (p) => p.product_id === result.product_id
+    //   )
+    //   if (!product) {
+    //     product = {
+    //       product_id: result.product_id,
+    //       category_name: result.category_name,
+    //       color: result.color_name,
+    //       price: result.price,
+    //       product_url: result.product_image_url,
+    //       positions: [],
+    //     }
+    //     productDetails.products.push(product)
+    //   }
+    //   product.positions.push({
+    //     top: result.top,
+    //     left: result.left,
+    //     zIndex: result.zIndex,
+    //     rotate: result.rotate,
+    //   })
+    //   productDetails.total_price += parseFloat(result.price)
+    // })
     results.forEach((result) => {
       let product = productDetails.products.find(
         (p) => p.product_id === result.product_id
@@ -1068,16 +1093,14 @@ router.get('/:template_id', async function (req, res) {
           color: result.color_name,
           price: result.price,
           product_url: result.product_image_url,
-          positions: [],
+          top: result.top,
+          left: result.left,
+          zIndex: result.zIndex,
+          rotate: result.rotate,
         }
         productDetails.products.push(product)
       }
-      product.positions.push({
-        top: result.top,
-        left: result.left,
-        zIndex: result.zIndex,
-        rotate: result.rotate,
-      })
+
       productDetails.total_price += parseFloat(result.price)
     })
 
@@ -1715,6 +1738,7 @@ router.get('/custom/:store_id', async function (req, res) {
   cat.category_type,
   sc.name AS color_name,
   cpv.image_url AS image_url,
+  cpv.variant_name AS variant_name,
   cpl.price AS price,
   cpl.product_id AS product_id  
   FROM
@@ -1763,6 +1787,7 @@ router.get('/custom/:store_id', async function (req, res) {
               product_id: cur.product_id,
               product_category: cur.category_type,
               product_price: cur.price,
+              variant_name: cur.variant_name,
             },
           ],
         })
@@ -1777,6 +1802,7 @@ router.get('/custom/:store_id', async function (req, res) {
             product_id: cur.product_id,
             product_category: cur.category_type,
             product_price: cur.price,
+            variant_name: cur.variant_name,
           })
         }
       }
@@ -1847,6 +1873,9 @@ router.get('/custom/:store_id', async function (req, res) {
 
 router.get('/custom-favorite/:member_id', async (req, res) => {
   const memberId = req.params.member_id
+  if (!memberId) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
 
   const sql = `
   SELECT
@@ -1900,5 +1929,72 @@ router.get('/custom-favorite/:member_id', async (req, res) => {
     res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
 })
+
+router.post('/add-favorite/:templateId', authenticate, async (req, res) => {
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+  const memberId = req.user.id
+  const templateId = req.params.templateId
+
+  try {
+    const existing = await Custom_Favorite.findOne({
+      where: { member_id: memberId, template_id: templateId },
+    })
+
+    if (existing) {
+      return res
+        .status(409)
+        .json({ message: 'Template already favorited.', status: 'unchanged' })
+    }
+
+    const newFavorite = await Custom_Favorite.create({
+      member_id: memberId,
+      template_id: templateId,
+    })
+
+    res.status(201).json({
+      message: 'Template favorited successfully.',
+      data: newFavorite,
+      status: 'success',
+    })
+  } catch (error) {
+    console.error('Error adding template to favorites:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+router.delete(
+  '/remove-favorite/:templateId',
+  authenticate,
+  async (req, res) => {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+    }
+    const memberId = req.user.id
+    const templateId = req.params.templateId
+
+    try {
+      const favorite = await Custom_Favorite.findOne({
+        where: { member_id: memberId, template_id: templateId },
+      })
+      if (!favorite) {
+        return res
+          .status(404)
+          .json({ message: 'Favorite not found.', status: 'filed' })
+      }
+
+      // 存在的話，刪除這個收藏
+      await favorite.destroy()
+
+      res.json({ message: 'Favorite deleted successfully.', status: 'success' })
+    } catch (error) {
+      console.error('Error removing template from favorites:', error)
+      res
+        .status(500)
+        .json({ status: 'error', message: 'Internal server error' })
+    }
+  }
+)
 
 export default router
