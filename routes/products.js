@@ -1,6 +1,7 @@
 import express from 'express'
 const router = express.Router()
 import authenticate from '#middlewares/authenticate.js'
+import db from '../utils/connect-mysql.js'
 
 // 檢查空物件, 轉換req.params為數字
 import { getIdParam } from '#db-helpers/db-tool.js'
@@ -8,6 +9,22 @@ import { getIdParam } from '#db-helpers/db-tool.js'
 // 資料庫使用
 import sequelize from '#configs/db.js'
 
+// Line Pay
+import axios from 'axios'
+import Base64 from 'crypto-js/enc-base64.js'
+import pkg from 'crypto-js'
+const { HmacSHA256 } = pkg
+const {
+  LINE_PAY_CHANNEL_ID,
+  LINE_PAY_VERSION,
+  LINE_PAY_SITE,
+  LINE_PAY_CHANNEL_SECRET,
+  LINE_PAY_RETURN_HOST,
+  REACT_REDIRECT_CONFIRM_URL,
+  REACT_REDIRECT_CANCEL_URL,
+} = process.env
+
+// Line Pay
 const {
   Product,
   Product_Image,
@@ -397,8 +414,6 @@ router.get('/get-all-order-details', authenticate, async (req, res) => {
       replacements: { memberId: memberId },
       type: sequelize.QueryTypes.SELECT,
     })
-
-    // Query to get order items with product details and images
     const sqlOrderItems = `
       SELECT
           poi.*,
@@ -425,7 +440,6 @@ router.get('/get-all-order-details', authenticate, async (req, res) => {
       type: sequelize.QueryTypes.SELECT,
     })
 
-    // Combine and send the results
     res.json({
       status: 'success',
       orderDetails: orderDetails,
@@ -439,12 +453,13 @@ router.get('/get-all-order-details', authenticate, async (req, res) => {
 
 // POST - 儲存訂單明細
 router.post('/save-order-details', authenticate, async (req, res) => {
-  console.log('Received body:', req.body)
+  // console.log('Received body:', req.body)
   if (!req.user || !req.user.id) {
     return res.status(401).json({ status: 'error', message: 'Unauthorized' })
   }
   const memberId = req.user.id
-  const { products, detail, store711, subtotal, totalAmount, orderStatus } = req.body
+  const { products, detail, store711, subtotal, totalAmount, orderStatus } =
+    req.body
   try {
     // 插入新的訂單明細紀錄
     const newOrderDetail = await Product_Order_Detail.create({
@@ -485,6 +500,125 @@ router.post('/save-order-details', authenticate, async (req, res) => {
     res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
 })
+
+// Line Pay
+// 跟 LINE Pay 串接的 API
+router.post('/create-line-pay-order', async (req, res) => {
+  const { orderId, linePayOrder, total_amount } = req.body
+
+  console.log('Order ID:', orderId)
+  console.log('Line Pay Order:', linePayOrder)
+  console.log('Total Amount:', total_amount)
+
+  linePayOrder.orderId = orderId
+  linePayOrder.amount = total_amount
+
+  console.log('create-line-pay-order', linePayOrder)
+
+  try {
+    const linePayBody = {
+      ...linePayOrder,
+      redirectUrls: {
+        confirmUrl: `${LINE_PAY_RETURN_HOST}${REACT_REDIRECT_CONFIRM_URL}`,
+        cancelUrl: `${LINE_PAY_RETURN_HOST}${REACT_REDIRECT_CANCEL_URL}`,
+      },
+    }
+    // console.log(linePayBody)
+
+    // Line Pay 路徑
+    const uri = '/payments/request'
+    const headers = createSignature(uri, linePayBody)
+
+    // 準備送給 LINE Pay 的資訊
+    // console.log(linePayBody, headers)
+    const url = `${LINE_PAY_SITE}/${LINE_PAY_VERSION}${uri}` // 發出請求的路徑
+
+    const linePayRes = await axios.post(url, linePayBody, { headers })
+    console.log('linePayResDataInfo', linePayRes.data)
+
+    if (linePayRes?.data?.returnCode === '0000') {
+      res.json(linePayRes?.data?.info?.paymentUrl.web)
+      // res.redirect(linePayRes?.data?.info.paymentUrl.web) //cors error 不能直接讓前端轉址
+    }
+  } catch (error) {
+    console.log(error)
+    // 錯誤的回饋
+    res.end()
+  }
+})
+
+// 本地端頁面，轉回來的路由
+// 確認支付是否成功
+router.get('/line-pay/confirm', async (req, res) => {
+  const { transactionId, orderId } = req.query
+  console.log('Transaction ID:', transactionId, 'Order ID:', orderId)
+  // 查詢訂單詳情
+  const sql = `SELECT * FROM product_order_detail WHERE order_number = ?`
+  const [order] = await db.query(sql, [orderId])
+
+  if (!order.length) {
+    return res.status(404).json({ success: false, message: 'Order not found' })
+  }
+  const orderDetails = order[0]
+  // console.log('row:', row)
+
+  try {
+    // 比對本地端訂單
+    const linePayBody = {
+      amount: orderDetails.total_cost,
+      currency: 'TWD',
+    }
+    const uri = `/payments/${transactionId}/confirm`
+    const headers = createSignature(uri, linePayBody)
+
+    const url = `${LINE_PAY_SITE}/${LINE_PAY_VERSION}${uri}`
+    // 向 LINE Pay 發送確認請求
+    const linePayRes = await axios.post(url, linePayBody, { headers })
+    // console.log('linePayRes', linePayRes)
+
+    // 付款成功後
+    if (linePayRes.data.returnCode === '0000') {
+      // 更新訂單狀態為 "已付款"
+      const updateSql = `UPDATE product_order_detail SET order_status = '已付款' WHERE order_number = ?`
+      await db.query(updateSql, [orderId])
+      res.json({ success: true, message: 'Payment confirmed' })
+    } else {
+      res.status(400).json({
+        success: false,
+        message: 'Payment confirmation failed',
+        error: linePayRes.data.returnMessage,
+      })
+    }
+  } catch (error) {
+    console.log(error)
+    return res.json({
+      success: false,
+      error: 'An error occurred while processing the payment',
+    })
+  }
+})
+
+// LinePay function：創建 Line Pay 簽章
+function createSignature(uri, linePayBody) {
+  const nonce = parseInt(new Date().getTime() / 1000)
+  const string = `${LINE_PAY_CHANNEL_SECRET}/${LINE_PAY_VERSION}${uri}${JSON.stringify(
+    linePayBody
+  )}${nonce}`
+
+  const signature = Base64.stringify(
+    HmacSHA256(string, LINE_PAY_CHANNEL_SECRET)
+  )
+
+  const headers = {
+    'X-LINE-ChannelId': LINE_PAY_CHANNEL_ID,
+    'Content-Type': 'application/json',
+    'X-LINE-Authorization-Nonce': nonce,
+    'X-LINE-Authorization': signature,
+  }
+  return headers
+}
+
+// Line Pay
 
 // 7-11 店到店：與資料庫無關，單純轉向使用
 const callback_url = process.env.SHIP_711_STORE_CALLBACK_URL
