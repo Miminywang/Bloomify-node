@@ -56,7 +56,7 @@ export default async function (sequelize) {
         allowNull: false,
       },
       total: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(255),
         allowNull: false,
       },
       payment_method: {
@@ -92,14 +92,22 @@ export default async function (sequelize) {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
+      invoice: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      barcode: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
     },
     {
-      tableName: 'custom_order_list', //直接提供資料表名稱
-      timestamps: true, // 使用時間戳
-      paranoid: false, // 軟性刪除
-      underscored: true, // 所有自動建立欄位，使用snake_case命名
-      createdAt: 'created_at', // 建立的時間戳
-      updatedAt: 'updated_at', // 更新的時間戳
+      tableName: 'custom_order_list',
+      timestamps: true,
+      paranoid: false,
+      underscored: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
     }
   )
 }

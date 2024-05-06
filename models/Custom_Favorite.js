@@ -8,9 +8,10 @@ export default async function (sequelize) {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+        allowNull: false,
       },
       template_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       member_id: {
@@ -21,14 +22,18 @@ export default async function (sequelize) {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      updated_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
     },
     {
-      tableName: 'custom_favorite', //直接提供資料表名稱
-      timestamps: true, // 使用時間戳
-      paranoid: false, // 軟性刪除
-      underscored: true, // 所有自動建立欄位，使用snake_case命名
-      createdAt: 'created_at', // 建立的時間戳
-      updatedAt: 'updated_at', // 更新的時間戳
+      tableName: 'custom_favorite',
+      timestamps: true, // 啟用 Sequelize 自動時間戳管理，若設定這個為 true，需確認自動時間戳功能與手動定義的字段不衝突
+      paranoid: false, // 不使用軟刪除
+      underscored: true, // 確保使用 snake_case
+      createdAt: 'created_at', // 自定義時間戳欄位名稱
+      updatedAt: 'updated_at', // 自定義時間戳欄位名稱
     }
   )
 }

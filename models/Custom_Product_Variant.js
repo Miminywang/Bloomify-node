@@ -7,8 +7,8 @@ export default function (sequelize) {
       variant_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
         allowNull: false,
+        autoIncrement: true,
       },
       category_id: {
         type: DataTypes.INTEGER,
@@ -28,8 +28,8 @@ export default function (sequelize) {
       },
     },
     {
-      tableName: 'custom_product_variant', // 表名
-      timestamps: true, // 啟用時間戳
+      tableName: 'custom_product_variant',
+      timestamps: true, // 启用时间戳
       paranoid: false,
       underscored: true,
       createdAt: 'created_at',

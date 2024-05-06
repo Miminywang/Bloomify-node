@@ -1,282 +1,64 @@
 [
-  {
-    "product_id": "1",
-    "variant_id": "13",
-    "store_id": "2",
-    "price": "100",
-    "created_at": "2024-04-19 13:07:16",
-    "updated_at": "2024-04-19 13:07:16"
-  },
-  {
-    "product_id": "2",
-    "variant_id": "14",
-    "store_id": "2",
-    "price": "200",
-    "created_at": "2024-04-19 13:07:16",
-    "updated_at": "2024-04-19 13:07:16"
-  },
-  {
-    "product_id": "3",
-    "variant_id": "15",
-    "store_id": "2",
-    "price": "300",
-    "created_at": "2024-04-19 13:07:16",
-    "updated_at": "2024-04-19 13:07:16"
-  },
-  {
-    "product_id": "4",
-    "variant_id": "16",
-    "store_id": "2",
-    "price": "400",
-    "created_at": "2024-04-19 13:07:16",
-    "updated_at": "2024-04-19 13:07:16"
-  },
-  {
-    "product_id": "5",
-    "variant_id": "17",
-    "store_id": "2",
-    "price": "500",
-    "created_at": "2024-04-19 13:07:16",
-    "updated_at": "2024-04-19 13:07:16"
-  },
-  {
-    "product_id": "6",
-    "variant_id": "16",
-    "store_id": "2",
-    "price": "600",
-    "created_at": "2024-04-19 13:07:16",
-    "updated_at": "2024-04-19 13:07:16"
-  },
-  {
-    "product_id": "7",
-    "variant_id": "18",
-    "store_id": "2",
-    "price": "700",
-    "created_at": "2024-04-19 13:07:16",
-    "updated_at": "2024-04-19 13:07:16"
-  },
-  {
-    "product_id": "8",
-    "variant_id": "15",
-    "store_id": "2",
-    "price": "800",
-    "created_at": "2024-04-19 13:07:16",
-    "updated_at": "2024-04-19 13:07:16"
-  },
-  {
-    "product_id": "9",
-    "variant_id": "14",
-    "store_id": "2",
-    "price": "900",
-    "created_at": "2024-04-19 13:07:16",
-    "updated_at": "2024-04-19 13:07:16"
-  },
-  {
-    "product_id": "10",
-    "variant_id": "13",
-    "store_id": "2",
-    "price": "1000",
-    "created_at": "2024-04-19 13:07:16",
-    "updated_at": "2024-04-19 13:07:16"
-  },
-  {
-    "product_id": "11",
-    "variant_id": "10",
-    "store_id": "2",
-    "price": "49",
-    "created_at": "2024-04-19 13:07:16",
-    "updated_at": "2024-04-19 13:07:16"
-  },
-  {
-    "product_id": "12",
-    "variant_id": "6",
-    "store_id": "2",
-    "price": "150",
-    "created_at": "2024-04-19 13:07:16",
-    "updated_at": "2024-04-19 13:07:16"
-  },
-  {
-    "product_id": "13",
-    "variant_id": "21",
-    "store_id": "2",
-    "price": "73",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "product_id": "14",
-    "variant_id": "22",
-    "store_id": "2",
-    "price": "75",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "product_id": "15",
-    "variant_id": "23",
-    "store_id": "2",
-    "price": "34",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "product_id": "16",
-    "variant_id": "24",
-    "store_id": "2",
-    "price": "98",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "product_id": "17",
-    "variant_id": "25",
-    "store_id": "2",
-    "price": "84",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "product_id": "18",
-    "variant_id": "26",
-    "store_id": "2",
-    "price": "98",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "product_id": "19",
-    "variant_id": "27",
-    "store_id": "2",
-    "price": "116",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "product_id": "20",
-    "variant_id": "28",
-    "store_id": "2",
-    "price": "77",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "product_id": "21",
-    "variant_id": "29",
-    "store_id": "2",
-    "price": "98",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "product_id": "22",
-    "variant_id": "30",
-    "store_id": "2",
-    "price": "47",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "product_id": "23",
-    "variant_id": "31",
-    "store_id": "2",
-    "price": "96",
-    "created_at": "2024-04-20 19:50:29",
-    "updated_at": "2024-04-20 19:50:29"
-  },
-  {
-    "product_id": "24",
-    "variant_id": "32",
-    "store_id": "2",
-    "price": "69",
-    "created_at": "2024-04-20 19:50:29",
-    "updated_at": "2024-04-20 19:50:29"
-  },
-  {
-    "product_id": "25",
-    "variant_id": "33",
-    "store_id": "2",
-    "price": "118",
-    "created_at": "2024-04-20 19:50:29",
-    "updated_at": "2024-04-20 19:50:29"
-  },
-  {
-    "product_id": "26",
-    "variant_id": "34",
-    "store_id": "2",
-    "price": "83",
-    "created_at": "2024-04-20 19:50:29",
-    "updated_at": "2024-04-20 19:50:29"
-  },
-  {
-    "product_id": "27",
-    "variant_id": "35",
-    "store_id": "2",
-    "price": "119",
-    "created_at": "2024-04-20 19:50:29",
-    "updated_at": "2024-04-20 19:50:29"
-  },
-  {
-    "product_id": "28",
-    "variant_id": "36",
-    "store_id": "2",
-    "price": "47",
-    "created_at": "2024-04-20 19:50:29",
-    "updated_at": "2024-04-20 19:50:29"
-  },
-  {
-    "product_id": "29",
-    "variant_id": "37",
-    "store_id": "2",
-    "price": "119",
-    "created_at": "2024-04-20 19:50:29",
-    "updated_at": "2024-04-20 19:50:29"
-  },
-  {
-    "product_id": "30",
-    "variant_id": "2",
-    "store_id": "2",
-    "price": "70",
-    "created_at": "2024-04-20 14:17:40",
-    "updated_at": "2024-04-20 14:17:40"
-  },
-  {
-    "product_id": "31",
-    "variant_id": "3",
-    "store_id": "2",
-    "price": "75",
-    "created_at": "2024-04-20 14:17:40",
-    "updated_at": "2024-04-20 14:17:40"
-  },
-  {
-    "product_id": "32",
-    "variant_id": "2",
-    "store_id": "2",
-    "price": "70",
-    "created_at": "2024-04-20 14:17:40",
-    "updated_at": "2024-04-20 14:17:40"
-  },
-  {
-    "product_id": "33",
-    "variant_id": "3",
-    "store_id": "2",
-    "price": "75",
-    "created_at": "2024-04-20 14:17:40",
-    "updated_at": "2024-04-20 14:17:40"
-  },
-  {
-    "product_id": "34",
-    "variant_id": "8",
-    "store_id": "2",
-    "price": "55",
-    "created_at": "2024-04-20 14:18:21",
-    "updated_at": "2024-04-20 14:18:21"
-  },
-  {
-    "product_id": "35",
-    "variant_id": "8",
-    "store_id": "2",
-    "price": "55",
-    "created_at": "2024-04-20 14:18:21",
-    "updated_at": "2024-04-20 14:18:21"
-  }
-]
+  {"product_id":"36","variant_id":"1","store_id":"2","price":"30","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"37","variant_id":"2","store_id":"2","price":"43","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"38","variant_id":"3","store_id":"2","price":"49","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"39","variant_id":"4","store_id":"2","price":"35","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"40","variant_id":"5","store_id":"2","price":"38","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"41","variant_id":"6","store_id":"2","price":"35","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"42","variant_id":"7","store_id":"2","price":"40","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"43","variant_id":"8","store_id":"2","price":"47","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"44","variant_id":"9","store_id":"2","price":"37","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"45","variant_id":"10","store_id":"2","price":"26","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"46","variant_id":"11","store_id":"2","price":"26","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"47","variant_id":"12","store_id":"2","price":"32","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"48","variant_id":"13","store_id":"2","price":"33","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"49","variant_id":"14","store_id":"2","price":"20","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"50","variant_id":"15","store_id":"2","price":"44","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"51","variant_id":"16","store_id":"2","price":"47","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"52","variant_id":"17","store_id":"2","price":"25","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"53","variant_id":"18","store_id":"2","price":"23","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"54","variant_id":"19","store_id":"2","price":"21","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"55","variant_id":"20","store_id":"2","price":"46","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"56","variant_id":"21","store_id":"2","price":"28","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"57","variant_id":"22","store_id":"2","price":"43","created_at":"2024-05-04 23:40:08","updated_at":"2024-05-04 23:40:08"},
+  {"product_id":"67","variant_id":"23","store_id":"2","price":"70","created_at":"2024-05-04 23:41:00","updated_at":"2024-05-04 23:41:00"},
+  {"product_id":"68","variant_id":"24","store_id":"2","price":"250","created_at":"2024-05-04 23:41:00","updated_at":"2024-05-04 23:41:00"},
+  {"product_id":"69","variant_id":"25","store_id":"2","price":"50","created_at":"2024-05-04 23:41:00","updated_at":"2024-05-04 23:41:00"},
+  {"product_id":"70","variant_id":"26","store_id":"2","price":"60","created_at":"2024-05-04 23:41:00","updated_at":"2024-05-04 23:41:00"},
+  {"product_id":"71","variant_id":"27","store_id":"2","price":"70","created_at":"2024-05-04 23:41:00","updated_at":"2024-05-04 23:41:00"},
+  {"product_id":"72","variant_id":"28","store_id":"2","price":"150","created_at":"2024-05-04 23:41:00","updated_at":"2024-05-04 23:41:00"},
+  {"product_id":"73","variant_id":"29","store_id":"2","price":"57","created_at":"2024-05-04 23:41:00","updated_at":"2024-05-04 23:41:00"},
+  {"product_id":"74","variant_id":"30","store_id":"2","price":"60","created_at":"2024-05-04 23:41:00","updated_at":"2024-05-04 23:41:00"},
+  {"product_id":"82","variant_id":"31","store_id":"2","price":"65","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"83","variant_id":"32","store_id":"2","price":"48","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"84","variant_id":"33","store_id":"2","price":"46","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"85","variant_id":"34","store_id":"2","price":"46","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"86","variant_id":"35","store_id":"2","price":"52","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"87","variant_id":"36","store_id":"2","price":"41","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"88","variant_id":"37","store_id":"2","price":"50","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"89","variant_id":"38","store_id":"2","price":"49","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"90","variant_id":"39","store_id":"2","price":"54","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"91","variant_id":"40","store_id":"2","price":"50","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"92","variant_id":"41","store_id":"2","price":"70","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"93","variant_id":"42","store_id":"2","price":"68","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"94","variant_id":"43","store_id":"2","price":"71","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"95","variant_id":"44","store_id":"2","price":"64","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"96","variant_id":"45","store_id":"2","price":"68","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"97","variant_id":"46","store_id":"2","price":"66","created_at":"2024-05-04 23:41:13","updated_at":"2024-05-04 23:41:13"},
+  {"product_id":"113","variant_id":"47","store_id":"2","price":"26","created_at":"2024-05-04 23:41:23","updated_at":"2024-05-04 23:41:23"},
+  {"product_id":"114","variant_id":"48","store_id":"2","price":"20","created_at":"2024-05-04 23:41:23","updated_at":"2024-05-04 23:41:23"},
+  {"product_id":"115","variant_id":"49","store_id":"2","price":"24","created_at":"2024-05-04 23:41:23","updated_at":"2024-05-04 23:41:23"},
+  {"product_id":"116","variant_id":"50","store_id":"2","price":"21","created_at":"2024-05-04 23:41:23","updated_at":"2024-05-04 23:41:23"},
+  {"product_id":"117","variant_id":"51","store_id":"2","price":"32","created_at":"2024-05-04 23:41:23","updated_at":"2024-05-04 23:41:23"},
+  {"product_id":"118","variant_id":"52","store_id":"2","price":"38","created_at":"2024-05-04 23:41:23","updated_at":"2024-05-04 23:41:23"},
+  {"product_id":"119","variant_id":"53","store_id":"2","price":"35","created_at":"2024-05-04 23:41:23","updated_at":"2024-05-04 23:41:23"},
+  {"product_id":"120","variant_id":"54","store_id":"2","price":"13","created_at":"2024-05-04 23:41:33","updated_at":"2024-05-04 23:41:33"},
+  {"product_id":"121","variant_id":"55","store_id":"2","price":"26","created_at":"2024-05-04 23:41:33","updated_at":"2024-05-04 23:41:33"},
+  {"product_id":"122","variant_id":"56","store_id":"2","price":"23","created_at":"2024-05-04 23:41:33","updated_at":"2024-05-04 23:41:33"},
+  {"product_id":"123","variant_id":"57","store_id":"2","price":"27","created_at":"2024-05-04 23:41:33","updated_at":"2024-05-04 23:41:33"},
+  {"product_id":"124","variant_id":"58","store_id":"2","price":"14","created_at":"2024-05-04 23:41:33","updated_at":"2024-05-04 23:41:33"},
+  {"product_id":"125","variant_id":"59","store_id":"2","price":"23","created_at":"2024-05-04 23:41:33","updated_at":"2024-05-04 23:41:33"},
+  {"product_id":"126","variant_id":"60","store_id":"2","price":"22","created_at":"2024-05-04 23:41:33","updated_at":"2024-05-04 23:41:33"},
+  {"product_id":"127","variant_id":"61","store_id":"2","price":"11","created_at":"2024-05-04 23:41:33","updated_at":"2024-05-04 23:41:33"},
+  {"product_id":"128","variant_id":"62","store_id":"2","price":"20","created_at":"2024-05-04 23:41:33","updated_at":"2024-05-04 23:41:33"}
+  ]

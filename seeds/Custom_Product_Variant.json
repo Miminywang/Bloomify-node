@@ -1,335 +1,66 @@
 [
-  {
-    "variant_id": "1",
-    "category_id": "1",
-    "variant_name": "紅色玫瑰",
-    "image_url": "\/custom\/custom\/roses\/red.jpg",
-    "color_id": "1",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "2",
-    "category_id": "1",
-    "variant_name": "白色玫瑰",
-    "image_url": "\/custom\/custom\/flowers\/white_rose.png",
-    "color_id": "11",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "3",
-    "category_id": "1",
-    "variant_name": "黃色玫瑰",
-    "image_url": "\/custom\/custom\/flowers\/yellow_rose.png",
-    "color_id": "3",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "4",
-    "category_id": "14",
-    "variant_name": "綠色向日葵",
-    "image_url": "\/custom\/custom\/sunflowers\/green.jpg",
-    "color_id": "4",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "5",
-    "category_id": "14",
-    "variant_name": "藍色向日葵",
-    "image_url": "\/custom\/custom\/sunflowers\/blue.jpg",
-    "color_id": "5",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "6",
-    "category_id": "3",
-    "variant_name": "紫色百合",
-    "image_url": "\/custom\/custom\/lilies\/white_lily.png",
-    "color_id": "6",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "7",
-    "category_id": "3",
-    "variant_name": "粉色百合",
-    "image_url": "\/custom\/custom\/lilies\/pink.jpg",
-    "color_id": "7",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "8",
-    "category_id": "4",
-    "variant_name": "紅色鬱金香",
-    "image_url": "\/custom\/custom\/flowers\/red_tulip.png",
-    "color_id": "1",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "9",
-    "category_id": "4",
-    "variant_name": "灰色鬱金香",
-    "image_url": "\/custom\/custom\/tulips\/gray.jpg",
-    "color_id": "9",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "10",
-    "category_id": "4",
-    "variant_name": "黑色鬱金香",
-    "image_url": "\/custom\/custom\/tulips\/black.jpg",
-    "color_id": "10",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "11",
-    "category_id": "17",
-    "variant_name": "白色康乃馨",
-    "image_url": "\/custom\/custom\/carnations\/white.jpg",
-    "color_id": "11",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "12",
-    "category_id": "17",
-    "variant_name": "其他色康乃馨",
-    "image_url": "\/custom\/custom\/carnations\/other.jpg",
-    "color_id": "12",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "13",
-    "category_id": "18",
-    "variant_name": "黃色雛菊",
-    "image_url": "\/custom\/custom\/daisies\/yellow.jpg",
-    "color_id": "3",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "14",
-    "category_id": "18",
-    "variant_name": "紅色雛菊",
-    "image_url": "\/custom\/custom\/daisies\/red.jpg",
-    "color_id": "1",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "15",
-    "category_id": "7",
-    "variant_name": "粉色透明禮盒",
-    "image_url": "https:\/\/i1.momoshop.com.tw\/1692556017\/goodsimg\/0011\/612\/726\/11612726_R_m.webp",
-    "color_id": "7",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "16",
-    "category_id": "10",
-    "variant_name": "藍色感謝卡",
-    "image_url": "\/custom\/custom\/cards\/blue.jpg",
-    "color_id": "5",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "17",
-    "category_id": "11",
-    "variant_name": "綠色萬用卡",
-    "image_url": "\/custom\/custom\/cards\/green.jpg",
-    "color_id": "4",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "18",
-    "category_id": "12",
-    "variant_name": "紫色情人卡",
-    "image_url": "\/custom\/custom\/cards\/purple.jpg",
-    "color_id": "6",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "19",
-    "category_id": "7",
-    "variant_name": "棕色櫥窗提盒",
-    "image_url": "\/custom\/custom\/packages\/brown.jpg",
-    "color_id": "8",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "20",
-    "category_id": "8",
-    "variant_name": "黑色透明禮盒",
-    "image_url": "https:\/\/i1.momoshop.com.tw\/1692556017\/goodsimg\/0011\/612\/726\/11612726_R_m.webp",
-    "color_id": "10",
-    "created_at": "2024-04-19 13:07:17",
-    "updated_at": "2024-04-19 13:07:17"
-  },
-  {
-    "variant_id": "21",
-    "category_id": "14",
-    "variant_name": "黃色高粱穗",
-    "image_url": "\/custom\/custom\/leaves\/sorghum_spike.png",
-    "color_id": "3",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "22",
-    "category_id": "15",
-    "variant_name": "綠色圓葉尤加利",
-    "image_url": "\/custom\/custom\/leaves\/round_leaved_eucalyptus.png",
-    "color_id": "4",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "23",
-    "category_id": "16",
-    "variant_name": "黃色小麥穗",
-    "image_url": "\/custom\/custom\/leaves\/wheat_spike.png",
-    "color_id": "4",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "24",
-    "category_id": "17",
-    "variant_name": "綠色皮葉蕨類",
-    "image_url": "\/custom\/custom\/leaves\/leatherleaf_fern.png",
-    "color_id": "3",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "25",
-    "category_id": "18",
-    "variant_name": "綠色棕櫚葉",
-    "image_url": "\/custom\/custom\/leaves\/palm_leaves.png",
-    "color_id": "4",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "26",
-    "category_id": "19",
-    "variant_name": "其他鼠尾草仿真花",
-    "image_url": "\/custom\/custom\/leaves\/artificial_sage_flowers.png",
-    "color_id": "12",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "27",
-    "category_id": "20",
-    "variant_name": "顏色蕨類",
-    "image_url": "\/custom\/custom\/leaves\/ferns.png",
-    "color_id": "4",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "28",
-    "category_id": "21",
-    "variant_name": "綠色人造綠葉",
-    "image_url": "\/custom\/custom\/leaves\/artificial_greenery.png",
-    "color_id": "4",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "29",
-    "category_id": "22",
-    "variant_name": "綠色乾燥蘆葦",
-    "image_url": "\/custom\/custom\/leaves\/dried_reeds.png",
-    "color_id": "4",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "30",
-    "category_id": "23",
-    "variant_name": "綠色波士頓蕨",
-    "image_url": "\/custom\/custom\/leaves\/boston_fern.png",
-    "color_id": "4",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "31",
-    "category_id": "24",
-    "variant_name": "紅色金魚草",
-    "image_url": "\/custom\/custom\/accent\/red_snapdragon.png",
-    "color_id": "1",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "32",
-    "category_id": "25",
-    "variant_name": "粉色唐菖蒲",
-    "image_url": "\/custom\/custom\/accent\/pink_gladiola.png",
-    "color_id": "7",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "33",
-    "category_id": "26",
-    "variant_name": "黃色旱金蓮",
-    "image_url": "\/custom\/custom\/accent\/tropaeolum.png",
-    "color_id": "3",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "34",
-    "category_id": "27",
-    "variant_name": "藍色忍冬",
-    "image_url": "\/custom\/custom\/accent\/honeysuckle.png",
-    "color_id": "5",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "35",
-    "category_id": "28",
-    "variant_name": "紫色香水草",
-    "image_url": "\/custom\/custom\/accent\/purple_garden_heliotrope.png",
-    "color_id": "6",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "36",
-    "category_id": "29",
-    "variant_name": "黃色金雞菊",
-    "image_url": "\/custom\/custom\/accent\/yellow_coreopsis.png",
-    "color_id": "3",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  },
-  {
-    "variant_id": "37",
-    "category_id": "30",
-    "variant_name": "白色晚香玉",
-    "image_url": "\/custom\/custom\/accent\/white_tuberose.png",
-    "color_id": "11",
-    "created_at": "0000-00-00 00:00:00",
-    "updated_at": "0000-00-00 00:00:00"
-  }
-]
+  {"variant_id":"1","category_id":"1","variant_name":"紫色玫瑰","image_url":"\/custom\/custom\/flowers\/purple_rose.png","color_id":"6","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"2","category_id":"1","variant_name":"白色玫瑰","image_url":"\/custom\/custom\/flowers\/white_rose.png","color_id":"11","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"3","category_id":"1","variant_name":"黃色玫瑰","image_url":"\/custom\/custom\/flowers\/yellow_rose.png","color_id":"3","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"4","category_id":"1","variant_name":"粉色玫瑰","image_url":"\/custom\/custom\/flowers\/pink_rose.png","color_id":"7","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"5","category_id":"1","variant_name":"藍色玫瑰","image_url":"\/custom\/custom\/flowers\/blue_rose.png","color_id":"5","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"6","category_id":"3","variant_name":"白色百合","image_url":"\/custom\/custom\/flowers\/white_lily.png","color_id":"11","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"7","category_id":"3","variant_name":"粉色百合","image_url":"\/custom\/custom\/flowers\/pink_lily.png","color_id":"7","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"8","category_id":"3","variant_name":"橘色百合","image_url":"\/custom\/custom\/flowers\/orange_lily.png","color_id":"2","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"9","category_id":"3","variant_name":"黃色百合","image_url":"\/custom\/custom\/flowers\/yellow_lily.png","color_id":"3","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"10","category_id":"4","variant_name":"黑色鬱金香","image_url":"\/custom\/custom\/flowers\/black_tulip.png","color_id":"10","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"11","category_id":"4","variant_name":"紅色鬱金香","image_url":"\/custom\/custom\/flowers\/red_tulip.png","color_id":"1","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"12","category_id":"4","variant_name":"黃色鬱金香","image_url":"\/custom\/custom\/flowers\/yellow_tulip.png","color_id":"3","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"13","category_id":"4","variant_name":"橘色鬱金香","image_url":"\/custom\/custom\/flowers\/orange_tulip.png","color_id":"2","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"14","category_id":"5","variant_name":"紅色康乃馨","image_url":"\/custom\/custom\/flowers\/red_carnation.png","color_id":"1","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"15","category_id":"5","variant_name":"紫色康乃馨","image_url":"\/custom\/custom\/flowers\/purple_carnation.png","color_id":"6","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"16","category_id":"5","variant_name":"白色康乃馨","image_url":"\/custom\/custom\/flowers\/white_carnation.png","color_id":"11","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"17","category_id":"36","variant_name":"藍色風信子","image_url":"\/custom\/custom\/flowers\/blue_hyacinth.png","color_id":"5","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"18","category_id":"36","variant_name":"黃色風信子","image_url":"\/custom\/custom\/flowers\/yellow_hyacinth.png","color_id":"3","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"19","category_id":"36","variant_name":"粉色風信子","image_url":"\/custom\/custom\/flowers\/pink_hyacinth.png","color_id":"7","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"20","category_id":"37","variant_name":"紫色菊花","image_url":"\/custom\/custom\/flowers\/purple_chrysanthemum.png","color_id":"6","created_at":"2024-04-19 05:07:17","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"21","category_id":"37","variant_name":"黃色菊花","image_url":"\/custom\/custom\/flowers\/yellow_chrysanthemum.png","color_id":"3","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"22","category_id":"37","variant_name":"綠色菊花","image_url":"\/custom\/custom\/flowers\/green_chrysanthemum.png","color_id":"4","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"23","category_id":"7","variant_name":"透明提袋","image_url":"\/custom\/custom\/package\/plasticbag.png","color_id":"4","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"24","category_id":"9","variant_name":"透明禮盒","image_url":"\/custom\/custom\/package\/transparentbox.png","color_id":"3","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"25","category_id":"8","variant_name":"單層包裝紙","image_url":"\/custom\/custom\/package\/one_layer.png","color_id":"4","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"26","category_id":"40","variant_name":"雙層包裝紙","image_url":"\/custom\/custom\/package\/double_layer.png","color_id":"12","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"27","category_id":"41","variant_name":"緞面包裝紙","image_url":"\/custom\/custom\/package\/satin.png","color_id":"4","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"28","category_id":"42","variant_name":"禮物盒包裝","image_url":"\/custom\/custom\/package\/giftbox.png","color_id":"4","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"29","category_id":"2","variant_name":"向日葵","image_url":"\/custom\/custom\/flowers\/sunflower.png","color_id":"3","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"30","category_id":"39","variant_name":"多肉植物","image_url":"\/custom\/custom\/leaves\/succulent.png","color_id":"4","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"31","category_id":"24","variant_name":"紅色金魚草","image_url":"\/custom\/custom\/accent\/red_snapdragon.png","color_id":"1","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"32","category_id":"25","variant_name":"粉色唐菖蒲","image_url":"\/custom\/custom\/accent\/pink_gladiola.png","color_id":"7","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"33","category_id":"26","variant_name":"紅色旱金蓮","image_url":"\/custom\/custom\/accent\/tropaeolum.png","color_id":"1","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"34","category_id":"27","variant_name":"白色忍冬","image_url":"\/custom\/custom\/accent\/honeysuckle.png","color_id":"11","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"35","category_id":"28","variant_name":"紫色香水草","image_url":"\/custom\/custom\/accent\/purple_garden_heliotrope.png","color_id":"6","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"36","category_id":"29","variant_name":"黃色金雞菊","image_url":"\/custom\/custom\/accent\/yellow_coreopsis.png","color_id":"3","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"37","category_id":"30","variant_name":"白色晚香玉","image_url":"\/custom\/custom\/accent\/white_tuberose.png","color_id":"11","created_at":"0000-00-00 00:00:00","updated_at":"2024-04-26 06:55:58"},
+  {"variant_id":"38","category_id":"31","variant_name":"青葙 紅色","image_url":"\/custom\/custom\/accent\/red_featherCelosia.png","color_id":"1","created_at":"2024-05-04 23:04:51","updated_at":"2024-05-04 23:04:51"},
+  {"variant_id":"39","category_id":"31","variant_name":"青葙 藍色","image_url":"\/custom\/custom\/accent\/blue_featherCelosia.png","color_id":"5","created_at":"2024-05-04 23:04:51","updated_at":"2024-05-04 23:04:51"},
+  {"variant_id":"40","category_id":"31","variant_name":"青葙 黃色","image_url":"\/custom\/custom\/accent\/yellow_featherCelosia.png","color_id":"3","created_at":"2024-05-04 23:04:51","updated_at":"2024-05-04 23:04:51"},
+  {"variant_id":"41","category_id":"31","variant_name":"紫色青葙","image_url":"\/custom\/custom\/accent\/purple_featherCelosia.png","color_id":"6","created_at":"2024-05-04 23:04:51","updated_at":"2024-05-04 23:04:51"},
+  {"variant_id":"42","category_id":"32","variant_name":"紫羅蘭 紫色","image_url":"\/custom\/custom\/accent\/purple_violet.png","color_id":"6","created_at":"2024-05-04 23:04:51","updated_at":"2024-05-04 23:04:51"},
+  {"variant_id":"43","category_id":"32","variant_name":"紫羅蘭 粉色","image_url":"\/custom\/custom\/accent\/pink_violet.png","color_id":"7","created_at":"2024-05-04 23:04:51","updated_at":"2024-05-04 23:04:51"},
+  {"variant_id":"44","category_id":"33","variant_name":"火鶴花 紅色","image_url":"\/custom\/custom\/accent\/red_anthurium.png","color_id":"1","created_at":"2024-05-04 23:04:51","updated_at":"2024-05-04 23:04:51"},
+  {"variant_id":"45","category_id":"33","variant_name":"火鶴花 粉色","image_url":"\/custom\/custom\/accent\/pink_anthurium.png","color_id":"7","created_at":"2024-05-04 23:04:51","updated_at":"2024-05-04 23:04:51"},
+  {"variant_id":"46","category_id":"33","variant_name":"火鶴花 紫色","image_url":"\/custom\/custom\/accent\/purple_anthurium.png","color_id":"6","created_at":"2024-05-04 23:04:51","updated_at":"2024-05-04 23:04:51"},
+  {"variant_id":"47","category_id":"15","variant_name":"綠色圓葉尤加利","image_url":"\/custom\/custom\/leaves\/eucalyptus.png","color_id":"4","created_at":"2024-05-04 23:09:10","updated_at":"2024-05-04 23:09:10"},
+  {"variant_id":"48","category_id":"16","variant_name":"綠色鼠尾草","image_url":"\/custom\/custom\/leaves\/artificial_sage_flowers.png","color_id":"4","created_at":"2024-05-04 23:09:10","updated_at":"2024-05-04 23:09:10"},
+  {"variant_id":"49","category_id":"17","variant_name":"綠色銀耳藻","image_url":"\/custom\/custom\/leaves\/galax_urceolata.png","color_id":"4","created_at":"2024-05-04 23:09:10","updated_at":"2024-05-04 23:09:10"},
+  {"variant_id":"50","category_id":"18","variant_name":"綠色雞冠刺桐","image_url":"\/custom\/custom\/leaves\/llex.png","color_id":"4","created_at":"2024-05-04 23:09:10","updated_at":"2024-05-04 23:09:10"},
+  {"variant_id":"51","category_id":"19","variant_name":"綠色橄欖葉","image_url":"\/custom\/custom\/leaves\/olive.png","color_id":"4","created_at":"2024-05-04 23:09:10","updated_at":"2024-05-04 23:09:10"},
+  {"variant_id":"52","category_id":"20","variant_name":"綠色蕨類","image_url":"\/custom\/custom\/leaves\/ferns.png","color_id":"4","created_at":"2024-05-04 23:09:10","updated_at":"2024-05-04 23:09:10"},
+  {"variant_id":"53","category_id":"21","variant_name":"綠色人造綠葉","image_url":"\/custom\/custom\/leaves\/artificial_greenery.png","color_id":"4","created_at":"2024-05-04 23:09:10","updated_at":"2024-05-04 23:09:10"},
+  {"variant_id":"54","category_id":"10","variant_name":"樣式一","image_url":"\/custom\/custom\/cards\/birthday_2.jpg","color_id":"12","created_at":"2024-05-04 23:18:54","updated_at":"2024-05-04 23:18:54"},
+  {"variant_id":"55","category_id":"11","variant_name":"樣式一","image_url":"\/custom\/custom\/cards\/thanks.jpg","color_id":"12","created_at":"2024-05-04 23:18:54","updated_at":"2024-05-04 23:18:54"},
+  {"variant_id":"56","category_id":"11","variant_name":"樣式二","image_url":"\/custom\/custom\/cards\/thanks_2.jpg","color_id":"12","created_at":"2024-05-04 23:18:54","updated_at":"2024-05-04 23:18:54"},
+  {"variant_id":"57","category_id":"12","variant_name":"樣式一","image_url":"\/custom\/custom\/cards\/greeting.jpg","color_id":"12","created_at":"2024-05-04 23:18:54","updated_at":"2024-05-04 23:18:54"},
+  {"variant_id":"58","category_id":"12","variant_name":"樣式二","image_url":"\/custom\/custom\/cards\/greeting_2.jpg","color_id":"12","created_at":"2024-05-04 23:18:54","updated_at":"2024-05-04 23:18:54"},
+  {"variant_id":"59","category_id":"13","variant_name":"樣式一","image_url":"\/custom\/custom\/cards\/vday.jpg","color_id":"12","created_at":"2024-05-04 23:18:54","updated_at":"2024-05-04 23:18:54"},
+  {"variant_id":"60","category_id":"13","variant_name":"樣式二","image_url":"\/custom\/custom\/cards\/vday_2.jpg","color_id":"12","created_at":"2024-05-04 23:18:54","updated_at":"2024-05-04 23:18:54"},
+  {"variant_id":"61","category_id":"14","variant_name":"樣式一","image_url":"\/custom\/custom\/cards\/mother.jpg","color_id":"12","created_at":"2024-05-04 23:18:54","updated_at":"2024-05-04 23:18:54"},
+  {"variant_id":"62","category_id":"14","variant_name":"樣式二","image_url":"\/custom\/custom\/cards\/mother_2.jpg","color_id":"12","created_at":"2024-05-04 23:18:54","updated_at":"2024-05-04 23:18:54"},
+  {"variant_id":"63","category_id":"2","variant_name":"向日葵","image_url":"\/custom\/custom\/flowers\/sunflower.png","color_id":"3","created_at":"2024-05-04 17:33:34","updated_at":"2024-05-04 17:33:34"},
+  {"variant_id":"64","category_id":"39","variant_name":"多肉植物","image_url":"\/custom\/custom\/leaves\/succulent.png","color_id":"4","created_at":"2024-05-04 17:33:34","updated_at":"2024-05-04 17:33:34"}
+  ]
