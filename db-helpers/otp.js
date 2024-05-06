@@ -4,7 +4,7 @@ import { generateToken } from '#configs/otp.js'
 // 資料庫使用
 import { QueryTypes } from 'sequelize'
 import sequelize from '#configs/db.js'
-const { User, Otp } = sequelize.models
+const { Share_Member, Otp } = sequelize.models
 
 // 判斷token是否到期, true代表到期
 // const hasExpired = (expTimestamp) => {
@@ -18,15 +18,18 @@ const shouldReset = (expTimestamp, exp, limit = 60) => {
 }
 
 // exp = 是 30 分到期,  limit = 60 是 60秒內不產生新的token
-const createOtp = async (email, exp = 30, limit = 60) => {
+const createOtp = async (username, exp = 30, limit = 60) => {
   // 方式二: 使用模型查詢
-  // 檢查使用者email是否存在
-  const user = await User.findOne({
+  // 檢查使用者username是否存在
+
+  // 要記得先註冊帳號
+  const user = await Share_Member.findOne({
     where: {
-      email,
+      username,
     },
     raw: true, // 只需要資料表中資料
   })
+  console.log(user)
 
   if (!user) {
     console.log('ERROR - 使用者帳號不存在'.bgRed)
@@ -35,7 +38,7 @@ const createOtp = async (email, exp = 30, limit = 60) => {
   // 檢查otp是否已經存在
   const foundOtp = await Otp.findOne({
     where: {
-      email,
+      username,
     },
     raw: true, // 只需要資料表中資料
   })
@@ -48,8 +51,8 @@ const createOtp = async (email, exp = 30, limit = 60) => {
 
   // 找到記錄，超過60s(秒)內限制，所以可以產生新的otp token
   if (foundOtp && shouldReset(foundOtp.exp_timestamp, exp, limit)) {
-    // 以使用者輸入的Email作為secret產生otp token
-    const token = generateToken(email)
+    // 以使用者輸入的username作為secret產生otp token
+    const token = generateToken(username)
 
     // 到期時間 預設 exp = 30 分鐘到期
     const exp_timestamp = Date.now() + exp * 60 * 1000
@@ -59,7 +62,7 @@ const createOtp = async (email, exp = 30, limit = 60) => {
       { token, exp_timestamp },
       {
         where: {
-          email,
+          username,
         },
       }
     )
@@ -72,16 +75,16 @@ const createOtp = async (email, exp = 30, limit = 60) => {
   }
 
   // 以下為"沒找到otp記錄"
-  // 以使用者輸入的Email作為secret產生otp token
-  const token = generateToken(email)
-
+  // 以使用者輸入的username作為secret產生otp token
+  const token = generateToken(username)
+  console.log(token)
   // 到期時間 預設 exp = 30 分鐘到期
   const exp_timestamp = Date.now() + exp * 60 * 1000
 
   // 建立otp物件
   const newOtp = {
     user_id: user.id,
-    email,
+    username,
     token,
     exp_timestamp,
   }
@@ -94,11 +97,11 @@ const createOtp = async (email, exp = 30, limit = 60) => {
 }
 
 // 更新密碼
-const updatePassword = async (email, token, password) => {
+const updatePassword = async (username, token, password) => {
   // 檢查otp是否已經存在
   const foundOtp = await Otp.findOne({
     where: {
-      email,
+      username,
       token,
     },
     raw: true, // 只需要資料表中資料
@@ -117,7 +120,7 @@ const updatePassword = async (email, token, password) => {
   }
 
   // 修改密碼
-  await User.update(
+  await Share_Member.update(
     { password },
     {
       where: {
