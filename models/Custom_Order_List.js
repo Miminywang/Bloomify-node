@@ -56,7 +56,7 @@ export default async function (sequelize) {
         allowNull: false,
       },
       total: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       payment_id: {
