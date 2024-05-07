@@ -54,6 +54,7 @@ const {
   Share_Shipping,
   Share_Shipping_Status,
   Share_Order_Status,
+  Share_Invoice,
 } = sequelize.models
 
 // 在 Share_Color 模型中
@@ -68,6 +69,10 @@ Custom_Order_Detail.belongsTo(Custom_Product_List, {
   as: 'product',
 })
 
+Custom_Order_List.belongsTo(Share_Invoice, {
+  as: 'invoiceType',
+  foreignKey: 'invoice_id',
+})
 // 在 Custom_Product_List 模型中
 Custom_Product_List.hasMany(Custom_Order_Detail, {
   foreignKey: 'product_id',
@@ -95,7 +100,7 @@ Custom_Order_List.belongsTo(Share_Store, {
   as: 'store',
 })
 Custom_Order_List.belongsTo(Share_Payment, {
-  foreignKey: 'payment_method',
+  foreignKey: 'payment_id',
   as: 'payment',
 })
 Custom_Order_List.belongsTo(Share_Shipping, {
@@ -1234,7 +1239,7 @@ router.get('/:template_id', async function (req, res) {
 //     recipient_tel,
 //     recipient_address,
 //     total,
-//     payment_method,
+//     payment_id,
 //     shipping_method,
 //     shipping_status,
 //     order_status,
@@ -1337,7 +1342,7 @@ router.get('/:template_id', async function (req, res) {
 //           recipient_tel,
 //           recipient_address,
 //           total,
-//           payment_method,
+//           payment_id,
 //           shipping_method,
 //           shipping_status,
 //           order_status,
@@ -1364,7 +1369,7 @@ router.get('/:template_id', async function (req, res) {
 //     })
 
 //     // const orderStatusDetails = await Share_Order_Status.findByPk(order_status)
-//     // const paymentDetails = await Share_Payment.findByPk(payment_method)
+//     // const paymentDetails = await Share_Payment.findByPk(payment_id)
 //     // res.json({
 //     //   status: 'success',
 //     //   message: '訂單建立成功!',
@@ -1373,7 +1378,7 @@ router.get('/:template_id', async function (req, res) {
 //     //     total: `NT$${total}`,
 //     //     // created_at: result.createdAt.toISOString(),
 //     //     // order_status: orderStatusDetails.name,
-//     //     // payment_method: paymentDetails.name,
+//     //     // payment_id: paymentDetails.name,
 //     //     payment_status: '已付款', // 假設付款狀態直接為已付款
 //     //     invoice: '載具',
 //     //   },
@@ -1385,7 +1390,14 @@ router.get('/:template_id', async function (req, res) {
 //     res.status(500).send({ message: 'Failed to place order' })
 //   }
 // })
-
+const paymentMethods = {
+  綠界: 1,
+  'Line Pay': 2,
+  現金: 3,
+}
+const getPaymentId = (methodName) => {
+  return paymentMethods[methodName] || null
+}
 router.post('/submit-order', upload.none(), async (req, res) => {
   const {
     image_url,
@@ -1410,6 +1422,7 @@ router.post('/submit-order', upload.none(), async (req, res) => {
     discount,
     card_content,
     card_url,
+    invoice_id,
   } = req.body
 
   const decodeAndSaveImage = async (base64Data, filename) => {
@@ -1435,7 +1448,7 @@ router.post('/submit-order', upload.none(), async (req, res) => {
     const cardImageName = `${uuidv4()}.png`
     const imagePath = await decodeAndSaveImage(image_url, imageName)
     const cardImagePath = await decodeAndSaveImage(card_url, cardImageName)
-
+    const payment_id = getPaymentId(payment_method)
     const orderId = uuidv4()
     const result = await sequelize.transaction(async (t) => {
       const order = await Custom_Order_List.create(
@@ -1454,7 +1467,7 @@ router.post('/submit-order', upload.none(), async (req, res) => {
           recipient_tel,
           recipient_address,
           total,
-          payment_method,
+          payment_id,
           payment_status,
           shipping_method,
           shipping_status,
@@ -1462,6 +1475,7 @@ router.post('/submit-order', upload.none(), async (req, res) => {
           discount: discount || 0,
           card_content,
           card_url: cardImagePath,
+          invoice_id,
         },
         { transaction: t }
       )
@@ -1711,8 +1725,8 @@ router.post('/payment-callback/:orderId', async (req, res) => {
   const { RtnCode, PaymentDate } = req.body
 
   console.log('Received callback for orderId:', orderId)
-  console.log('Request body:', req.body) // 输出请求体
-  console.log('Request headers:', req.headers) // 输出请求头
+  console.log('Request body:', req.body)
+  console.log('Request headers:', req.headers)
 
   try {
     if (RtnCode === '1') {
@@ -1767,12 +1781,17 @@ router.get('/order-result/:orderId', async (req, res) => {
           as: 'paymentStatus',
           attributes: ['name'],
         },
+        {
+          model: Share_Invoice,
+          as: 'invoiceType',
+          attributes: ['name'],
+        },
       ],
     })
 
     if (!orderDetails) {
-      console.log('Order not found')
-      return null
+      res.status(404).json({ status: 'error', message: 'Order not found' })
+      return
     }
 
     const formattedCreatedAt = moment(orderDetails.created_at).format(
@@ -1795,6 +1814,9 @@ router.get('/order-result/:orderId', async (req, res) => {
           : 'Unknown',
         paymentStatus: orderDetails.paymentStatus
           ? orderDetails.paymentStatus.name
+          : 'Unknown',
+        invoiceType: orderDetails.invoiceType
+          ? orderDetails.invoiceType.name
           : 'Unknown',
       },
     })

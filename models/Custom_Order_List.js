@@ -59,7 +59,7 @@ export default async function (sequelize) {
         type: DataTypes.STRING(255),
         allowNull: false,
       },
-      payment_method: {
+      payment_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -92,7 +92,7 @@ export default async function (sequelize) {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      invoice: {
+      invoice_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
