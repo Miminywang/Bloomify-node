@@ -138,7 +138,7 @@ router.get('/latest', async function (req, res) {
   }
 })
 
-// GET - 得到隨機課程
+// GET - 得到隨機課程 (8張)
 router.get('/random', async function (req, res) {
   try {
     const randomCourses = await Course.findAll({
@@ -152,6 +152,30 @@ router.get('/random', async function (req, res) {
       order: sequelize.random(), // 隨機函數
       nest: true,
       limit: 8,
+    })
+    return res.json({ status: 'success', data: { courses: randomCourses } })
+  } catch (error) {
+    console.error('Error fetching latest courses:', error)
+    return res
+      .status(500)
+      .json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
+// GET - 得到隨機課程 (9張)
+router.get('/random-sm', async function (req, res) {
+  try {
+    const randomCourses = await Course.findAll({
+      include: [
+        {
+          model: Course_Image,
+          as: 'images',
+          attributes: ['id', 'path', 'is_main'],
+        },
+      ],
+      order: sequelize.random(), // 隨機函數
+      nest: true,
+      limit: 9,
     })
     return res.json({ status: 'success', data: { courses: randomCourses } })
   } catch (error) {
@@ -366,11 +390,6 @@ router.delete('/remove-fav/:courseId', authenticate, async (req, res) => {
 router.get('/:id', async function (req, res) {
   // 轉為數字
   const id = getIdParam(req)
-
-  // 檢查是否為授權會員，只有授權會員可以存取自己的資料
-  // if (req.user.id !== id) {
-  //   return res.json({ status: 'error', message: '存取會員資料失敗' })
-  // }
 
   const course = await Course.findByPk(id, {
     include: [
