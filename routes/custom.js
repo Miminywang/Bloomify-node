@@ -952,49 +952,171 @@ router.get('/flower-type', async (req, res) => {
 //       .json({ status: 'error', message: 'Internal server error' })
 //   }
 // })
+// router.get('/:template_id', async function (req, res) {
+//   const template_id = req.params.template_id
+
+//   // const sql = `
+//   //   SELECT
+//   //     ctl.template_id,
+//   //     ss.store_name AS store_name,
+//   //     ss.store_id AS store_id,
+//   //     ss.store_address AS store_address,
+//   //     ctl.template_name,
+//   //     ctl.image_url,
+//   //     ctl.discount,
+//   //     sco.occ AS occasion,
+//   //     clr.name AS base_color,
+//   //     cat.category_name,
+//   //     clr.name AS color_name,
+//   //     cpl.product_id,
+
+//   //     cpl.price,
+//   //     ctd.top,
+//   //     ctd.left,
+//   //     ctd.z_index AS zIndex,
+//   //     ctd.rotate
+//   //   FROM
+//   //     Custom_Template_List AS ctl
+//   //   LEFT JOIN
+//   //     Share_Store AS ss ON ctl.store_id = ss.store_id
+//   //   LEFT JOIN
+//   //     Custom_Template_Detail AS ctd ON ctl.template_id = ctd.template_id
+//   //   LEFT JOIN
+//   //     Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
+//   //   LEFT JOIN
+//   //     Custom_Product_Variant AS cpv ON cpl.variant_id = cpv.variant_id
+//   //   LEFT JOIN
+//   //     Custom_Category AS cat ON cpv.category_id = cat.category_id
+//   //   LEFT JOIN
+//   //     Share_Color AS clr ON cpv.color_id = clr.color_id
+//   //   LEFT JOIN
+//   //     Share_Occ AS sco ON ctl.occ_id = sco.occ_id
+//   //   WHERE
+//   //     ctl.template_id = :template_id;
+
+//   // `
+
+//   const sql = `
+//     SELECT
+//       ctl.template_id,
+//       ss.store_name AS store_name,
+//       ss.store_id AS store_id,
+//       ss.store_address AS store_address,
+//       ctl.template_name,
+//       ctl.image_url AS template_image_url,
+//       ctl.discount,
+//       sco.occ AS occasion,
+//       clr.name AS base_color,
+//       cat.category_name,
+//       clr.name AS color_name,
+//       cpl.product_id,
+//       cpl.price,
+//       cpv.image_url AS product_image_url,
+//       ctd.left,
+//       ctd.z_index AS zIndex,
+//       ctd.rotate
+//     FROM
+//       Custom_Template_List AS ctl
+//     LEFT JOIN
+//       Share_Store AS ss ON ctl.store_id = ss.store_id
+//     LEFT JOIN
+//       Custom_Template_Detail AS ctd ON ctl.template_id = ctd.template_id
+//     LEFT JOIN
+//       Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
+//     LEFT JOIN
+//       Custom_Product_Variant AS cpv ON cpl.variant_id = cpv.variant_id
+//     LEFT JOIN
+//       Custom_Category AS cat ON cpv.category_id = cat.category_id
+//     LEFT JOIN
+//       Share_Color AS clr ON cpv.color_id = clr.color_id
+//     LEFT JOIN
+//       Share_Occ AS sco ON ctl.occ_id = sco.occ_id
+//     WHERE
+//       ctl.template_id = :template_id;
+// `
+
+//   try {
+//     const results = await sequelize.query(sql, {
+//       replacements: { template_id: template_id },
+//       type: sequelize.QueryTypes.SELECT,
+//     })
+
+//     if (results.length === 0) {
+//       return res.status(404).json({ message: 'Product not found' })
+//     }
+
+//     let productDetails = {
+//       template_id: template_id,
+//       template_occ: results[0].occasion,
+//       store_name: results[0].store_name,
+//       store_id: results[0].store_id,
+//       store_address: results[0].store_address,
+//       template_name: results[0].template_name,
+//       image_url: results[0].template_image_url,
+//       color: results[0].base_color,
+//       discount: results[0].discount,
+//       products: [],
+//       total_price: 0,
+//     }
+
+//     // results.forEach((result) => {
+//     //   let product = productDetails.products.find(
+//     //     (p) => p.product_id === result.product_id
+//     //   )
+//     //   if (!product) {
+//     //     product = {
+//     //       product_id: result.product_id,
+//     //       category_name: result.category_name,
+//     //       color: result.color_name,
+//     //       price: result.price,
+//     //       product_url: result.product_image_url,
+//     //       positions: [],
+//     //     }
+//     //     productDetails.products.push(product)
+//     //   }
+//     //   product.positions.push({
+//     //     top: result.top,
+//     //     left: result.left,
+//     //     zIndex: result.zIndex,
+//     //     rotate: result.rotate,
+//     //   })
+//     //   productDetails.total_price += parseFloat(result.price)
+//     // })
+//     results.forEach((result) => {
+//       let product = productDetails.products.find(
+//         (p) => p.product_id === result.product_id
+//       )
+//       if (!product) {
+//         product = {
+//           product_id: result.product_id,
+//           category_name: result.category_name,
+//           color: result.color_name,
+//           price: result.price,
+//           product_url: result.product_image_url,
+//           top: result.top,
+//           left: result.left,
+//           zIndex: result.zIndex,
+//           rotate: result.rotate,
+//         }
+//         productDetails.products.push(product)
+//       }
+
+//       productDetails.total_price += parseFloat(result.price)
+//     })
+
+//     return res.json({
+//       status: 'success',
+//       data: productDetails,
+//     })
+//   } catch (error) {
+//     console.error('Error fetching product details:', error)
+//     return res
+//       .status(500)
+//       .json({ status: 'error', message: 'Internal server error' })
+//   }
+// })
 router.get('/:template_id', async function (req, res) {
   const template_id = req.params.template_id
-
-  // const sql = `
-  //   SELECT
-  //     ctl.template_id,
-  //     ss.store_name AS store_name,
-  //     ss.store_id AS store_id,
-  //     ss.store_address AS store_address,
-  //     ctl.template_name,
-  //     ctl.image_url,
-  //     ctl.discount,
-  //     sco.occ AS occasion,
-  //     clr.name AS base_color,
-  //     cat.category_name,
-  //     clr.name AS color_name,
-  //     cpl.product_id,
-
-  //     cpl.price,
-  //     ctd.top,
-  //     ctd.left,
-  //     ctd.z_index AS zIndex,
-  //     ctd.rotate
-  //   FROM
-  //     Custom_Template_List AS ctl
-  //   LEFT JOIN
-  //     Share_Store AS ss ON ctl.store_id = ss.store_id
-  //   LEFT JOIN
-  //     Custom_Template_Detail AS ctd ON ctl.template_id = ctd.template_id
-  //   LEFT JOIN
-  //     Custom_Product_List AS cpl ON ctd.product_id = cpl.product_id
-  //   LEFT JOIN
-  //     Custom_Product_Variant AS cpv ON cpl.variant_id = cpv.variant_id
-  //   LEFT JOIN
-  //     Custom_Category AS cat ON cpv.category_id = cat.category_id
-  //   LEFT JOIN
-  //     Share_Color AS clr ON cpv.color_id = clr.color_id
-  //   LEFT JOIN
-  //     Share_Occ AS sco ON ctl.occ_id = sco.occ_id
-  //   WHERE
-  //     ctl.template_id = :template_id;
-
-  // `
 
   const sql = `
     SELECT
@@ -1013,6 +1135,7 @@ router.get('/:template_id', async function (req, res) {
       cpl.price,
       cpv.image_url AS product_image_url, 
       ctd.left,
+      ctd.top,
       ctd.z_index AS zIndex,
       ctd.rotate
     FROM
@@ -1059,29 +1182,6 @@ router.get('/:template_id', async function (req, res) {
       total_price: 0,
     }
 
-    // results.forEach((result) => {
-    //   let product = productDetails.products.find(
-    //     (p) => p.product_id === result.product_id
-    //   )
-    //   if (!product) {
-    //     product = {
-    //       product_id: result.product_id,
-    //       category_name: result.category_name,
-    //       color: result.color_name,
-    //       price: result.price,
-    //       product_url: result.product_image_url,
-    //       positions: [],
-    //     }
-    //     productDetails.products.push(product)
-    //   }
-    //   product.positions.push({
-    //     top: result.top,
-    //     left: result.left,
-    //     zIndex: result.zIndex,
-    //     rotate: result.rotate,
-    //   })
-    //   productDetails.total_price += parseFloat(result.price)
-    // })
     results.forEach((result) => {
       let product = productDetails.products.find(
         (p) => p.product_id === result.product_id
@@ -1093,14 +1193,16 @@ router.get('/:template_id', async function (req, res) {
           color: result.color_name,
           price: result.price,
           product_url: result.product_image_url,
-          top: result.top,
-          left: result.left,
-          zIndex: result.zIndex,
-          rotate: result.rotate,
+          positions: [],
         }
         productDetails.products.push(product)
       }
-
+      product.positions.push({
+        top: result.top,
+        left: result.left,
+        zIndex: result.zIndex,
+        rotate: result.rotate,
+      })
       productDetails.total_price += parseFloat(result.price)
     })
 
