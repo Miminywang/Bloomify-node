@@ -476,7 +476,7 @@ router.post('/save-order-details', authenticate, async (req, res) => {
       delivery_cost: detail.deliveryShipping,
       payment_method: detail.paymentMethod,
       coupon_code: detail.couponCode,
-      discount: 0,
+      discount: detail.discount,
       invoice_option: detail.invoiceOption,
       order_status: orderStatus,
       store_id: store711.storeid,
@@ -560,7 +560,6 @@ router.get('/line-pay/confirm', async (req, res) => {
     return res.status(404).json({ success: false, message: 'Order not found' })
   }
   const orderDetails = order[0]
-  // console.log('row:', row)
 
   try {
     // 比對本地端訂單
