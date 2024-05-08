@@ -1,14 +1,5 @@
 [
   {
-    "id": 1,
-    "course_id": 1,
-    "member_id": 1,
-    "stars": 4,
-    "comment": "教學非常細心，使得初學者也能夠輕鬆理解和上手。",
-    "created_at": "2024-02-15 01:30:00",
-    "updated_at": "2024-04-25 07:10:27"
-  },
-  {
     "id": 2,
     "course_id": 1,
     "member_id": 2,

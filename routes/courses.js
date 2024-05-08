@@ -438,10 +438,8 @@ router.get('/:id', async function (req, res) {
       },
     ],
     nest: true,
+    order: [[{ model: Course_Review, as: 'reviews' }, 'created_at', 'DESC']],
   })
-
-  // 不回傳密碼
-  // delete user.password
 
   return res.json({ status: 'success', data: { course } })
 })

@@ -7,6 +7,7 @@ import { getIdParam } from '#db-helpers/db-tool.js'
 // 引入 sequelize 和模型
 // import authenticate from '#middlewares/authenticate.js'
 import sequelize from '#configs/db.js'
+import authenticate from '##/middlewares/authenticate.js'
 const { Course, Share_Member, Course_Review } = sequelize.models
 
 // 外鍵定義
@@ -46,6 +47,7 @@ router.get('/', async function (req, res) {
     const reviews = await Course_Review.findAll({
       raw: true,
       nest: true,
+      order: ['created_at', 'DESC'], // 預設由新到舊排序
     })
 
     return res.json({ status: 'success', data: { reviews } })
@@ -58,9 +60,14 @@ router.get('/', async function (req, res) {
 })
 
 // POST - 添加課程評價
-router.post('/:courseId', async (req, res) => {
+router.post('/add/:courseId', authenticate, async (req, res) => {
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized' })
+  }
+
   const courseId = req.params.courseId
-  const { memberId, stars, comment } = req.body
+  const memberId = req.user.id
+  const { stars, comment } = req.body
 
   try {
     await Course_Review.create({
