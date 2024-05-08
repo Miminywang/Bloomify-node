@@ -19,6 +19,7 @@ const {
   Course_Image,
   Course_Datetime,
   Share_Store,
+  Course_Review,
 } = sequelize.models
 
 // 課程訂單和課程訂單項目的關聯
@@ -58,6 +59,10 @@ Course_Order.belongsTo(Share_Invoice, {
   as: 'invoice',
   foreignKey: 'invoice_id',
 })
+
+// Course_Order_Item 和 Course
+Course_Order_Item.belongsTo(Course, { foreignKey: 'course_id' })
+Course.hasMany(Course_Order_Item, { foreignKey: 'course_id' })
 
 // 路由建構 ---------------------------------
 
@@ -106,6 +111,12 @@ router.get('/', authenticate, async (req, res) => {
                     'start_time',
                     'end_time',
                   ],
+                },
+                {
+                  model: Course_Review,
+                  as: 'reviews',
+                  required: false,
+                  where: { member_id: memberId },
                 },
                 {
                   model: Share_Store,
