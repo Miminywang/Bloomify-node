@@ -564,21 +564,21 @@ router.get('/line-pay/confirm', async (req, res) => {
   try {
     // 比對本地端訂單
     const linePayBody = {
-      amount: orderDetails.total_cost,
+      amount: orderDetails.subtotal,
       currency: 'TWD',
     }
     const uri = `/payments/${transactionId}/confirm`
     const headers = createSignature(uri, linePayBody)
 
     const url = `${LINE_PAY_SITE}/${LINE_PAY_VERSION}${uri}`
+    console.log(url)
     // 向 LINE Pay 發送確認請求
     const linePayRes = await axios.post(url, linePayBody, { headers })
     // console.log('linePayRes', linePayRes)
 
     // 付款成功後
     if (linePayRes.data.returnCode === '0000') {
-      // 更新訂單狀態為 "已付款"
-      const updateSql = `UPDATE product_order_detail SET order_status = '已付款' WHERE order_number = ?`
+      const updateSql = `UPDATE product_order_detail SET order_status = '處理中' WHERE order_number = ?`
       await db.query(updateSql, [orderId])
       res.json({ success: true, message: 'Payment confirmed' })
     } else {
