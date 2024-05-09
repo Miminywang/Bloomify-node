@@ -47,7 +47,7 @@ router.get('/', async function (req, res) {
     const reviews = await Course_Review.findAll({
       raw: true,
       nest: true,
-      order: ['created_at', 'DESC'], // 預設由新到舊排序
+      order: [['created_at', 'DESC']], // 預設由新到舊排序
     })
 
     return res.json({ status: 'success', data: { reviews } })
