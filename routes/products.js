@@ -1,5 +1,4 @@
 import express from 'express'
-const router = express.Router()
 import authenticate from '#middlewares/authenticate.js'
 import db from '../utils/connect-mysql.js'
 
@@ -13,6 +12,8 @@ import sequelize from '#configs/db.js'
 import axios from 'axios'
 import Base64 from 'crypto-js/enc-base64.js'
 import pkg from 'crypto-js'
+
+const router = express.Router()
 const { HmacSHA256 } = pkg
 const {
   LINE_PAY_CHANNEL_ID,
@@ -24,7 +25,6 @@ const {
   REACT_REDIRECT_CANCEL_URL,
 } = process.env
 
-// Line Pay
 const {
   Product,
   Product_Image,
@@ -86,7 +86,6 @@ Product_Review.belongsTo(Product, {
 })
 
 // 建立商品評論與共享星等關聯
-// models/Product_Review.js
 Product_Review.belongsTo(Share_Star, {
   foreignKey: 'share_star_id',
   as: 'star',
@@ -178,14 +177,12 @@ router.get('/', async function (req, res) {
 })
 
 // 篩選子項目
-// Define a GET route handler for the '/filter' endpoint.
 router.get('/filter', async function (req, res) {
   const { parent_id } = req.query
 
   // Initialize an object to hold conditions for the database query.
   const whereConditions = {}
 
-  // If a parent_id is provided, use it to determine the specific categories to filter by.
   if (parent_id) {
     // Map parent categories to their child category IDs.
     const parentToCategoryMap = {
@@ -207,7 +204,6 @@ router.get('/filter', async function (req, res) {
     const { rows: products, count } = await Product.findAndCountAll({
       where: whereConditions, // Conditions used for filtering the products.
       include: [
-        // Include related models and specify the attributes to retrieve.
         {
           model: Product_Image,
           as: 'images',
@@ -218,14 +214,14 @@ router.get('/filter', async function (req, res) {
           model: Share_Tag,
           as: 'tags',
           attributes: ['id', 'name'],
-          through: { attributes: [] }, // Do not retrieve attributes from the join table.
+          through: { attributes: [] },
 
           required: false,
         },
         {
           model: Product_Category,
           as: 'category',
-          attributes: ['name', 'parent_id'], // Include parent_id for additional context.
+          attributes: ['name', 'parent_id'],
           required: false,
         },
         {
@@ -252,7 +248,6 @@ router.get('/filter', async function (req, res) {
             'updated_at',
           ],
           include: [
-            // Include nested relations within reviews.
             {
               model: Share_Star,
               as: 'star',
@@ -269,13 +264,10 @@ router.get('/filter', async function (req, res) {
           required: false,
         },
       ],
-      // order: orderOptions,
       nest: true, // Enable nested loading of related models.
     })
-    // If the query is successful, return the products in the response.
     return res.json({ status: 'success', data: { products, count } })
   } catch (error) {
-    // If there's an error during the database query, log the error and return a server error response.
     console.error('Error fetching Products:', error)
     return res
       .status(500)
@@ -345,7 +337,7 @@ router.post('/add-fav/:productId', authenticate, async (req, res) => {
 
     if (existing) {
       // 如果已存在，可選擇更新紀錄或返回已收藏
-      return res.status(409).json({ message: 'Product already favorited.' })
+      return res.status(409).json({ message: '商品已被蒐藏' })
     }
 
     // 插入新的收藏紀錄
@@ -378,7 +370,6 @@ router.delete('/remove-fav/:productId', authenticate, async (req, res) => {
       where: { member_id: memberId, product_id: productId },
     })
     if (!favorite) {
-      // 如果不存在，返回一個 404 錯誤
       return res.status(404).json({ message: 'Favorite not found.' })
     }
 
