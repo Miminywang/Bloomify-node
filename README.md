@@ -1,4 +1,4 @@
-Frontend(React Next.js): [https://github.com/huachen8858/freefyt-client](https://github.com/forget0224/next-react-nextUI.git)
+Frontend(React Next.js): https://github.com/Miminywang/Bloomify-client
 
 使用 React (Next.js 14.1.3) 和 Node (v20.11.1) 開發的 Bloomify 花店網站
 
